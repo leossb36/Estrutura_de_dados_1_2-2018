@@ -49,7 +49,7 @@ void print_vector(double *vector, double elements)
 {
     printf("Valores:\n");
 
-    for (int i = 0; i <= 10; i++)
+    for (int i = 0; i <= elements; i++)
     
         printf("%.4lf\n", *(vector + i));
     
