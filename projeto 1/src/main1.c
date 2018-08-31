@@ -50,9 +50,9 @@ void print_vector(double *vector, double elements)
     printf("Valores:\n");
 
     for (int i = 0; i <= 10; i++)
-    {
+    
         printf("%.4lf\n", *(vector + i));
-    }
+    
 }
 
 void fneuronio(double *ENTRADAS, double *PESOS, double limiar, double len, int *status)
