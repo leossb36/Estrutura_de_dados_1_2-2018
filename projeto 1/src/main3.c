@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 
 void mov_disk(int disk, char orig, char aux, char dest);
 void print_mov(int disk);
