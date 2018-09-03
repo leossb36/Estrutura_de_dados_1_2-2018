@@ -37,10 +37,10 @@ int main ()
 
     percent = percent_aprov(&aprovados, &reprovados, &per_aprov, &per_reprov, &status);
 
-    printf("Aprovados: %d\tReprovados: %d\n\n", aprovados, reprovados);
-    printf("Percentual de aprovados: %.2lf\tPercentual de reprovados: %.2lf\n", per_aprov, per_reprov);
+    printf("\nAprovados: %d\tReprovados: %d\n\n", aprovados, reprovados);
+    printf("Percentual de aprovados: %.2lf\tPercentual de reprovados: %.2lf\n\n", per_aprov, per_reprov);
 
-    printf("Mais da metade da turma está %s\n", (status == 1) ? "APROVADA" : "REPROVADA");
+    printf("Mais da metade da turma está %s\n", (status == 1) ? "APROVADA" : "REPROVADA --> SEUS MERDA");
 
     free(APR);
 
