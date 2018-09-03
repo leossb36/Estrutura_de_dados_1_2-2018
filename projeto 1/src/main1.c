@@ -3,7 +3,7 @@
 
 
 void print_vector(double *vector, double elements);
-void fneuronio(double *ENTRADAS, double *PESOS, double limiar, double len, int *status);
+int *fneuronio(double *ENTRADAS, double *PESOS, double limiar, double len, int *status);
 
 int main ()
 {
@@ -11,13 +11,14 @@ int main ()
     double PESOS[MAX] = {0};
     double T;
     int status = 0;
+    int *check;
 
     printf("Enter with 10 value of ENTRADAS:\n");
 
     for (int i = 0; i <= MAX; i++)
-    
+
         scanf("%lf", &ENTRADAS[i]);
-    
+
     print_vector(ENTRADAS, MAX);
 
     printf("Enter with 10 value of PESOS:\n");
@@ -34,7 +35,7 @@ int main ()
 
     printf("\n\nLimiar = %.4lf\n", T);
 
-    fneuronio(ENTRADAS, PESOS, T, 10, &status);
+    check = fneuronio(ENTRADAS, PESOS, T, 10, &status);
 
     if (status == 1)
         printf("\nNeurônio ativado!\n");
@@ -50,12 +51,12 @@ void print_vector(double *vector, double elements)
     printf("Valores:\n");
 
     for (int i = 0; i <= elements; i++)
-    
+
         printf("%.4lf\n", *(vector + i));
-    
+
 }
 
-void fneuronio(double *ENTRADAS, double *PESOS, double limiar, double len, int *status)
+int *fneuronio(double *ENTRADAS, double *PESOS, double limiar, double len, int *status)
 {
     double SOMAP = 0;
 
@@ -65,7 +66,5 @@ void fneuronio(double *ENTRADAS, double *PESOS, double limiar, double len, int *
 
     *status = SOMAP > limiar;
 
+    return status;
 }
-
-
-

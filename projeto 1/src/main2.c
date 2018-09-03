@@ -10,7 +10,6 @@ int percent_aprov(int *aprov, int *reprov, double *percent_aprov, double *percen
 int main ()
 {
     double notas[10];
-    
     int *APR;
 
     int aprovados = 0;
@@ -22,7 +21,6 @@ int main ()
 
     double per_aprov = 0;
     double per_reprov = 0;
-
 
     printf("\nEnter with 10 values of NOTAS:\n");
 
@@ -67,7 +65,7 @@ int *recebe_notas(double *nota, int elements)
         else
             APR[i] = 0;
     }
-    
+
     return APR;
 }
 
@@ -76,7 +74,7 @@ void conta_notas(int *APR, int elements, int *aprov, int *reprov)
     for(int i = 0; i < elements; i++)
         *aprov += APR[i];
 
-    *reprov = elements - *aprov; 
+    *reprov = elements - *aprov;
 }
 
 int percent_aprov(int *aprov, int *reprov, double *percent_aprov, double *percent_reprov, int *status)
