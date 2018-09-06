@@ -3,14 +3,15 @@
 #define MAX 10
 
 void print_vector(double *vector, int elements);
-int *recebe_notas(double *nota, int elements);
+int *recebe_notas(double *nota, int elements, int APR[]);
 void conta_notas(int *APR, int elements, int *aprov, int *reprov);
 int percent_aprov(int *aprov, int *reprov, double *percent_aprov, double *percent_reprov, int *status);
 
 int main ()
 {
     double notas[10];
-    int *APR;
+    int APR[10];
+    int *var;
 
     int aprovados = 0;
     int reprovados = 0;
@@ -31,7 +32,7 @@ int main ()
     printf("Notas:\n");
     print_vector(notas, MAX);
 
-    APR = recebe_notas(notas, MAX); 
+    var = recebe_notas(notas, MAX, APR); 
 
     conta_notas(APR, MAX, &aprovados ,&reprovados);
 
@@ -42,7 +43,7 @@ int main ()
 
     printf("Mais da metade da turma está %s\n", (status == 1) ? "APROVADA" : "REPROVADA --> SEUS MERDA");
 
-    free(APR);
+    //free(APR);
 
     return 0;
 }
@@ -54,10 +55,8 @@ void print_vector(double *vector, int elements)
         printf("%.2lf\n", *(vector+i));
 }
 
-int *recebe_notas(double *nota, int elements)
+int *recebe_notas(double *nota, int elements, int APR[])
 {
-    int *APR = (int *) calloc(MAX, sizeof(int));
-
     for (int i = 0; i < elements; i++)
     {
         if (nota[i] >= 6)
