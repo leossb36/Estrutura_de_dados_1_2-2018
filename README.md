@@ -3,6 +3,6 @@ This repository has the purpose of elaborating projects for discipline of data s
 
 ## Professor: Mateus Mendelson
 ## Group:
- - Bruno Félix;
- - Ian Rocha;
- - Leonardo Silva.
+- Bruno Félix - 16/0114705
+- Ian Pereira Rocha - 16/0124778
+- Leonardo dos Santos Silva Barreiros - 15/0135521
