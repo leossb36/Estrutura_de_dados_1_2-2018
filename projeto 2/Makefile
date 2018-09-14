@@ -2,7 +2,7 @@
 CC = gcc
 
 #compiler flags
-CFLAG = -Wall -a
+CFLAG = -Wall -g
 
 #main script
 SRC = /src/main.c
