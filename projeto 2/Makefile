@@ -5,24 +5,21 @@ CC = gcc
 CFLAG = -Wall -g
 
 #main script
-SRC = /src/main.c
+SRC = src/main.c
 
 #executable file
-BUILD = /build/main.o
-exec = build/./main
-
+BUILD = build/main.o
 
 #commands
 build:
 	mkdir build/
-	$(CC) $(SRC) -o $(BUILD)
+	$(CC) $(SRC) -o $(BUILD) $(CFLAG)
 
 run:
-	$(exec)
+	./build/main "$(CURDIR)/DataSet" 1
 
 clean:
-	rm -rf build/
+	rm -r -f build/*
+	rmdir build
 
-all:
-	build 
-	run
+all: clean build run
