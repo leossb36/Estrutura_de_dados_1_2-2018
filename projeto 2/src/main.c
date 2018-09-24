@@ -60,15 +60,21 @@ int *getFile(char *path)
 	rewind(fp);
 
 	int *matrix = (int *) calloc(row*col ,sizeof(int));
-
+	int vmatrix[50];
 	for(int i = 0; i <= row; i++)
 	{
 		for(int j = 0; j <= col; j++)
 			fscanf(fp, "%d;", matrix + i*col + j);
+		
 	}
-	fclose(fp);
+	for (int i = 0; i < 50; i++)
+		vmatrix[i] = matrix[i];
 
-	return matrix;
+	fclose(fp);
+	
+	free(matrix);
+
+	return vmatrix;
 }
 
 int *calc_ILBP(int *matrix, int row, int col)
@@ -81,9 +87,9 @@ int *calc_ILBP(int *matrix, int row, int col)
 	//		|
 
 	// ilbp describer:  (2 + 3 + 7 + 1 + 5 + 9 + 8 + 4 + 6)/9 = 5
-	// s(x) - > [1][1][0]
-	// 			[1][0][0] -> 110001011 -> unsigned
-	// 			[1][0][1]
+	// s(x) - > [0][0][1]
+	// 			[0][1][1] -> 001110100 -> unsigned
+	// 			[1][0][0]
 
 	// 	find the lowest bit in rotation of pixel
 	// 	ex: 001001000 - > rotate -> 000100100 -> rotate -> 000010010 -> 000001001 = 9
@@ -103,14 +109,31 @@ int *calc_ILBP(int *matrix, int row, int col)
 	{
 		for(int j = 0; j < col; j++)
 		{
-
 			int submatrix[3][3];
 
 			// we want do the path: (0,0)->(0,1)->(0,2)->(1,2)->(2,2)->(2,1)->(2,0)->(1,0)->(1,1)
+			submatrix[0][0] = (i == 0 || j == 0) ? 0 : *(matrix + ((i - 1) * col) + (j - 1));
+			submatrix[0][1] = (i == 1) ? 0 : *(matrix + ((i - 1) * col) + j);
+			submatrix[0][2] = (i == 0 || j == (col - 1)) ? 0 : *(matrix + ((i - 1) * col) + (j + 1));
+			submatrix[1][0] = (j == 0) ? 0 : *(matrix + (i * col) + (j - 1));
+			submatrix[1][1] = *(matrix + ((i - 1) * col) + j);
+			submatrix[1][2] = (j == (col - 1)) ? 0 : *(matrix + (i * col) + (j + 1));
+			submatrix[2][0] = (i == (row - 1) || j == 0) ? 0 : *(matrix + ((i + 1) * col) + (j - 1));
+			submatrix[2][1] = (i == (row - 1)) ? 0 : *(matrix + ((i + 1) * col) + j);
+			submatrix[2][2]-= (i == (row - 1) || j == (col - 1)) ? 0 : *(matrix + ((i + 1) * col) + (j + 1));
+
+			for (int i = 0; i < 3; i++){
+				for(int j = 0; j < 3; j++)
+				{
+					avg += submatrix[i][j];
+				}
+			}
+
+			avg /= 9;
 			// find the lowest bit
 			// 010010000 -> rotation ... > 000001001 = 9;
 
-			unsigned short lowest = 0;		
+			unsigned short lowest = 0;
 
 		}
 		
