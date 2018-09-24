@@ -7,13 +7,10 @@ CFLAG = -Wall -g
 #main script
 SRC = src/main.c
 
-#executable file
-BUILD = build/main.o
-
 #commands
 build:
 	mkdir build/
-	$(CC) $(SRC) -o $(BUILD) $(CFLAG)
+	$(CC) $(SRC) -o build/main $(CFLAG)
 
 run:
 	./build/main "$(CURDIR)/DataSet" 1
