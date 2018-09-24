@@ -12,20 +12,20 @@ int *calc_ILBP(int *matrix, int row, int col);
 
 
 int main(int argc, char **argv){
-	
+
 	int *matrix, *ilbp;
 
 	matrix = getFile(asphalt);
 
 	ilbp = calc_ILBP(matrix, row, col);
-	
+
 	return 0;
 }
 
 int *getFile(char *path)
 {
 	FILE *fp;
-	
+
 	fp = fopen(path, "r");
 
 	if(fp == NULL)
@@ -60,21 +60,16 @@ int *getFile(char *path)
 	rewind(fp);
 
 	int *matrix = (int *) calloc(row*col ,sizeof(int));
-	int vmatrix[50];
 	for(int i = 0; i <= row; i++)
 	{
 		for(int j = 0; j <= col; j++)
 			fscanf(fp, "%d;", matrix + i*col + j);
-		
+
 	}
-	for (int i = 0; i < 50; i++)
-		vmatrix[i] = matrix[i];
 
 	fclose(fp);
-	
-	free(matrix);
 
-	return vmatrix;
+	return matrix;
 }
 
 int *calc_ILBP(int *matrix, int row, int col)
@@ -103,7 +98,7 @@ int *calc_ILBP(int *matrix, int row, int col)
 	if (ilbp == NULL) {
 		printf("\nError: cannot alocate memory\n");
 		exit(1);
-	
+
 	}
 	for(int i = 0; i < row; i++)
 	{
@@ -120,7 +115,7 @@ int *calc_ILBP(int *matrix, int row, int col)
 			submatrix[1][2] = (j == (col - 1)) ? 0 : *(matrix + (i * col) + (j + 1));
 			submatrix[2][0] = (i == (row - 1) || j == 0) ? 0 : *(matrix + ((i + 1) * col) + (j - 1));
 			submatrix[2][1] = (i == (row - 1)) ? 0 : *(matrix + ((i + 1) * col) + j);
-			submatrix[2][2]-= (i == (row - 1) || j == (col - 1)) ? 0 : *(matrix + ((i + 1) * col) + (j + 1));
+			submatrix[2][2] = (i == (row - 1) || j == (col - 1)) ? 0 : *(matrix + ((i + 1) * col) + (j + 1));
 
 			for (int i = 0; i < 3; i++){
 				for(int j = 0; j < 3; j++)
@@ -135,12 +130,57 @@ int *calc_ILBP(int *matrix, int row, int col)
 
 			unsigned short lowest = 0;
 
+			int x = 0, y = 0;
+			// rotation path: 0.0 > 0.1 > 0.2 > 1.2 > 2.2 > 2.1 > 2.0 > 1.0 > 1.1;
+			while(1){
+				lowest = lowest << 1;
+
+				if(submatrix[x][y] >= avg){
+					lowest = lowest | 0x0001;
+				}
+				if(x == 1 && y == 1){
+					break;
+				}
+				if((x == 0 || x == 1) && y != 2){
+					y++;
+					continue;
+				}
+				if(x != 2 && y == 2){
+					x++;
+					y = 2;
+					continue;
+				}
+				if(x == 2 && y != 2){
+					x = 2;
+					y--;
+					continue;
+				}
+				else{
+					x = 1;
+					y = 0;
+				}
+			}
+			int lowest_bit = lowest;
+
+			for(int k = 0; k < 9; k++){
+				unsigned short modificado = lowest & 0x0100;
+				modificado = modificado >> 8;
+
+				lowest = lowest << 1;
+
+				lowest = lowest | modificado;
+				modificado = lowest & 0x01FF;
+
+				if(lowest < lowest_bit){
+					lowest_bit = lowest;
+				}
+			}
+
+			*(ilbp + lowest_bit) += 1;
+
 		}
-		
+
 	}
 	// printf("binary vector: %d\n\n", *binary);
 	return ilbp;
 }
-
-
-
