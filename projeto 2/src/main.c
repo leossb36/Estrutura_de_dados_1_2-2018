@@ -8,6 +8,7 @@ int row = 0;
 
 int *getFile(char *path);
 int *calc_ILBP(int *matrix, int row, int col);
+double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level);
 
 
 
@@ -183,4 +184,8 @@ int *calc_ILBP(int *matrix, int row, int col)
 	}
 	// printf("binary vector: %d\n\n", *binary);
 	return ilbp;
+}
+
+double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level){
+
 }
