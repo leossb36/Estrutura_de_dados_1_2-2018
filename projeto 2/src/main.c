@@ -1,22 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
 #define asphalt "../DataSet/asphalt/asphalt_01.txt"
 #define max_size_ilbp 512
 #define size_f 25
+
 int col = 0;
 int row = 0;
 
 int *getFile(char *path);
-int *calc_ILBP(int *matrix, int row, int col);
-double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level);
+int *calc_ILBP(int **matrix, int row, int col);
+// double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level);
 
 
 
 int main(int argc, char **argv){
 
-	int *matrix, *ilbp;
+	int **matrix, *ilbp;
 
-	matrix = getFile(asphalt);
+	*matrix = getFile(asphalt);
 
 	ilbp = calc_ILBP(matrix, row, col);
 
@@ -73,7 +77,7 @@ int *getFile(char *path)
 	return matrix;
 }
 
-int *calc_ILBP(int *matrix, int row, int col)
+int *calc_ILBP(int **matrix, int row, int col)
 {
 	// [2][3][7] 	s(x) >= 0 set (1), s(x) < 0 set(0)
 	// [1][5][9]	ilbp(gc) = sum(0 -> 8) of s(gp - avg(gc))2^p, that gp = variant pixel
@@ -92,7 +96,9 @@ int *calc_ILBP(int *matrix, int row, int col)
 
 	double avg = 0;
 	int count = 0;
-	int binaryVector[8] = {0};
+	int **submatrix;
+	int binary[9] = {0};
+	double decimal = 0;
 
 	int *ilbp = (int *) calloc(max_size_ilbp, sizeof(int)); //max size of ilbp is 2^9 - 1, that 9 is the amount pixel of submatrix;
 
@@ -101,91 +107,82 @@ int *calc_ILBP(int *matrix, int row, int col)
 		exit(1);
 
 	}
+
+	for(int i = 0; i < 3; i++)
+	{
+		submatrix[i] = (int *) calloc(3, sizeof(int));
+	}
+
+	if (submatrix == NULL) {
+		printf("\nError: cannot alocate memory\n");
+		exit(1);
+	}
+	
 	for(int i = 0; i < row; i++)
 	{
 		for(int j = 0; j < col; j++)
 		{
-			int submatrix[3][3];
 
-			// we want do the path: (0,0)->(0,1)->(0,2)->(1,2)->(2,2)->(2,1)->(2,0)->(1,0)->(1,1)
-			submatrix[0][0] = (i == 0 || j == 0) ? 0 : *(matrix + ((i - 1) * col) + (j - 1));
-			submatrix[0][1] = (i == 1) ? 0 : *(matrix + ((i - 1) * col) + j);
-			submatrix[0][2] = (i == 0 || j == (col - 1)) ? 0 : *(matrix + ((i - 1) * col) + (j + 1));
-			submatrix[1][0] = (j == 0) ? 0 : *(matrix + (i * col) + (j - 1));
-			submatrix[1][1] = *(matrix + ((i - 1) * col) + j);
-			submatrix[1][2] = (j == (col - 1)) ? 0 : *(matrix + (i * col) + (j + 1));
-			submatrix[2][0] = (i == (row - 1) || j == 0) ? 0 : *(matrix + ((i + 1) * col) + (j - 1));
-			submatrix[2][1] = (i == (row - 1)) ? 0 : *(matrix + ((i + 1) * col) + j);
-			submatrix[2][2] = (i == (row - 1) || j == (col - 1)) ? 0 : *(matrix + ((i + 1) * col) + (j + 1));
-
-			for (int i = 0; i < 3; i++){
-				for(int j = 0; j < 3; j++)
-				{
+			if((i < row) && (i > 0) && (j < col) && (j > 0)) {
+				submatrix[0][0] = matrix[i - 1][j - 1];
+				submatrix[0][1] = matrix[i - 1][j];
+				submatrix[0][2] = matrix[i - 1][j + 1];
+				submatrix[1][0] = matrix[i][j - 1];
+				submatrix[1][1] = matrix[i][j];
+				submatrix[1][2] = matrix[i][j + 1];
+				submatrix[2][0] = matrix[i + 1][j - 1];
+				submatrix[2][1] = matrix[i + 1][j];
+				submatrix[2][2] = matrix[i + 1][j + 1];
+			}
+			// now we need to get the lowest bin, 
+			// but first we need compare average 
+			// and the values between each them and set 0 or 1.
+			for(int i = 0; i < 3; i++){
+				for(int j = 0; i < 3; j++){
 					avg += submatrix[i][j];
 				}
 			}
 
 			avg /= 9;
-			// find the lowest bit
-			// 010010000 -> rotation ... > 000001001 = 9;
 
-			unsigned short lowest = 0;
-
-			int x = 0, y = 0;
-			// rotation path: 0.0 > 0.1 > 0.2 > 1.2 > 2.2 > 2.1 > 2.0 > 1.0 > 1.1;
-			while(1){
-				lowest = lowest << 1;
-
-				if(submatrix[x][y] >= avg){
-					lowest = lowest | 0x0001;
-				}
-				if(x == 1 && y == 1){
-					break;
-				}
-				if((x == 0 || x == 1) && y != 2){
-					y++;
-					continue;
-				}
-				if(x != 2 && y == 2){
-					x++;
-					y = 2;
-					continue;
-				}
-				if(x == 2 && y != 2){
-					x = 2;
-					y--;
-					continue;
-				}
-				else{
-					x = 1;
-					y = 0;
-				}
+			binary[0] = (submatrix[0][0] >= avg) ? 1 : 0;
+			binary[1] = (submatrix[0][1] >= avg) ? 1 : 0; 
+			binary[2] = (submatrix[0][2] >= avg) ? 1 : 0; 
+			binary[3] = (submatrix[1][0] >= avg) ? 1 : 0; 
+			binary[4] = (submatrix[1][1] >= avg) ? 1 : 0; 
+			binary[5] = (submatrix[1][2] >= avg) ? 1 : 0; 
+			binary[6] = (submatrix[2][0] >= avg) ? 1 : 0; 
+			binary[7] = (submatrix[2][1] >= avg) ? 1 : 0; 
+			binary[8] = (submatrix[2][2] >= avg) ? 1 : 0;
+			
+			
+			// convert binary to decimal and make sum
+			for (int i = 0; i < 9; i++){
+				decimal += binary[i] * (double)(2^i);
 			}
-			int lowest_bit = lowest;
+				
+			// extracting the lowest binary
 
-			for(int k = 0; k < 9; k++){
-				unsigned short modificado = lowest & 0x0100;
-				modificado = modificado >> 8;
-
-				lowest = lowest << 1;
-
-				lowest = lowest | modificado;
-				modificado = lowest & 0x01FF;
-
-				if(lowest < lowest_bit){
-					lowest_bit = lowest;
+			int smaller = (int)decimal;
+			
+			for (int i = 0; i < 9; i++) {
+				decimal = ((((int)decimal) >> 1) | (((int)decimal) << 8)) & 511;
+				
+				if ((int)decimal < smaller){
+					smaller = (int)decimal;
 				}
+
 			}
-
-			*(ilbp + lowest_bit) += 1;
-
+			printf("binary vector: %d\n\n", binary[i]);
+			*(ilbp + smaller);
 		}
-
 	}
-	// printf("binary vector: %d\n\n", *binary);
+	for(int i = 0; i < 3; i++)
+		free(submatrix[i]);
+			
 	return ilbp;
 }
 
-double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level){
+// double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level) {
 
-}
+// }
