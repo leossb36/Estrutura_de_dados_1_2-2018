@@ -188,20 +188,21 @@ int *calc_ILBP(int *matrix, int row, int col)
 
 double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level){
 
-	// 		if your REFERENCE DIRECTION is right;
-	// 		1º: Need to look, "What is the BIGGEST bit?;
-	// 		this bit "m" will be the size of the GLCM[m][m].
-	// 		
-	// 		After 2º: "How many times does J happens on DIRECTION of I?",
-	//		[1][2][4]	in this example, 1º: the size of the GLCM is 4, because [1][3] && [2][3] = 4, most BIGGEST bit;
-	// 		[2][1][4]	After, 2º: looking the GLCM position, you answer the question:
-	// 		[3][2][3]   GLCM[1][1], How many times does j(1) happens on RIGHT of j(1)? = 0 -> GLCM[1][1] = 0;
-	//					GLCM[1][2], How many times does j(2) happens on RIGHT of j(1)? = 2 => GLCM[1][2] = 1;
-	//				... GLCM[4][4], How many times does j(4) happens on RIGHT of j(4)? = 0 => GLCM[4][4] = 0;
+	// 		1º to condition your REFERENCE DIRECTION: right, left, up, botton;
+	// 		2º: Need to look, "What is the BIGGEST bit?; this bit "m" will be the size of the GLCM[m][m].
+	// 		3º: "How many times does J happens on DIRECTION of I?",
+	//
+	//		Example:
+	//		[1][2][4]	1º: the REFERENCE DIRECTION is right; 
+	//  	[2][1][4]	2º: the size of the GLCM is 4, because [1][3] && [2][3] = 4, most BIGGEST bit;
+	// 		[3][2][3]	3º: looking the GLCM position, you answer the question:
+	// 					   	GLCM[1][1], How many times does j(1) happens on RIGHT of i(1)? = 0 -> GLCM[1][1] = 0;
+	//						GLCM[1][2], How many times does j(2) happens on RIGHT of i(1)? = 2 => GLCM[1][2] = 1;
+	//					 ...GLCM[4][4], How many times does j(4) happens on RIGHT of i(4)? = 0 => GLCM[4][4] = 0;
 	//
 	// 		Finally, GLCM is:
 	// 		[0][1][0][1]
-	//		[0][0][1][1]
+	//		[1][0][1][1]
 	//		[0][1][0][0]
 	//		[0][0][0][0]
 
