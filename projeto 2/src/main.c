@@ -288,7 +288,7 @@ double *glcmMatrix(int *matrix, int row, int col) {
 				continue;
 			}
 
-			double *metric = glcmDirection(direction[2], matrix, row, col);
+			double *metric = glcmDirection(direction, matrix, row, col);
 
 			for(int n = 0; n < 3; n++){
 				glcm[m] = metric[n];
