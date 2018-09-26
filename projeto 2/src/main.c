@@ -14,6 +14,8 @@ int *getFile(char *path);
 int *calc_ILBP(int *matrix, int row, int col);
 int getLowestBin(int binary);
 double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level);
+void maxAndMin(int *max, int *min, double *concatenateVector, int size);
+
 
 
 
@@ -185,4 +187,21 @@ double *glcmDirection(int direction[2], int* mat, int row, int col, int gray_lev
 	//		[1][0][1][1]
 	//		[0][1][0][0]
 	//		[0][0][0][0]
+}
+
+void maxAndMin(int *max, int *min, double *concatenateVector, int size)
+{
+	int tempMin = 0;
+	int tempMax = *concatenateVector;
+
+	for(int i = 0; i < size; i++) {
+		if(*(concatenateVector + i) >= tempMax){
+			tempMax = *(concatenateVector + i);
+		}
+		if (*(concatenateVector + i) <= tempMin){
+			tempMin = *(concatenateVector + i);
+		}
+	}
+	*max = tempMax;
+	*min = tempMin; 
 }
