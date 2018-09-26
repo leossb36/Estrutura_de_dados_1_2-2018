@@ -5,9 +5,9 @@
 #include <string.h>
 
 #define asphalt "../DataSet/asphalt/asphalt_"
+#define grass "../DataSet/grass/grass_"
 #define max_size_ilbp 512
 #define size_f 25
-#define gray_level 256
 
 int col = 0;
 int row = 0;	
@@ -230,8 +230,8 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 	//		[0][1][0][0]
 	//		[0][0][0][0]
 
-
-	int energy = 0, contraste = 0, homog = 0;
+	double energy = 0, contraste = 0, homog = 0;
+	direction[2] -= 1;
 	//Alocating memory for every direction
 	double* glcm_matrix = (double*)calloc(pow(256, 2), sizeof(double));
 
@@ -242,15 +242,23 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 
 	for(int i = 0; i < 256; i++){
 		for(int j = 0; j < 256; j++){
-			
+			if(i + direction[0] >= row || j + direction[1] >= col || i + direction[0] < 0 || j + direction[1] < 0){
+				continue;
+			}
+			int n = matrix[(i * col) + j];
+			int m = matrix[(i + direction[0]) * col + (j + direction[1])];
+
+			glcm_matrix[(n * 256) + m] += 1;
 		}
 	}
 
+	double valor = *glcm_matrix;
+
 	for(int i = 0; i < 256; i++){
    		for(int j = 0; j < 256; j++){
-	      contraste += pow(abs(i - j),2) * glcm[i][j];
-		  energy += pow(glcm[i][j], 2);
-		  homog += (glcm[i][j] /(1 + abs(i - j)));
+	      contraste += valor * pow(abs(i - j),2);
+		  energy += pow(valor, 2);
+		  homog += (valor /(1 + abs(i - j)));
 	   }
 	}
 
@@ -261,6 +269,7 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 	metric[2] = homog;
 
 	free(glcm_matrix);
+	return metric;
 }
 
 double *glcmMatrix(int *matrix, int row, int col) {
