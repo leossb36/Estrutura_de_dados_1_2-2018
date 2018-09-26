@@ -76,7 +76,12 @@ int *getFile(char *path)
 
 	rewind(fp);
 
-	int *matrix = (int *) calloc(row*col ,sizeof(int));
+	int *matrix = (int *) calloc(row*col ,sizeof(int));// Give "free" later
+	if (matrix == NULL) {
+		printf("\nError: cannot alocate memory\n");
+		exit(1);
+	}
+
 	for(int i = 0; i <= row; i++)
 	{
 		for(int j = 0; j <= col; j++)
