@@ -7,6 +7,7 @@
 #define asphalt "../DataSet/asphalt/asphalt_"
 #define max_size_ilbp 512
 #define size_f 25
+#define gray_level 256
 
 int col = 0;
 int row = 0;	
@@ -15,11 +16,9 @@ char *getFileFormat(char *path, int id, char *postfix);
 int *getFile(char *path);
 int *calcILBP(int *matrix, int row, int col);
 int getLowestBin(int binary);
-double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level);
 void maxAndMin(int *max, int *min, double *concatenateVector, int size);
-
-
-
+double *glcmDirection(int direction[2], int* matrix, int row, int col);
+double *glcmMatrix(int *matrix, int row, int col);
 
 int main(int argc, char **argv){
 
@@ -194,7 +193,24 @@ int getLowestBin(int binary)
 	return lowest;
 }
 
-double *glcmDirection(int direction[2], int* mat, int row, int col, int gray_level) {
+void maxAndMin(int *max, int *min, double *concatenateVector, int size)
+{
+	int tempMin = 0;
+	int tempMax = *concatenateVector;
+
+	for(int i = 0; i < size; i++) {
+		if(*(concatenateVector + i) >= tempMax){
+			tempMax = *(concatenateVector + i);
+		}
+		if (*(concatenateVector + i) <= tempMin){
+			tempMin = *(concatenateVector + i);
+		}
+	}
+	*max = tempMax;
+	*min = tempMin; 
+}
+
+double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 
 	// 		1º to condition your REFERENCE DIRECTION: right, left, up, botton;
 	// 		2º: Need to look, "What is the BIGGEST bit?; this bit "m" will be the size of the GLCM[m][m].
@@ -213,21 +229,66 @@ double *glcmDirection(int direction[2], int* mat, int row, int col, int gray_lev
 	//		[1][0][1][1]
 	//		[0][1][0][0]
 	//		[0][0][0][0]
-}
 
-void maxAndMin(int *max, int *min, double *concatenateVector, int size)
-{
-	int tempMin = 0;
-	int tempMax = *concatenateVector;
 
-	for(int i = 0; i < size; i++) {
-		if(*(concatenateVector + i) >= tempMax){
-			tempMax = *(concatenateVector + i);
-		}
-		if (*(concatenateVector + i) <= tempMin){
-			tempMin = *(concatenateVector + i);
+	int energy = 0, contraste = 0, homog = 0;
+	//Alocating memory for every direction
+	double* glcm_matrix = (double*)calloc(pow(256, 2), sizeof(double));
+
+	if(glcm_matrix == NULL){
+		printf("\nError: cannot alocate memory\n");
+		exit(1);
+	}
+
+	for(int i = 0; i < 256; i++){
+		for(int j = 0; j < 256; j++){
+			
 		}
 	}
-	*max = tempMax;
-	*min = tempMin; 
+
+	for(int i = 0; i < 256; i++){
+   		for(int j = 0; j < 256; j++){
+	      contraste += pow(abs(i - j),2) * glcm[i][j];
+		  energy += pow(glcm[i][j], 2);
+		  homog += (glcm[i][j] /(1 + abs(i - j)));
+	   }
+	}
+
+	double* metric = (double*)calloc(3, sizeof(double));
+
+	metric[0] = contraste;
+	metric[1] = energy;
+	metric[2] = homog;
+
+	free(glcm_matrix);
+}
+
+double *glcmMatrix(int *matrix, int row, int col) {
+	double* glcm = (double*)calloc(24, sizeof(double));
+	//We want to calculate glcm for every direction in a matrix.
+	//We are putting x as a linear direction and y as a vertical direction,
+
+	//Constant for putting all 24 metrics in GLCM;
+	int m = 0;
+
+	for(int i = 0; i < 3; i++){
+		for(int j = 0; j < 3; j++){
+			int direction[2] = {i, j};
+
+			if(i == 1 && j == 1){
+				continue;
+			}
+
+			double *metric = glcmDirection(direction[2], matrix, row, col);
+
+			for(int n = 0; n < 3; n++){
+				glcm[m] = metric[n];
+				m++;
+			}
+			
+			free(metric);
+		}
+	}
+	return glcm;
+
 }
