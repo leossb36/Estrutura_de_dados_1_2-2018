@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <string.h>
 
-#define asphalt "../DataSet/asphalt/asphalt_01.txt"
+#define asphalt "../DataSet/asphalt/asphalt_"
 #define max_size_ilbp 512
 #define size_f 25
 
 int col = 0;
-int row = 0;
+int row = 0;	
 
+char *getFileFormat(char *path, int id, char *postfix);
 int *getFile(char *path);
-int *calc_ILBP(int *matrix, int row, int col);
+int *calcILBP(int *matrix, int row, int col);
 int getLowestBin(int binary);
 double *glcm_direction(int direction[2], int* mat, int row, int col, int gray_level);
 void maxAndMin(int *max, int *min, double *concatenateVector, int size);
@@ -22,10 +24,13 @@ void maxAndMin(int *max, int *min, double *concatenateVector, int size);
 int main(int argc, char **argv){
 
 	int *matrix, *ilbp;
+	char *teste;
 
-	matrix = getFile(asphalt);
+	teste = getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
 
-	ilbp = calc_ILBP(matrix, row, col);
+	matrix = getFile(teste);
+
+	ilbp = calcILBP(matrix, row, col);
 
 	return 0;
 }
@@ -80,7 +85,28 @@ int *getFile(char *path)
 	return matrix;
 }
 
-int *calc_ILBP(int *matrix, int row, int col)
+char *getFileFormat(char *path, int id, char *postfix){
+	
+	char *fileformat = (char *) calloc((strlen(path) + strlen(postfix) + 12), sizeof(char));
+
+	if (fileformat == NULL) {
+		printf("\nError: cannot alocate memory\n");
+		exit(1);
+	}
+	
+	char buffer[12] = { 0 };
+	sprintf(buffer, "%02d", id);
+
+	strcat(fileformat, path);
+	strcat(fileformat, buffer);       
+	strcat(fileformat, postfix);
+
+	printf("\nFilename: %s\n", fileformat);
+
+	return fileformat;
+}
+
+int *calcILBP(int *matrix, int row, int col)
 {
 	// [2][3][7] 	s(x) >= 0 set (1), s(x) < 0 set(0)
 	// [1][5][9]	ilbp(gc) = sum(0 -> 8) of s(gp - avg(gc))2^p, that gp = variant pixel
@@ -148,7 +174,7 @@ int *calc_ILBP(int *matrix, int row, int col)
 			*ilbp += lowestBin; 
 		}
 	}
-	// printf("%d ", *ilbp);
+	//printf("%d\n", *ilbp);
 	return ilbp;
 }
 
