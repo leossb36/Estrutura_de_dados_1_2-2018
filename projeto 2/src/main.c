@@ -19,6 +19,7 @@ int getLowestBin(int binary);
 void maxAndMin(int *max, int *min, double *concatenateVector, int size);
 double *glcmDirection(int direction[2], int* matrix, int row, int col);
 double *glcmMatrix(int *matrix, int row, int col);
+double *normalizedVector(double *concatenateVector, int size, int *max, int *min);
 
 int main(int argc, char **argv){
 
@@ -300,4 +301,13 @@ double *glcmMatrix(int *matrix, int row, int col) {
 	}
 	return glcm;
 
+}
+
+double *normalizedVector(double *concatenateVector, int size, int *max, int *min){
+	int *vmax = max;
+	int *vmin = min;
+	double normalized[size];
+	for(int i = 0; i < size; i++){
+		normalized[i] = (size - vmin[i]) / (vmax[i] - vmin[i]);
+	}
 }
