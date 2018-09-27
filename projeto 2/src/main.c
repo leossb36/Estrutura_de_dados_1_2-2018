@@ -23,7 +23,7 @@ double Min(double *, int);
 double *glcmDirection(int *, int *, int, int);
 double *glcmMatrix(int *, int, int);
 double **getDescriptorFile(char *);
-void normalizedVector(double *, int);
+void normalizedVector(double **, int);
 void separateGroup(int *, int *);
 
 
@@ -225,13 +225,13 @@ double Min(double *concatenateVector, int size)
 	return min; 
 }
 
-void normalizedVector(double *concatenateVector, int size)
+void normalizedVector(double **concatenateVector, int size)
 {
-	double *normalized = concatenateVector;
-	double *vmax = maxAndMin(normalized, size);
-	double *vmin = maxAndMin(normalized, size);
+	double vmax = Max(concatenateVector, size);
+	double vmin = Min(concatenateVector, size);
+	
 	for(int i = 0; i < size; i++){
-		normalized[i] = (size - vmin[i]) / (vmax[i] - vmin[i]);
+		*(*concatenateVector + i) = (*(*concatenateVector) - vmin) / (vmax - vmin);
 	}
 }
 
