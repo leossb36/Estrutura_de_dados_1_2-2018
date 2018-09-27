@@ -8,6 +8,7 @@
 #define grass "../DataSet/grass/grass_"
 #define max_size_ilbp 512
 #define size_metrics 24
+#define size_random_set 25
 
 int col = 0;
 int row = 0;	
@@ -16,11 +17,13 @@ char *getFileFormat(char *, int , char *);
 int *getFile(char *);
 int *calcILBP(int *, int, int);
 int getLowestBin(int);
-void maxAndMin(int *, int *, double *);
+double Max(double *, int);
+double Min(double *, int);
+
 double *glcmDirection(int *, int *, int, int);
 double *glcmMatrix(int *, int, int);
 double **getDescriptorFile(char *);
-void normalizedVector(double *, int, int *, int *);
+void normalizedVector(double *, int);
 void separateGroup(int *, int *);
 
 
@@ -195,27 +198,38 @@ int getLowestBin(int binary)
 	return lowest;
 }
 
-void maxAndMin(int *max, int *min, double *concatenateVector)
+double max(double *concatenateVector, int size)
 {
-	int tempMin = 0;
-	int tempMax = *concatenateVector;
+	size = size_random_set;
+	double max = concatenateVector[0];
 
 	for(int i = 0; i < size; i++) {
-		if(*(concatenateVector + i) >= tempMax){
-			tempMax = *(concatenateVector + i);
-		}
-		if (*(concatenateVector + i) <= tempMin){
-			tempMin = *(concatenateVector + i);
+		if(*(concatenateVector + i) >= max){
+			max = *(concatenateVector + i);
 		}
 	}
-	*max = tempMax;
-	*min = tempMin; 
+
+	return max;
 }
 
-void normalizedVector(double *concatenateVector, int size){
-	int *vmax = max;
-	int *vmin = min;
-	double normalized[size];
+double Min(double *concatenateVector, int size)
+{
+	size = size_random_set;
+	double min = concatenateVector[0];
+	
+	for(int i = 0; i < size; i++) {
+		if (*(concatenateVector + i) <= min){
+			min = *(concatenateVector + i);
+		}
+	}
+	return min; 
+}
+
+void normalizedVector(double *concatenateVector, int size)
+{
+	double *normalized = concatenateVector;
+	double *vmax = maxAndMin(normalized, size);
+	double *vmin = maxAndMin(normalized, size);
 	for(int i = 0; i < size; i++){
 		normalized[i] = (size - vmin[i]) / (vmax[i] - vmin[i]);
 	}
@@ -361,7 +375,7 @@ double **getDescriptorFile(char * file)
 			}
 		}
 
-		normalizedVector(&describe, 536, ((int)glcm + ilbp), ((int)glcm + ilbp));
+		normalizedVector(&describe, (max_size_ilbp + size_metrics));
 
 		*img_describe = (describe + i);
 
