@@ -25,11 +25,12 @@ double *glcmMatrix(int *, int, int);
 double **getDescriptorFile(char *);
 void normalizedVector(double **, int);
 void separateGroup(int *, int *);
+void average(double**, double**);
 
 
 int main(int argc, char **argv){
 
-	int *matrix, *ilbp, *test, *train;
+	// int *matrix, *ilbp, *test, *train;
 	// char *teste = (char *) calloc(50, sizeof(char));
 	// teste = *getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
 
@@ -440,5 +441,18 @@ void separateGroup(int *test, int *training)
 		*(training + k) = x;
 		k++;
 	}
+}
 
+
+void average(double **learn_set, double **concatenateVector){
+
+	double average;
+	for(int i = 0; i < 536; i++){
+        for(int j = 0; j < 25; j++){
+            
+			average += *(*concatenateVector + i) + *(*(learn_set + j) + i);
+        }
+
+    	average /= 25;
+    }
 }
