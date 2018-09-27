@@ -11,7 +11,10 @@
 #define size_random_set 25
 
 int col = 0;
-int row = 0;	
+int row = 0;
+int correct = 0;
+int f_positive = 0;
+int f_negative = 0;	
 
 char *getFileFormat(char *, int , char *);
 int *getFile(char *);
@@ -19,13 +22,14 @@ int *calcILBP(int *, int, int);
 int getLowestBin(int);
 double Max(double *, int);
 double Min(double *, int);
-
+void euclidianDistance(double *, double *, double **, int);
 double *glcmDirection(int *, int *, int, int);
 double *glcmMatrix(int *, int, int);
 double **getDescriptorFile(char *);
 void normalizedVector(double **, int);
 void separateGroup(int *, int *);
 void average(double**, double**);
+void Debug(int , int);
 
 
 int main(int argc, char **argv){
@@ -455,4 +459,46 @@ void average(double **learn_set, double **concatenateVector){
 
     	average /= 25;
     }
+}
+void euclidianDistance(double *asphalt_descriptor, double* grass_descriptor, double** test_set, int base){
+	//		Euclidian Distance:
+	//		sqrt((x1-x0)^2+(y1-y0)^2
+	// We need to calculate for the test set of images
+	for(int i = 0; i < 25; i++){
+		double distance_grass, distance_asphalt;
+		double d_grass = 0, d_asphalt = 0;
+		int result;
+		
+		for(int j = 0; j < 25; j++){
+			d_grass += pow(grass_descriptor[i] - *(*(test_set + i) + j), 2);
+			d_asphalt += pow(asphalt_descriptor[i] - *(*(test_set + i) + j), 2);
+		}
+
+		distance_asphalt = sqrt(d_asphalt);
+		distance_grass = sqrt(d_grass);
+
+		if(distance_grass < distance_asphalt){
+			result = 1;
+		}
+		else{
+			result = 0;
+		}
+
+		Debug(result, base);
+
+	}
+}
+
+void Debug(int result, int base){
+	if(result == base){
+		correct++;
+	}
+	else{
+		if(base == 1){
+			f_positive++;
+		}
+		else{
+			f_negative++;
+		}
+	}
 }
