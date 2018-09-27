@@ -1,5 +1,5 @@
 #compiler
-CC = gcc
+CC = g++
 
 #compiler flags
 CFLAG = -Wall -g
