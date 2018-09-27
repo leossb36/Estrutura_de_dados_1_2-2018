@@ -12,18 +12,20 @@
 int col = 0;
 int row = 0;	
 
-char *getFileFormat(char *path, int id, char *postfix);
-int *getFile(char *path);
-int *calcILBP(int *matrix, int row, int col);
-int getLowestBin(int binary);
-void maxAndMin(int *max, int *min, double *concatenateVector, int size);
-double *glcmDirection(int direction[2], int* matrix, int row, int col);
-double *glcmMatrix(int *matrix, int row, int col);
-double *normalizedVector(double *concatenateVector, int size, int *max, int *min);
+char *getFileFormat(char *, int , char *);
+int *getFile(char *);
+int *calcILBP(int *, int, int);
+int getLowestBin(int);
+void maxAndMin(int *, int *, double *, int );
+double *glcmDirection(int *, int *, int, int);
+double *glcmMatrix(int *, int, int);
+double *normalizedVector(double *, int, int *, int *);
+void separateGroup(int *, int *);
+
 
 int main(int argc, char **argv){
 
-	int *matrix, *ilbp;
+	int *matrix, *ilbp, *test, *train;
 	char *teste;
 
 	teste = getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
@@ -31,6 +33,8 @@ int main(int argc, char **argv){
 	matrix = getFile(teste);
 
 	ilbp = calcILBP(matrix, row, col);
+
+	separateGroup(test, train);
 
 	return 0;
 }
@@ -234,7 +238,7 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 	double energy = 0, contraste = 0, homog = 0;
 	direction[2] -= 1;
 	//Alocating memory for every direction
-	double* glcm_matrix = (double*)calloc(pow(256, 2), sizeof(double));
+	double *glcm_matrix = (double*)calloc(pow(256, 2), sizeof(double)); // 2^8 = 256
 
 	if(glcm_matrix == NULL){
 		printf("\nError: cannot alocate memory\n");
@@ -243,9 +247,15 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 
 	for(int i = 0; i < 256; i++){
 		for(int j = 0; j < 256; j++){
-			if(i + direction[0] >= row || j + direction[1] >= col || i + direction[0] < 0 || j + direction[1] < 0){
+
+			// checking if matrix(x, y) == j and matrix(x, y on direction) == i
+			// if != i (outside) continue;
+			if(i + direction[0] >= row || j + direction[1] >= col || 
+			i + direction[0] < 0 || j + direction[1] < 0){
 				continue;
 			}
+
+			// setting direction
 			int n = matrix[(i * col) + j];
 			int m = matrix[(i + direction[0]) * col + (j + direction[1])];
 
@@ -310,4 +320,55 @@ double *normalizedVector(double *concatenateVector, int size, int *max, int *min
 	for(int i = 0; i < size; i++){
 		normalized[i] = (size - vmin[i]) / (vmax[i] - vmin[i]);
 	}
+}
+
+void separateGroup(int *test, int *training)
+{
+
+	int count, num, k = 0;
+	srand(time(NULL));
+
+
+	//getting random files to test
+	for(int i = 0; i <= 50; i++)
+	{
+		num = rand() % 50 + 1;
+		count = 0;
+		
+		for(int j = 0; j <= 25; j++){
+			if(*(test + i) == num)
+				count++;
+			else
+			{
+				continue;
+			}
+		}
+		if (count > 0)
+		{
+			i--;
+			continue;
+		}
+	}
+
+	for(int x = 0; x <= 50; x++)
+	{
+
+		num = rand() % 50 + 1;
+		count = 0;
+
+		for (int i = 0; i <= 25; i++)
+		{
+			if(*(training + x) == num)
+				count++;
+		}
+
+		if (count > 0)
+		{
+			continue;
+		}
+
+		*(training + k) = x;
+		k++;
+	}
+
 }
