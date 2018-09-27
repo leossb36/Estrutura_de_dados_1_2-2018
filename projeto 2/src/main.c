@@ -203,7 +203,7 @@ int getLowestBin(int binary)
 	return lowest;
 }
 
-double max(double *concatenateVector, int size)
+double Max(double *concatenateVector, int size)
 {
 	size = size_random_set;
 	double max = concatenateVector[0];
@@ -232,8 +232,8 @@ double Min(double *concatenateVector, int size)
 
 void normalizedVector(double **concatenateVector, int size)
 {
-	double vmax = Max(concatenateVector, size);
-	double vmin = Min(concatenateVector, size);
+	double vmax = Max(*concatenateVector, size);
+	double vmin = Min(*concatenateVector, size);
 	
 	for(int i = 0; i < size; i++){
 		*(*concatenateVector + i) = (*(*concatenateVector) - vmin) / (vmax - vmin);
