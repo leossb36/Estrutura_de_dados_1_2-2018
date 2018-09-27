@@ -7,7 +7,7 @@
 #define asphalt "../DataSet/asphalt/asphalt_"
 #define grass "../DataSet/grass/grass_"
 #define max_size_ilbp 512
-#define size_f 25
+#define size_metrics 24
 
 int col = 0;
 int row = 0;	
@@ -16,26 +16,23 @@ char *getFileFormat(char *, int , char *);
 int *getFile(char *);
 int *calcILBP(int *, int, int);
 int getLowestBin(int);
-void maxAndMin(int *, int *, double *, int );
+void maxAndMin(int *, int *, double *);
 double *glcmDirection(int *, int *, int, int);
 double *glcmMatrix(int *, int, int);
-double *normalizedVector(double *, int, int *, int *);
+double **getDescriptorFile(char *);
+void normalizedVector(double *, int, int *, int *);
 void separateGroup(int *, int *);
 
 
 int main(int argc, char **argv){
 
 	int *matrix, *ilbp, *test, *train;
-	char *teste;
+	// char *teste = (char *) calloc(50, sizeof(char));
+	// teste = *getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
 
-	teste = getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
+	// ilbp = calcILBP(matrix, row, col);
 
-	matrix = getFile(teste);
-
-	ilbp = calcILBP(matrix, row, col);
-
-	separateGroup(test, train);
-
+	// separateGroup(test, train);
 	return 0;
 }
 
@@ -198,7 +195,7 @@ int getLowestBin(int binary)
 	return lowest;
 }
 
-void maxAndMin(int *max, int *min, double *concatenateVector, int size)
+void maxAndMin(int *max, int *min, double *concatenateVector)
 {
 	int tempMin = 0;
 	int tempMax = *concatenateVector;
@@ -213,6 +210,15 @@ void maxAndMin(int *max, int *min, double *concatenateVector, int size)
 	}
 	*max = tempMax;
 	*min = tempMin; 
+}
+
+void normalizedVector(double *concatenateVector, int size){
+	int *vmax = max;
+	int *vmin = min;
+	double normalized[size];
+	for(int i = 0; i < size; i++){
+		normalized[i] = (size - vmin[i]) / (vmax[i] - vmin[i]);
+	}
 }
 
 double *glcmDirection(int direction[2], int* matrix, int row, int col) {
@@ -313,13 +319,58 @@ double *glcmMatrix(int *matrix, int row, int col) {
 
 }
 
-double *normalizedVector(double *concatenateVector, int size, int *max, int *min){
-	int *vmax = max;
-	int *vmin = min;
-	double normalized[size];
-	for(int i = 0; i < size; i++){
-		normalized[i] = (size - vmin[i]) / (vmax[i] - vmin[i]);
+double **getDescriptorFile(char * file)
+{
+	char *path = (char *) calloc(200, sizeof(char));
+
+	if(path == NULL)
+	{
+		printf("\nError: cannot alocate memory!\n");
+		exit(1);
 	}
+
+	double **img_describe = (double **) calloc(50, sizeof(double *));
+
+	if(img_describe == NULL)
+	{
+		printf("\nError: cannot alocate memory!\n");
+		exit(1);
+	}
+
+	for(int i = 1; i <= 50; i++)
+	{
+		char *filename = getFileFormat(path, i, ".txt");
+
+		int *matrix = getFile(filename);
+
+		int *ilbp = calcILBP(matrix, row, col);
+
+		double *glcm = glcmMatrix(matrix, row, col);
+
+		double *describe = (double *) calloc(max_size_ilbp + size_metrics, sizeof(double));
+
+		for(int j = 0; j < *describe; j++)
+		{
+			if (j < describe[j])
+			{
+				describe[j] = (double)ilbp[j];
+			}
+			else
+			{
+				describe[j] = glcm[j - max_size_ilbp];
+			}
+		}
+
+		normalizedVector(&describe, 536, ((int)glcm + ilbp), ((int)glcm + ilbp));
+
+		*img_describe = (describe + i);
+
+		free(matrix);
+		free(ilbp);
+		free(glcm);
+		free(filename);
+	}
+	return img_describe;
 }
 
 void separateGroup(int *test, int *training)
