@@ -30,17 +30,23 @@ void normalizedVector(double **, int);
 void separateGroup(int *, int *);
 void average(double**, double**);
 void Debug(int , int);
+void declarationSet(double *, double *, double *);
 
 
 int main(int argc, char **argv){
 
-	// int *matrix, *ilbp, *test, *train;
-	// char *teste = (char *) calloc(50, sizeof(char));
-	// teste = *getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
+	int *matrix, *ilbp, *test, *train;
+	double **aux;
+	char teste;
+	teste = *getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
 
-	// ilbp = calcILBP(matrix, row, col);
+	aux = getDescriptorFile(grass);
+	printf("%lf\n", aux);
+	
+	//ilbp = calcILBP(matrix, row, col);
 
-	// separateGroup(test, train);
+	//teste = getFileFormat();
+	//separateGroup(test, train);
 	return 0;
 }
 
@@ -343,9 +349,9 @@ double *glcmMatrix(int *matrix, int row, int col) {
 
 }
 
-double **getDescriptorFile(char * file)
+double **getDescriptorFile(char * path)
 {
-	char *path = (char *) calloc(200, sizeof(char));
+	path = (char *) calloc(200, sizeof(char));
 
 	if(path == NULL)
 	{
@@ -476,16 +482,6 @@ void euclidianDistance(double *asphalt_descriptor, double* grass_descriptor, dou
 
 		distance_asphalt = sqrt(d_asphalt);
 		distance_grass = sqrt(d_grass);
-
-		if(distance_grass < distance_asphalt){
-			result = 1;
-		}
-		else{
-			result = 0;
-		}
-
-		Debug(result, base);
-
 	}
 }
 
@@ -501,4 +497,35 @@ void Debug(int result, int base){
 			f_negative++;
 		}
 	}
+}
+
+void declarationSet(double *average_grass, double *average_asphalt, double *euclidianDistance){
+	char metric[50] = {};
+	double diference_average_grass;
+	double diference_average_asphalt;
+	double percentual_asphalt, percentual_grass;
+	int total_grass = 0, total_asphalt = 0;
+	
+	for(int j = 0; j < 50; j++){
+		diference_average_grass = 0;
+		diference_average_asphalt = 0;
+		diference_average_grass = euclidianDistance[j] - *average_grass;
+		diference_average_asphalt = euclidianDistance[j] - *average_asphalt;
+
+		if(diference_average_grass > diference_average_asphalt){
+			metric[j] = 'g';
+			percentual_grass ++;
+		}
+
+		else if(diference_average_grass < diference_average_asphalt){
+			metric[j] = 'a';
+			percentual_asphalt ++;
+		}
+	}
+
+	printf("Número de Imagens Grama: %d\n", total_grass);
+	printf("Percentual de Imagens Grama: %.2lf % \n", percentual_grass = total_grass*100/50);
+
+	printf("Número de Imagens Asfalto: %d\n", total_asphalt);
+	printf("Percentual de Imagens Asfalto: %.2lf % \n", percentual_asphalt = total_asphalt*100/50);
 }
