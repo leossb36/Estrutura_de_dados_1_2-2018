@@ -1,46 +1,55 @@
+#include <math.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <math.h>
 #include <string.h>
 
-#define asphalt_path "../DataSet/asphalt/asphalt_"
-#define grass_path "../DataSet/grass/grass_"
-#define max_size_ilbp 512
 #define gray_size 256
 #define size_metrics 24
+#define max_size_ilbp 512
 #define size_random_set 25
+#define grass_path "../DataSet/grass/grass_"
+#define asphalt_path "../DataSet/asphalt/asphalt_"
 
 int col = 0;
 int row = 0;
 int correct = 0;
 int f_positive = 0;
-int f_negative = 0;
-char *dataset_path;	
+int f_negative = 0;	
 
 char *getFileFormat(char *, int , const char*);
 int *getFile(char *);
 int *calcILBP(int *, int, int);
 int getLowestBin(int);
+void Debug(int , int);
+void average(double**, double**);
+void declarationSet(double *, double *, double *);
+void normalizedVector(double **, int);
+void euclidianDistance(double *, double *, double **, int);
+void *separateTest(double *);
+void *separateTraining(double *);
 double Max(double *, int);
 double Min(double *, int);
-void euclidianDistance(double *, double *, double **, int);
-double *glcmDirection(int *, int *, int, int, int);
 double *glcmMatrix(int *, int, int, int);
+double *glcmDirection(int *, int *, int, int, int);
 double **getDescriptorFile(char *);
-void normalizedVector(double **, int);
-int *separateTest(int *test);
-int *separateTraining(int *training);
-void average(double**, double**);
-void Debug(int , int);
-void declarationSet(double *, double *, double *);
-
 
 int main(int argc, char **argv){
 
 	double **grass, *grass_test, *grass_training;
 
 	grass = getDescriptorFile(grass_path);
+
+	separateTraining(grass_training);
+
+	double **asphalt, *asphalt_test, *asphalt_training;
+
+	asphalt = getDescriptorFile(asphalt_path);
+
+	printf("%lf", *grass_training);
+	// grass_training = separateTraining(grass);
+
+	// printf("%lf", *grass_training);
 	// char *fp = getFileFormat(grass_path, 1, ".txt");
 
 	// int *matrix = getFile(fp);
@@ -207,7 +216,7 @@ int getLowestBin(int binary)
 	int lowest = binary;
 			
 	for (int i = 0; i < 9; i++) {
-		binary = (binary >> 1) | (binary << 8) & 511;
+		binary = (binary >> 1) | (binary << 8) & 512;
 		
 		if (binary < lowest){
 			lowest = binary;
@@ -275,15 +284,15 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col, int max_g
 	//		[0][0][0][0]
 
 	double energy = 0, contraste = 0, homog = 0;
-	direction[2] -= 1;
+	direction[0] -= 1;
+	direction[1] -= 1;
 	//Alocating memory for every direction
-	double *glcm_matrix = (double*)calloc(pow(256, 2), sizeof(double)); // 2^8 = 256
+	double *glcm_matrix = (double*)calloc(max_gray_level * max_gray_level, sizeof(double)); // 2^8 = 256
 
 	if(glcm_matrix == NULL){
 		printf("\nError: cannot alocate memory\n");
 		exit(1);
 	}
-	printf("cheguei0\n");
 
 	for(int i = 0; i < row; i++){
 		for(int j = 0; j < col; j++){
@@ -300,11 +309,10 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col, int max_g
 			int n = matrix[(i * col) + j];
 			int m = matrix[(i + direction[0]) * col + (j + direction[1])];
 
-			glcm_matrix[(n * (max_gray_level-1)) + j] += 1;
+			glcm_matrix[(n * (max_gray_level-1)) + m] += 1;
 
 		}
 	}
-	printf("cheguei1\n");
 
 	for(int i = 0; i < max_gray_level; i++){
    		for(int j = 0; j < max_gray_level; j++){
@@ -314,7 +322,6 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col, int max_g
 	   }
 
 	}
-	printf("cheguei2\n");
 	double* metric = (double*)calloc(3, sizeof(double));
 
 	metric[0] = contraste;
@@ -350,8 +357,6 @@ double *glcmMatrix(int *matrix, int row, int col, int max_gray_level) {
 			free(metric);
 		}
 	}
-	printf("cheguei4\n");
-
 	return glcm;
 
 }
@@ -390,7 +395,7 @@ double **getDescriptorFile(char *datatype)
 
 		for(int j = 0; j < max_size_ilbp + size_metrics; j++)
 		{
-			if (j < describe[j])
+			if (j < max_size_ilbp)
 			{
 				describe[j] = (double)ilbp[j];
 			}
@@ -409,10 +414,11 @@ double **getDescriptorFile(char *datatype)
 		free(glcm);
 		free(filename);
 	}
+
 	return img_describe;
 }
 
-int *separateTest(int *test)
+void *separateTest(double *test)
 {
 
 	int count, num;
@@ -440,10 +446,9 @@ int *separateTest(int *test)
 		}
 		*(test + i) = num;
 	}
-	return test;
 }
 
-int *separateTrainig(int *training){
+void *separateTraining(double *training){
 	
 	int count = 0, num;
 
@@ -467,10 +472,8 @@ int *separateTrainig(int *training){
 			continue;
 		}
 
-		*(training + x) = num;
-	}
-
-	return training; 
+		*(training + x);
+	} 
 }
 
 
