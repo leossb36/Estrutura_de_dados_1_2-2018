@@ -32,7 +32,7 @@ double Max(double *, int);
 double Min(double *, int);
 double *glcmMatrix(int *, int, int, int);
 double *glcmDirection(int *, int *, int, int, int);
-double **getDescriptorFile(char *);
+double **getDescriptorFile(const char *);
 
 int main(int argc, char **argv){
 
@@ -40,13 +40,13 @@ int main(int argc, char **argv){
 
 	grass = getDescriptorFile(grass_path);
 
-	separateTraining(grass_training);
+	// separateTraining(grass_training);
 
 	double **asphalt, *asphalt_test, *asphalt_training;
 
 	asphalt = getDescriptorFile(asphalt_path);
 
-	printf("%lf", *grass_training);
+	// printf("%lf", *grass_training);
 	// grass_training = separateTraining(grass);
 
 	// printf("%lf", *grass_training);
@@ -158,8 +158,7 @@ int *calcILBP(int *matrix, int row, int col)
 	unsigned int lowestBin = 0;
 	int binary[9] = {0};
 	double avg = 0;
-	int decimal = 0;
-	
+		
 	int *ilbp = (int *) calloc(max_size_ilbp, sizeof(int)); //max size of ilbp is 2^9 - 1, that 9 is the amount pixel of submatrix;
 
 	if (ilbp == NULL) {
@@ -216,7 +215,7 @@ int getLowestBin(int binary)
 	int lowest = binary;
 			
 	for (int i = 0; i < 9; i++) {
-		binary = (binary >> 1) | (binary << 8) & 512;
+		binary = (binary >> 1) | ((binary << 8) & 512);
 		
 		if (binary < lowest){
 			lowest = binary;
@@ -361,7 +360,7 @@ double *glcmMatrix(int *matrix, int row, int col, int max_gray_level) {
 
 }
 
-double **getDescriptorFile(char *datatype)
+double **getDescriptorFile(const char *datatype)
 {
 	char *path = (char *) calloc(255, sizeof(char));
 
@@ -426,12 +425,12 @@ void *separateTest(double *test)
 
 
 	//getting random files to test
-	for(int i = 0; i <= 50; i++)
+	for(int i = 0; i < 50; i++)
 	{
 		num = rand() % 50 + 1;
 		count = 0;
 		
-		for(int j = 0; j <= 25; j++){
+		for(int j = 0; j < 25; j++){
 			if(*(test + i) == num)
 				count++;
 			else
@@ -446,6 +445,7 @@ void *separateTest(double *test)
 		}
 		*(test + i) = num;
 	}
+
 }
 
 void *separateTraining(double *training){
@@ -454,13 +454,13 @@ void *separateTraining(double *training){
 
 	srand(time(NULL));
 
-	for(int x = 0; x <= 50; x++)
+	for(int x = 0; x < 50; x++)
 	{
 
 		num = rand() % 50 + 1;
 		count = 0;
 
-		for (int i = 0; i <= 25; i++)
+		for (int i = 0; i < 25; i++)
 		{
 			if(*(training + x) == num)
 				count++;
@@ -472,7 +472,7 @@ void *separateTraining(double *training){
 			continue;
 		}
 
-		*(training + x);
+		*(training + x) = num;
 	} 
 }
 
@@ -496,7 +496,6 @@ void euclidianDistance(double *asphalt_descriptor, double* grass_descriptor, dou
 	for(int i = 0; i < 25; i++){
 		double distance_grass, distance_asphalt;
 		double d_grass = 0, d_asphalt = 0;
-		int result;
 		
 		for(int j = 0; j < 25; j++){
 			d_grass += pow(grass_descriptor[i] - *(*(test_set + i) + j), 2);
@@ -546,11 +545,14 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 		}
 	}
 
+	percentual_grass = (total_grass * 100)/50;
+	percentual_asphalt = (total_asphalt * 100)/50;
+
 	printf("Número de Imagens Grama: %d\n", total_grass);
-	printf("Percentual de Imagens Grama: %.2lf %% \n", percentual_grass = total_grass*100/50);
+	printf("Percentual de Imagens Grama: %.2lf %% \n", percentual_grass);
 
 	printf("Número de Imagens Asfalto: %d\n", total_asphalt);
-	printf("Percentual de Imagens Asfalto: %.2lf % \n", percentual_asphalt = total_asphalt*100/50);
+	printf("Percentual de Imagens Asfalto: %.2lf %% \n", percentual_asphalt);
 
 	double total = percentual_asphalt + percentual_grass;
 
