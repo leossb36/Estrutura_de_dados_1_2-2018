@@ -34,14 +34,14 @@ void declarationSet(double *, double *, double *);
 
 
 int main(int argc, char **argv){
-
+	system("clear");
 	int *matrix, *ilbp, *test, *train;
 	double **aux;
 	char teste;
 	teste = *getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
 
-	aux = getDescriptorFile(grass);
-	printf("%lf\n", aux);
+	//aux = getDescriptorFile(grass);
+	//printf("%lf\n", aux);
 	
 	//ilbp = calcILBP(matrix, row, col);
 
@@ -503,7 +503,7 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 	char metric[50] = {};
 	double diference_average_grass;
 	double diference_average_asphalt;
-	double percentual_asphalt, percentual_grass;
+	double percentual_asphalt = 0, percentual_grass = 0;
 	int total_grass = 0, total_asphalt = 0;
 	
 	for(int j = 0; j < 50; j++){
@@ -514,12 +514,12 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 
 		if(diference_average_grass > diference_average_asphalt){
 			metric[j] = 'g';
-			percentual_grass ++;
+			percentual_grass++;
 		}
 
 		else if(diference_average_grass < diference_average_asphalt){
 			metric[j] = 'a';
-			percentual_asphalt ++;
+			percentual_asphalt++;
 		}
 	}
 
@@ -528,4 +528,18 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 
 	printf("Número de Imagens Asfalto: %d\n", total_asphalt);
 	printf("Percentual de Imagens Asfalto: %.2lf % \n", percentual_asphalt = total_asphalt*100/50);
+
+	double total = percentual_asphalt + percentual_grass;
+
+	for(int j=0;j<total;j++){
+		
+		if(metric[j]== 'g'){
+			printf("Área segura para o pouso!\n");
+		}
+		
+		if(metric[j]== 'a'){
+			printf("Área não segura para pouso!\n");
+		}
+	}
+
 }
