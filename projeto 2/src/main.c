@@ -10,6 +10,8 @@
 #define size_random_set 25
 #define grass_path "../DataSet/grass/grass_"
 #define asphalt_path "../DataSet/asphalt/asphalt_"
+#define grass_name "grass_"
+#define asphalt_name "asplalt_"
 
 int col = 0;
 int row = 0;
@@ -557,13 +559,12 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 	double total = percentual_asphalt + percentual_grass;
 
 	for(int j=0;j<total;j++){
-		
 		if(metric[j]== 'g'){
-			printf("Área segura para o pouso!\n");
+			printf("%s_%d: Área segura para o pouso!\n", grass_name, j);
 		}
 		
 		if(metric[j]== 'a'){
-			printf("Área não segura para pouso!\n");
+			printf("%s_%d: Área não segura para pouso!\n", asphalt_name, j);
 		}
 	}
 
