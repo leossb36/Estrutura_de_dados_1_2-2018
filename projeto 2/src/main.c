@@ -4,9 +4,10 @@
 #include <math.h>
 #include <string.h>
 
-#define asphalt "../DataSet/asphalt/asphalt_"
-#define grass "../DataSet/grass/grass_"
+#define asphalt_path "../DataSet/asphalt/asphalt_"
+#define grass_path "../DataSet/grass/grass_"
 #define max_size_ilbp 512
+#define gray_size 256
 #define size_metrics 24
 #define size_random_set 25
 
@@ -14,20 +15,22 @@ int col = 0;
 int row = 0;
 int correct = 0;
 int f_positive = 0;
-int f_negative = 0;	
+int f_negative = 0;
+char *dataset_path;	
 
-char *getFileFormat(char *, int , char *);
+char *getFileFormat(char *, int , const char*);
 int *getFile(char *);
 int *calcILBP(int *, int, int);
 int getLowestBin(int);
 double Max(double *, int);
 double Min(double *, int);
 void euclidianDistance(double *, double *, double **, int);
-double *glcmDirection(int *, int *, int, int);
-double *glcmMatrix(int *, int, int);
+double *glcmDirection(int *, int *, int, int, int);
+double *glcmMatrix(int *, int, int, int);
 double **getDescriptorFile(char *);
 void normalizedVector(double **, int);
-void separateGroup(int *, int *);
+int *separateTest(int *test);
+int *separateTraining(int *training);
 void average(double**, double**);
 void Debug(int , int);
 void declarationSet(double *, double *, double *);
@@ -35,14 +38,14 @@ void declarationSet(double *, double *, double *);
 
 int main(int argc, char **argv){
 
-	int *matrix, *ilbp, *test, *train;
-	double **aux;
-	char teste;
-	teste = *getFileFormat(asphalt, 1, ".txt");//Need to change the variable name
+	double **grass, *grass_test, *grass_training;
 
-	aux = getDescriptorFile(grass);
-	printf("%lf\n", aux);
-	
+	grass = getDescriptorFile(grass_path);
+	// char *fp = getFileFormat(grass_path, 1, ".txt");
+
+	// int *matrix = getFile(fp);
+
+	// double * test = glcmMatrix(matrix, row, col, gray_size);
 	//ilbp = calcILBP(matrix, row, col);
 
 	//teste = getFileFormat();
@@ -105,7 +108,7 @@ int *getFile(char *path)
 	return matrix;
 }
 
-char *getFileFormat(char *path, int id, char *postfix){
+char *getFileFormat(char *path, int id, const char *postfix){
 	
 	char *fileformat = (char *) calloc((strlen(path) + strlen(postfix) + 12), sizeof(char));
 
@@ -117,7 +120,7 @@ char *getFileFormat(char *path, int id, char *postfix){
 	char buffer[12] = { 0 };
 	sprintf(buffer, "%02d", id);
 
-	strcat(fileformat, path);
+	strcpy(fileformat, path);
 	strcat(fileformat, buffer);       
 	strcat(fileformat, postfix);
 
@@ -155,20 +158,20 @@ int *calcILBP(int *matrix, int row, int col)
 		exit(1);
 	}
 
-	for(int i = 0; i <= row; i++){
-		for(int j = 0; j <= col; j++){
+	for(int i = 0; i < row; i++){
+		for(int j = 0; j < col; j++){
 			// setting the initial value of matrix as center
 			int submatrix[3][3];
 
 			submatrix[0][0] = (i == 0 || j == 0) ? 0 : *(matrix + ((i - 1) * col) +(j - 1));
-			submatrix[0][1] = (i == 0 || j == 1) ? 0 : *(matrix + ((i - 1) * col) + j);
-			submatrix[0][2] = (i == 0 || j == 2) ? 0 : *(matrix + ((i - 1) * col) +(j + 1));
-			submatrix[1][0] = (i == 1 || j == 0) ? 0 : *(matrix + (i * col) + (j - 1));
-			submatrix[1][1] = (i == 1 || j == 1) ? 0 : *(matrix + (i * col) + j);
-			submatrix[1][2] = (i == 1 || j == 2) ? 0 : *(matrix + (i * col) +(j + 1));
-			submatrix[2][0] = (i == 2 || j == 0) ? 0 : *(matrix + ((i + 1) * col) + (j - 1));
-			submatrix[2][1] = (i == 2 || j == 1) ? 0 : *(matrix + ((i + 1) * col) + j);
-			submatrix[2][2] = (i == 2 || j == 2) ? 0 : *(matrix + ((i + 1) * col) + (j + 1));
+			submatrix[0][1] = (i == 0) ? 0 : *(matrix + ((i - 1) * col) + j);
+			submatrix[0][2] = (i == 0 || j == (col - 1)) ? 0 : *(matrix + ((i - 1) * col) +(j + 1));
+			submatrix[1][0] = (j == 0) ? 0 : *(matrix + (i * col) + (j - 1));
+			submatrix[1][1] = *(matrix + (i * col) + j);
+			submatrix[1][2] = (j == (col - 1)) ? 0 : *(matrix + (i * col) +(j + 1));
+			submatrix[2][0] = (i == (row - 1) || j == 0) ? 0 : *(matrix + ((i + 1) * col) + (j - 1));
+			submatrix[2][1] = (i == (row - 1) || j == 1) ? 0 : *(matrix + ((i + 1) * col) + j);
+			submatrix[2][2] = (i == (row - 1) || j == (col - 1)) ? 0 : *(matrix + ((i + 1) * col) + (j + 1));
 			
 
 			for(int x = 0; x < 3; x++){
@@ -191,7 +194,7 @@ int *calcILBP(int *matrix, int row, int col)
 
 			lowestBin = getLowestBin(*binary);
 
-			*ilbp += lowestBin; 
+			ilbp[lowestBin] += 1; 
 		}
 	}
 	//printf("%d\n", *ilbp);
@@ -251,7 +254,7 @@ void normalizedVector(double **concatenateVector, int size)
 	}
 }
 
-double *glcmDirection(int direction[2], int* matrix, int row, int col) {
+double *glcmDirection(int direction[2], int* matrix, int row, int col, int max_gray_level) {
 
 	// 		1º to condition your REFERENCE DIRECTION: right, left, up, botton;
 	// 		2º: Need to look, "What is the BIGGEST bit?; this bit "m" will be the size of the GLCM[m][m].
@@ -280,14 +283,16 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 		printf("\nError: cannot alocate memory\n");
 		exit(1);
 	}
+	printf("cheguei0\n");
 
-	for(int i = 0; i < 256; i++){
-		for(int j = 0; j < 256; j++){
+	for(int i = 0; i < row; i++){
+		for(int j = 0; j < col; j++){
 
 			// checking if matrix(x, y) == j and matrix(x, y on direction) == i
 			// if != i (outside) continue;
-			if(i + direction[0] >= row || j + direction[1] >= col || 
-			i + direction[0] < 0 || j + direction[1] < 0){
+			if(i + direction[0] < 0 || i + direction[0] >= row || 
+			   j + direction[1] < 0 || j + direction[1] >= col)
+			{
 				continue;
 			}
 
@@ -295,20 +300,21 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 			int n = matrix[(i * col) + j];
 			int m = matrix[(i + direction[0]) * col + (j + direction[1])];
 
-			glcm_matrix[(n * 256) + m] += 1;
+			glcm_matrix[(n * (max_gray_level-1)) + j] += 1;
+
 		}
 	}
+	printf("cheguei1\n");
 
-	double valor = *glcm_matrix;
-
-	for(int i = 0; i < 256; i++){
-   		for(int j = 0; j < 256; j++){
-	      contraste += valor * pow(abs(i - j),2);
-		  energy += pow(valor, 2);
-		  homog += (valor /(1 + abs(i - j)));
+	for(int i = 0; i < max_gray_level; i++){
+   		for(int j = 0; j < max_gray_level; j++){
+	      contraste += glcm_matrix[i * max_gray_level + j] * pow(abs(i - j),2);
+		  energy += pow(glcm_matrix[i * max_gray_level + j], 2);
+		  homog += (glcm_matrix[i * max_gray_level + j] /(1 + abs(i - j)));
 	   }
-	}
 
+	}
+	printf("cheguei2\n");
 	double* metric = (double*)calloc(3, sizeof(double));
 
 	metric[0] = contraste;
@@ -319,7 +325,7 @@ double *glcmDirection(int direction[2], int* matrix, int row, int col) {
 	return metric;
 }
 
-double *glcmMatrix(int *matrix, int row, int col) {
+double *glcmMatrix(int *matrix, int row, int col, int max_gray_level) {
 	double* glcm = (double*)calloc(24, sizeof(double));
 	//We want to calculate glcm for every direction in a matrix.
 	//We are putting x as a linear direction and y as a vertical direction,
@@ -329,13 +335,12 @@ double *glcmMatrix(int *matrix, int row, int col) {
 
 	for(int i = 0; i < 3; i++){
 		for(int j = 0; j < 3; j++){
-			int direction[2] = {i, j};
-
 			if(i == 1 && j == 1){
 				continue;
 			}
+			int direction[2] = {i, j};
 
-			double *metric = glcmDirection(direction, matrix, row, col);
+			double *metric = glcmDirection(direction, matrix, row, col, max_gray_level);
 
 			for(int n = 0; n < 3; n++){
 				glcm[m] = metric[n];
@@ -345,13 +350,17 @@ double *glcmMatrix(int *matrix, int row, int col) {
 			free(metric);
 		}
 	}
+	printf("cheguei4\n");
+
 	return glcm;
 
 }
 
-double **getDescriptorFile(char * path)
+double **getDescriptorFile(char *datatype)
 {
-	path = (char *) calloc(200, sizeof(char));
+	char *path = (char *) calloc(255, sizeof(char));
+
+	strcpy(path, datatype);
 
 	if(path == NULL)
 	{
@@ -375,11 +384,11 @@ double **getDescriptorFile(char * path)
 
 		int *ilbp = calcILBP(matrix, row, col);
 
-		double *glcm = glcmMatrix(matrix, row, col);
+		double *glcm = glcmMatrix(matrix, row, col, gray_size);
 
 		double *describe = (double *) calloc(max_size_ilbp + size_metrics, sizeof(double));
 
-		for(int j = 0; j < *describe; j++)
+		for(int j = 0; j < max_size_ilbp + size_metrics; j++)
 		{
 			if (j < describe[j])
 			{
@@ -403,10 +412,10 @@ double **getDescriptorFile(char * path)
 	return img_describe;
 }
 
-void separateGroup(int *test, int *training)
+int *separateTest(int *test)
 {
 
-	int count, num, k = 0;
+	int count, num;
 	srand(time(NULL));
 
 
@@ -429,7 +438,16 @@ void separateGroup(int *test, int *training)
 			i--;
 			continue;
 		}
+		*(test + i) = num;
 	}
+	return test;
+}
+
+int *separateTrainig(int *training){
+	
+	int count = 0, num;
+
+	srand(time(NULL));
 
 	for(int x = 0; x <= 50; x++)
 	{
@@ -445,22 +463,24 @@ void separateGroup(int *test, int *training)
 
 		if (count > 0)
 		{
+			x--;
 			continue;
 		}
 
-		*(training + k) = x;
-		k++;
+		*(training + x) = num;
 	}
+
+	return training; 
 }
 
 
-void average(double **learn_set, double **concatenateVector){
+void average(double **training_set, double **concatenateVector){
 
 	double average;
 	for(int i = 0; i < 536; i++){
         for(int j = 0; j < 25; j++){
             
-			average += *(*concatenateVector + i) + *(*(learn_set + j) + i);
+			average += *(*concatenateVector + i) + *(*(training_set + j) + i);
         }
 
     	average /= 25;
@@ -524,8 +544,8 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 	}
 
 	printf("Número de Imagens Grama: %d\n", total_grass);
-	printf("Percentual de Imagens Grama: %.2lf % \n", percentual_grass = total_grass*100/50);
+	printf("Percentual de Imagens Grama: %.2lf %% \n", percentual_grass = total_grass*100/50);
 
 	printf("Número de Imagens Asfalto: %d\n", total_asphalt);
-	printf("Percentual de Imagens Asfalto: %.2lf % \n", percentual_asphalt = total_asphalt*100/50);
+	printf("Percentual de Imagens Asfalto: %.2lf %% \n", percentual_asphalt = total_asphalt*100/50);
 }
