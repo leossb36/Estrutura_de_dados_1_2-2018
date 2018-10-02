@@ -23,13 +23,13 @@ char *getFileFormat(char *, int , const char*);
 int *getFile(char *);
 int *calcILBP(int *, int, int);
 int getLowestBin(int);
+int numero(int);
 void Debug(int , int);
 void average(double**, double**);
 void declarationSet(double *, double *, double *);
 void normalizedVector(double **, int);
 void euclidianDistance(double *, double *, double **, int);
-void *separateTest(double *);
-void *separateTraining(double *);
+void *separategroup(char *, int, double **, double **);
 double Max(double *, int);
 double Min(double *, int);
 double *glcmMatrix(int *, int, int, int);
@@ -42,13 +42,13 @@ int main(int argc, char **argv){
 
 	grass = getDescriptorFile(grass_path);
 
-	// separateTraining(grass_training);
+	separategroup(grass_path, 50, &grass_training, &grass_test);
 
 	double **asphalt, *asphalt_test, *asphalt_training;
 
 	asphalt = getDescriptorFile(asphalt_path);
 
-	// printf("%lf", *grass_training);
+	printf("%lf", *grass_training);
 	// grass_training = separateTraining(grass);
 
 	// printf("%lf", *grass_training);
@@ -61,6 +61,7 @@ int main(int argc, char **argv){
 
 	//teste = getFileFormat();
 	//separateGroup(test, train);
+	printf("%lf", *asphalt_training);
 	return 0;
 }
 
@@ -419,63 +420,61 @@ double **getDescriptorFile(const char *datatype)
 	return img_describe;
 }
 
-void *separateTest(double *test)
-{
+void *separategroup(char *path, int size, double **training_set, double **test_set){
 
-	int count, num;
-	srand(time(NULL));
-
-
-	//getting random files to test
-	for(int i = 0; i < 50; i++)
+	double treino[25], num, tam, test, teste[25];
+	int l, i;
+	for(i = 0; i < 25; i++)
 	{
-		num = rand() % 50 + 1;
-		count = 0;
-		
-		for(int j = 0; j < 25; j++){
-			if(*(test + i) == num)
-				count++;
-			else
-			{
-				continue;
+		treino[i] = 0;//preenchemos o vetor com zeros
+	} 
+	for(int i = 0; i < 50; i++){
+		teste[i] = i + 1;
+		printf("%.0lf\n", teste[i]);
+	}
+	for(i = 0; i < 25; i++)
+	{
+	  test = 0;
+	  while(test == 0)//inicio do teste para evitar numeros repetidos
+	  {
+		  test = 1;//test vira um para sair do laço
+		  //iniciamos o tempo de contagem
+		  treino[i] = numero(num);//numeros[i] recebe o valor da função srand
+		  for(l = 0; l < 25; l++)
+		  {
+			   if(treino[l] == treino[i] && i != l)// o i!=l é para não testar ele com ele mesmo.
+			   {
+				   //reiniciamos o tempo
+				   treino [i] = numero(num);//numeros[i] recebe um novo valor da função srand
+				   test = 0;//caso seja verdadeiro volta a ser 0 para voltar ao laço
+				   l= 25;//fechamos o for e voltamos ao laço de 0
+				   }
 			}
 		}
-		if (count > 0)
-		{
-			i--;
-			continue;
+		*(training_set + i) = &treino[i];
+		printf("%lf\n", treino[i]);
+		if(i == 24){
+			printf("bagulho doido\n");
+			break;
 		}
-		*(test + i) = num;
 	}
-
-}
-
-void *separateTraining(double *training){
-	
-	int count = 0, num;
-
-	srand(time(NULL));
-
-	for(int x = 0; x < 50; x++)
-	{
-
-		num = rand() % 50 + 1;
-		count = 0;
-
-		for (int i = 0; i < 25; i++)
-		{
-			if(*(training + x) == num)
-				count++;
+	printf("bagulho doidao\n");
+	printf("/n/n");
+	for(int i = 0; i < 50; i++){
+		for(int j = 0; j < 25; j++){
+			printf("Teste %d: %.0lf", i, teste[i]);
+			if(teste[i] == treino[j]){
+				teste[i] = 0;
+				printf("Teste %d: %.0lf", i, teste[i]);
+			}
 		}
-
-		if (count > 0)
-		{
-			x--;
-			continue;
+	}
+	for(int i = 0; i < 50; i++){
+		if(teste[i] != 0){
+			*(test_set + i) = &teste[i];
+			printf("%lf\n", teste[i]);
 		}
-
-		*(training + x) = num;
-	} 
+	}
 }
 
 
@@ -568,4 +567,10 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 		}
 	}
 
+}
+int numero(int num)
+{
+	srand(time(NULL));
+	num=(rand())%50 + 1;//pega o resto da divisão do numero aleatorio por 50 (um numero menor q 50)
+return num;
 }
