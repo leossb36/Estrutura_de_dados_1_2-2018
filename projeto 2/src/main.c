@@ -23,13 +23,12 @@ char *getFileFormat(char *, int , const char*);
 int *getFile(char *);
 int *calcILBP(int *, int, int);
 int getLowestBin(int);
-int numero(int);
 void Debug(int , int);
 void average(double**, double**);
-void declarationSet(double *, double *, double *);
+void declarationSet(double *, double *, double **, double **);
 void normalizedVector(double **, int);
-void euclidianDistance(double *, double *, double **, int);
-void *separategroup(char *, int, double **, double **);
+void euclidianDistance(double **, double **, double **, double **, int);
+void *separategroup(char *, int, double *, double *);
 double Max(double *, int);
 double Min(double *, int);
 double *glcmMatrix(int *, int, int, int);
@@ -38,17 +37,30 @@ double **getDescriptorFile(const char *);
 
 int main(int argc, char **argv){
 
-	double **grass, *grass_test, *grass_training;
+	double **grass;
+	double *grass_test = (double *) calloc(size_random_set*2, sizeof(double)); 
+	double *grass_training = (double *) calloc(size_random_set*2, sizeof(double));
 
 	grass = getDescriptorFile(grass_path);
 
-	separategroup(grass_path, 50, &grass_training, &grass_test);
+	separategroup(grass_path, 50, grass_training, grass_test);
 
-	double **asphalt, *asphalt_test, *asphalt_training;
+	double **asphalt;
+	double *asphalt_test, *asphalt_training;
 
 	asphalt = getDescriptorFile(asphalt_path);
 
-	printf("%lf", *grass_training);
+	separategroup(asphalt_path, 50, asphalt_training, asphalt_test);
+
+	average(&grass_training, &asphalt_training);
+
+	int base = 0;
+
+	euclidianDistance(asphalt, grass, &grass_test, &asphalt_test, base);
+
+	declarationSet(grass_test, asphalt_test, grass, asphalt);
+
+	// printf("%d", grass_training);
 	// grass_training = separateTraining(grass);
 
 	// printf("%lf", *grass_training);
@@ -61,7 +73,6 @@ int main(int argc, char **argv){
 
 	//teste = getFileFormat();
 	//separateGroup(test, train);
-	printf("%lf", *asphalt_training);
 	return 0;
 }
 
@@ -420,68 +431,62 @@ double **getDescriptorFile(const char *datatype)
 	return img_describe;
 }
 
-void *separategroup(char *path, int size, double **training_set, double **test_set){
+void *separategroup(char *path, int size, double *training_set, double *test_set)
+{
 
-	double treino[25], num, tam, test, teste[25];
-	int l, i;
-	for(i = 0; i < 25; i++)
+	int *random_numb = (int *) calloc(size_random_set*2, sizeof(int));
+	
+	if (random_numb == NULL)
 	{
-		treino[i] = 0;//preenchemos o vetor com zeros
-	} 
-	for(int i = 0; i < 50; i++){
-		teste[i] = i + 1;
-		printf("%.0lf\n", teste[i]);
+		printf("Error: Cannot allocate memory!\n");
+		exit(1);
 	}
-	for(i = 0; i < 25; i++)
+	int num = 0;
+	int find_num = 0;
+	srand(time(NULL));
+
+	for(int i = 0; i < size; i++)
 	{
-	  test = 0;
-	  while(test == 0)//inicio do teste para evitar numeros repetidos
-	  {
-		  test = 1;//test vira um para sair do laço
-		  //iniciamos o tempo de contagem
-		  treino[i] = numero(num);//numeros[i] recebe o valor da função srand
-		  for(l = 0; l < 25; l++)
-		  {
-			   if(treino[l] == treino[i] && i != l)// o i!=l é para não testar ele com ele mesmo.
-			   {
-				   //reiniciamos o tempo
-				   treino [i] = numero(num);//numeros[i] recebe um novo valor da função srand
-				   test = 0;//caso seja verdadeiro volta a ser 0 para voltar ao laço
-				   l= 25;//fechamos o for e voltamos ao laço de 0
-				   }
+		find_num = 0;
+
+		while(find_num == 0)
+		{
+			find_num = 1;
+
+			num = rand() % size + 1;
+
+			random_numb[i] = num;
+
+			for(int j = 0; j < size; j++)
+			{
+				if (*(random_numb + j) == *(random_numb + i) && j != i)
+				{
+					num = 0;
+					num = rand() % size + 1;
+					*(random_numb + i) = num;
+					find_num = 0;
+					j = size - 1;
+				}
 			}
 		}
-		*(training_set + i) = &treino[i];
-		printf("%lf\n", treino[i]);
-		if(i == 24){
-			printf("bagulho doido\n");
-			break;
+		if (i < 25)
+		{
+			if(*(training_set + i )) 
+			*(training_set + i) = *(random_numb + i);
+		}		
+		if(i >= 25)
+		{
+			*(test_set + i - 25) = *(random_numb + i); 
 		}
+
 	}
-	printf("bagulho doidao\n");
-	printf("/n/n");
-	for(int i = 0; i < 50; i++){
-		for(int j = 0; j < 25; j++){
-			printf("Teste %d: %.0lf", i, teste[i]);
-			if(teste[i] == treino[j]){
-				teste[i] = 0;
-				printf("Teste %d: %.0lf", i, teste[i]);
-			}
-		}
-	}
-	for(int i = 0; i < 50; i++){
-		if(teste[i] != 0){
-			*(test_set + i) = &teste[i];
-			printf("%lf\n", teste[i]);
-		}
-	}
+	free(random_numb);
 }
-
 
 void average(double **training_set, double **concatenateVector){
 
 	double average;
-	for(int i = 0; i < 536; i++){
+	for(int i = 0; i < (max_size_ilbp + size_metrics); i++){
         for(int j = 0; j < 25; j++){
             
 			average += *(*concatenateVector + i) + *(*(training_set + j) + i);
@@ -490,7 +495,7 @@ void average(double **training_set, double **concatenateVector){
     	average /= 25;
     }
 }
-void euclidianDistance(double *asphalt_descriptor, double* grass_descriptor, double** test_set, int base){
+void euclidianDistance(double **asphalt_descriptor, double **grass_descriptor, double **test_set_grass, double **test_set_asphalt, int base){
 	//		Euclidian Distance:
 	//		sqrt((x1-x0)^2+(y1-y0)^2
 	// We need to calculate for the test set of images
@@ -499,8 +504,8 @@ void euclidianDistance(double *asphalt_descriptor, double* grass_descriptor, dou
 		double d_grass = 0, d_asphalt = 0;
 		
 		for(int j = 0; j < 25; j++){
-			d_grass += pow(grass_descriptor[i] - *(*(test_set + i) + j), 2);
-			d_asphalt += pow(asphalt_descriptor[i] - *(*(test_set + i) + j), 2);
+			d_grass += pow(grass_descriptor[i] - (*(test_set_grass + i) + j), 2);
+			d_asphalt += pow(asphalt_descriptor[i] - (*(test_set_asphalt + i) + j), 2);
 		}
 
 		distance_asphalt = sqrt(d_asphalt);
@@ -522,25 +527,22 @@ void Debug(int result, int base){
 	}
 }
 
-void declarationSet(double *average_grass, double *average_asphalt, double *euclidianDistance){
+void declarationSet(double *euclidianDistanceGrass, double* euclidianDistanceAsphalt, double **descriptorGrass, double **descriptorAsphalt)
+{
 	char metric[50] = {};
-	double diference_average_grass;
-	double diference_average_asphalt;
 	double percentual_asphalt = 0, percentual_grass = 0;
 	int total_grass = 0, total_asphalt = 0;
 	
 	for(int j = 0; j < 50; j++){
-		diference_average_grass = 0;
-		diference_average_asphalt = 0;
-		diference_average_grass = euclidianDistance[j] - *average_grass;
-		diference_average_asphalt = euclidianDistance[j] - *average_asphalt;
-
-		if(diference_average_grass > diference_average_asphalt){
+	 	euclidianDistanceGrass = 0;
+		euclidianDistanceAsphalt = 0;
+	
+		if(&euclidianDistanceGrass < descriptorGrass){
 			metric[j] = 'g';
 			percentual_grass++;
 		}
 
-		else if(diference_average_grass < diference_average_asphalt){
+		else if(&euclidianDistanceAsphalt < descriptorAsphalt){
 			metric[j] = 'a';
 			percentual_asphalt++;
 		}
@@ -567,10 +569,4 @@ void declarationSet(double *average_grass, double *average_asphalt, double *eucl
 		}
 	}
 
-}
-int numero(int num)
-{
-	srand(time(NULL));
-	num=(rand())%50 + 1;//pega o resto da divisão do numero aleatorio por 50 (um numero menor q 50)
-return num;
 }
