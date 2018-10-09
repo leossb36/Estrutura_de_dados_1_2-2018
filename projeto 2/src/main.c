@@ -22,13 +22,14 @@ int f_negative = 0;
 char *getFileFormat(char *, int , const char*);
 int *getFile(char *);
 int *calcILBP(int *, int, int);
+int getRandomNumb(int, int);
 int getLowestBin(int);
 void Debug(int , int);
 void average(double**, double**);
-void declarationSet(double *, double *, double **, double **);
+void declarationSet(double **, double **, double **, double **);
 void normalizedVector(double **, int);
 void euclidianDistance(double **, double **, double **, double **, int);
-void *separategroup(char *, int, double *, double *);
+void *separategroup(char *, int, double **, double **);
 double Max(double *, int);
 double Min(double *, int);
 double *glcmMatrix(int *, int, int, int);
@@ -38,41 +39,30 @@ double **getDescriptorFile(const char *);
 int main(int argc, char **argv){
 
 	double **grass;
-	double *grass_test = (double *) calloc(size_random_set*2, sizeof(double)); 
-	double *grass_training = (double *) calloc(size_random_set*2, sizeof(double));
+	double **grass_test = (double **) calloc(size_random_set*2, sizeof(double *)); 
+	double **grass_training = (double **) calloc(size_random_set*2, sizeof(double *));
 
 	grass = getDescriptorFile(grass_path);
 
 	separategroup(grass_path, 50, grass_training, grass_test);
 
 	double **asphalt;
-	double *asphalt_test, *asphalt_training;
+	double **asphalt_test = (double **) calloc(size_random_set*2, sizeof(double *)); 
+	double **asphalt_training = (double **) calloc(size_random_set*2, sizeof(double *));
 
 	asphalt = getDescriptorFile(asphalt_path);
 
 	separategroup(asphalt_path, 50, asphalt_training, asphalt_test);
 
-	average(&grass_training, &asphalt_training);
-
+	average(grass_training, grass);
+	average(asphalt_training, asphalt);
+	
 	int base = 0;
 
-	euclidianDistance(asphalt, grass, &grass_test, &asphalt_test, base);
+	euclidianDistance(asphalt, grass, grass_test, asphalt_test, base);
 
 	declarationSet(grass_test, asphalt_test, grass, asphalt);
 
-	// printf("%d", grass_training);
-	// grass_training = separateTraining(grass);
-
-	// printf("%lf", *grass_training);
-	// char *fp = getFileFormat(grass_path, 1, ".txt");
-
-	// int *matrix = getFile(fp);
-
-	// double * test = glcmMatrix(matrix, row, col, gray_size);
-	//ilbp = calcILBP(matrix, row, col);
-
-	//teste = getFileFormat();
-	//separateGroup(test, train);
 	return 0;
 }
 
@@ -219,7 +209,8 @@ int *calcILBP(int *matrix, int row, int col)
 			ilbp[lowestBin] += 1; 
 		}
 	}
-	//printf("%d\n", *ilbp);
+	printf("ILBP: \n");
+	printf("%d\n", *ilbp);
 	return ilbp;
 }
 
@@ -431,56 +422,82 @@ double **getDescriptorFile(const char *datatype)
 	return img_describe;
 }
 
-void *separategroup(char *path, int size, double *training_set, double *test_set)
+int getRandomNumb(int num, int size)
+{
+	srand(time(NULL));
+	
+	num=(rand()) % size;
+
+	return num;
+
+}
+
+void *separategroup(char *path, int size, double **training_set, double **test_set)
 {
 
-	int *random_numb = (int *) calloc(size_random_set*2, sizeof(int));
-	
-	if (random_numb == NULL)
-	{
-		printf("Error: Cannot allocate memory!\n");
-		exit(1);
-	}
-	int num = 0;
-	int find_num = 0;
-	srand(time(NULL));
+	double *training = (double *) calloc(size/2, sizeof(double));
+	double *testing = (double *) calloc(size/2, sizeof(double));
 
-	for(int i = 0; i < size; i++)
-	{
-		find_num = 0;
 
-		while(find_num == 0)
+	double num;
+	int tam, i, l, test; 
+	int vec[50] = {1, 2, 3, 4, 5,
+					6, 7, 8, 9, 10,
+					11, 12, 13, 14, 15,
+					16, 17, 18, 19, 20,
+					21, 22, 23, 24, 25, 
+					26, 27, 28, 29, 30, 
+					31, 32, 33, 34, 35, 
+					36, 37, 38, 39, 40, 
+					41, 42, 43, 44, 45, 
+					46, 47, 48, 49, 50};
+			
+	printf("\nGetting random set\n");
+	for(i = 0; i < 25; i++)
+	{
+		training_set[i] = 0;
+	} 
+	for(i = 0; i < 25; i++)
+	{
+		test = 0;
+		while(test == 0)
 		{
-			find_num = 1;
-
-			num = rand() % size + 1;
-
-			random_numb[i] = num;
-
-			for(int j = 0; j < size; j++)
+			test = 1;
+			training_set[i] = getRandomNumb(num, size);
+			for(l = 0; l < 25; l++)
 			{
-				if (*(random_numb + j) == *(random_numb + i) && j != i)
+				if(training_set[l] == training_set[i] && i!=l)
 				{
-					num = 0;
-					num = rand() % size + 1;
-					*(random_numb + i) = num;
-					find_num = 0;
-					j = size - 1;
+					training_set[i] = getRandomNumb(num, size);
+					test = 0;
+					l = 25;
 				}
 			}
 		}
-		if (i < 25)
-		{
-			if(*(training_set + i )) 
-			*(training_set + i) = *(random_numb + i);
-		}		
-		if(i >= 25)
-		{
-			*(test_set + i - 25) = *(random_numb + i); 
-		}
-
+	printf("%.0lf\t",training_set[i]);
 	}
-	free(random_numb);
+
+	for(int i = 0; i < 25;i++){
+		for(int j = 0;j < 50;j++){
+			if(training_set[i] == vec[j]){
+				vec[j] = 0;                    
+			}                
+		}
+	}
+
+	for(int i = 0;i < 25; i++)
+	{
+		for(int j = 0; j < 50; j++)
+		{
+			if(vec[j] != 0){
+				test_set[i] = vec[j];
+				vec[j] = 0;
+				break;
+			}
+		}
+		printf("%.0lf\t",test_set[i]); 
+	}	
+
 }
 
 void average(double **training_set, double **concatenateVector){
@@ -527,7 +544,7 @@ void Debug(int result, int base){
 	}
 }
 
-void declarationSet(double *euclidianDistanceGrass, double* euclidianDistanceAsphalt, double **descriptorGrass, double **descriptorAsphalt)
+void declarationSet(double **euclidianDistanceGrass, double **euclidianDistanceAsphalt, double **descriptorGrass, double **descriptorAsphalt)
 {
 	char metric[50] = {};
 	double percentual_asphalt = 0, percentual_grass = 0;
