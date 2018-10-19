@@ -20,7 +20,7 @@ void *readFile(char *filename){
 
   if (read_data == NULL)
   {
-    puts("Error: Fail to allocate memory![1]");
+    printf("\nError: Fail to allocate memory![1]\n");
     exit(-2);
   }
 
