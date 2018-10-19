@@ -6,7 +6,7 @@ void *readFile(char *filename){
   
   FILE *fp;
   Schedule *read_data;
-  DataType *
+  DataType * e; /* list elements */
   
   fp = fopen(filename, "r+");
 
