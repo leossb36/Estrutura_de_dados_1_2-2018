@@ -1,41 +1,71 @@
 #include "head.h"
+#define contacts "../reference/contato.txt"
 
-int main(){
+int main(int argv, char **argc){
 
   int menu = 1, op;
 
   do{
-  /*Menu com as seguintes opçoes
-      Inserir Registro
-      Remover registro com string X
-      Visualizar Registro
-      Visualisar TUDO em ordem Alfabetica
-      Sair
-  */
+  /* Menu functions:
+      see all registers
+      insert register
+      remove register by name
+      see register by name
+      see in order register
+      exit
+ */
+    printf("=========================================\n\n");
     printf("\tAGENDA DE CONTATOS\n\n");
-    printf("[0] - Inserir Registro\n");
-    printf("[1] - Remover Registro\n");
-    printf("[2] - Visualizar Registro\n");
-    printf("[3] - Visualizar em Ordem Alfabética\n");
-    printf("[4] - Sair\n");
+    printf("=========================================\n");
+    printf("[0] - Visualizar todos os registros\n");
+    printf("[1] - Inserir Registro\n");
+    printf("[2] - Remover Registro por nome\n");
+    printf("[3] - Visualizar Registro por nome\n");
+    printf("[4] - Visualizar em Ordem Alfabética\n");
+    printf("[5] - Sair\n");
+    printf("=========================================\n\n");
+    
 
     scanf("%d", &op);
 
     switch(op) {
-      case 0:  
+
+      case 0:
+        printf("=========================================\n\n");
+        printf("\tVisualizar Todos os Registros\n\n");
+        readDataFile(contacts);
+        printf("\n=========================================\n\n");
         break;
-        
+
       case 1:
+        printf("=========================================\n\n");
+        printf("\tInserir Registro\n\n");
+
+        printf("\n=========================================\n\n");    
         break;
         
       case 2:
+        printf("=========================================\n\n");
+        printf("\tRemover Registro por Nome\n\n");
+
+        printf("\n=========================================\n\n");
         break;
         
       case 3:
+        printf("=========================================\n\n");
+        printf("\tVisualizar Registro por Nome\n\n");
+
+        printf("\n=========================================\n\n");
         break;
         
       case 4:
-        printf("Gloria a Deuxxxx!\n");
+        printf("=========================================\n\n");
+        printf(" Visualizar Todos os Registros em Ordem\n\n");
+
+        printf("\n=========================================\n\n");
+        break;
+        
+      case 5:
         menu = 0;
         break;
         

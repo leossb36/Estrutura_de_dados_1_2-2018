@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#define contacts "../reference/contato.txt"
 
 typedef struct element
 {
@@ -19,6 +20,7 @@ typedef struct element
     char adress[101];
     unsigned int cep;
     char birth[11];
+    char buffer[25];
 
 }Schedule;
 
@@ -36,6 +38,6 @@ typedef struct list
 
 }DataType;
 
-void *readFile(char *filename);
+void *readDataFile(char *);
 
 #endif
