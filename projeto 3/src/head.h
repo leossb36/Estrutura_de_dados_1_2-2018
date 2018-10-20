@@ -40,4 +40,9 @@ typedef struct list
 
 void *readDataFile(char *);
 
+DataType *voidList();
+
+DataType *newRegister(char *, char *, char *, unsigned int, char *, char *);
+
+
 #endif

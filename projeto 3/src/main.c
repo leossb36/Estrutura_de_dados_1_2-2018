@@ -5,6 +5,8 @@ int main(int argv, char **argc){
 
   int menu = 1, op;
 
+  Schedule *new;
+
   do{
   /* Menu functions:
       see all registers
@@ -13,6 +15,9 @@ int main(int argv, char **argc){
       see register by name
       see in order register
       exit
+
+      @todo
+        do the validations for each options
  */
     printf("=========================================\n\n");
     printf("\tAGENDA DE CONTATOS\n\n");
@@ -40,7 +45,14 @@ int main(int argv, char **argc){
       case 1:
         printf("=========================================\n\n");
         printf("\tInserir Registro\n\n");
+        printf("Por favor preencha os dados:");
+        
+        do 
+        {
+          scanf("%s %s %s %u %s %c", &new->name, &new->phone, &new->adress, new->cep
+                                     &new->birth, &new->buffer);
 
+        } while(!EOF);
         printf("\n=========================================\n\n");    
         break;
         

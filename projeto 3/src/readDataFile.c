@@ -4,7 +4,13 @@
 open file
 check file
 read all lines
-close the file */
+close the file 
+
+@todo
+  view list
+  see list by name
+  see list in alphabetical order
+*/
 
 void *readDataFile(char *filename){
 
@@ -30,8 +36,6 @@ void *readDataFile(char *filename){
     printf("\nError: Fail to allocate memory![1]\n");
     exit(-2);
   }
-  char ch;
-  int count = 0;
 
   while(!feof(fp))
   {
@@ -47,7 +51,7 @@ void *readDataFile(char *filename){
     fscanf(fp, "%u", &e->cep);
     fgetc(fp);
 
-    fscanf(fp, "%[^\n]", e->birth);
+    fscanf(fp, "%s", e->birth);
     fgetc(fp);
 
     fscanf(fp, "%c", e->buffer);
