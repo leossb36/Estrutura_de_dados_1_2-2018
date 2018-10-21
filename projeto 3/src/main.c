@@ -1,6 +1,8 @@
 #include "header.h"
 #define contacts "../reference/contato.txt"
 
+void choiceOptionExit();
+
 int main(int argv, char **argc){
 
   int menu = 1, op;
@@ -21,6 +23,8 @@ int main(int argv, char **argc){
       @todo
         do the validations for each options
  */
+
+    system("clear");
     printf("=========================================\n\n");
     printf("\tAGENDA DE CONTATOS\n\n");
     printf("=========================================\n");
@@ -32,48 +36,66 @@ int main(int argv, char **argc){
     printf("[5] - Sair\n");
     printf("=========================================\n\n");
     
-
+    printf("Digite sua escolha: ");
     scanf("%d", &op);
 
     switch(op) {
 
       case 0:
+        system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
         readDataFile(contacts, list);
         printf("\n=========================================\n\n");
+
+        choiceOptionExit();
+
         break;
 
       case 1:
+        system("clear");
         printf("=========================================\n\n");
         printf("\tInserir Registro\n\n");
 
         // list = insertBeginning(list, newr);
         printf("\n=========================================\n\n");
+        
+        choiceOptionExit();
         break;
         
       case 2:
+        system("clear");
         printf("=========================================\n\n");
         printf("\tRemover Registro por Nome\n\n");
 
         printf("\n=========================================\n\n");
+
+        choiceOptionExit();
         break;
         
       case 3:
+        system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Registro por Nome\n\n");
 
         printf("\n=========================================\n\n");
+
+        choiceOptionExit();
         break;
         
       case 4:
+        system("clear");
         printf("=========================================\n\n");
         printf(" Visualizar Todos os Registros em Ordem\n\n");
 
         printf("\n=========================================\n\n");
+
+        choiceOptionExit();
         break;
         
       case 5:
+        system("clear");
+        printf("\nAgenda Finalizada\n\n");
         menu = 0;
         break;
         
@@ -86,4 +108,20 @@ int main(int argv, char **argc){
 
 
 return 0;
+}
+
+
+void choiceOptionExit(){
+  int ch;
+  printf("[0] - Voltar ao Menu da Agenda\n");
+  printf("[1] - Sair\n");
+  printf("\n=========================================\n");
+  printf("Digite sua escolha: ");
+  scanf("%d", &ch);
+
+  if(ch == 1){
+    printf("\nAgenda Finalizada\n\n");
+
+    exit(0);
+  }
 }
