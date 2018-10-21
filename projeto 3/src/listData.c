@@ -1,4 +1,4 @@
-#include "head.h"
+#include "header.h"
 #define size 101
 /* @todo
     if doesn't exist list, create a new list
@@ -36,50 +36,50 @@ DataType *newRegister(char *name, char *phone, char *adress, unsigned int cep, c
         exit(-1);
     }
 
-    *rgt->name = name;
+    *rgt->name = *name;
 
-    if (rgt->name > size || rgt->name < 2)
+    if (*rgt->name > size || *rgt->name < 2)
     {
-        ((rgt->name) > size) ? printf("Invalid adress, max size limited exceeded, try again\n")
+        ((*rgt->name) > size) ? printf("Invalid adress, max size limited exceeded, try again\n")
                              : printf("Invalid adress, minimum size below allowable, try again\n"); 
     }
-    *rgt->phone = phone;
-    if(rgt->phone != 12)
+    *rgt->phone = *phone;
+    if(*rgt->phone != 12)
         printf("Invalid phone number, try again\n");
 
-    *rgt->adress = adress;
-    if (rgt->adress > size || rgt->adress < 10)
+    *rgt->adress = *adress;
+    if (*rgt->adress > size || *rgt->adress < 10)
     {
-        ((rgt->adress) > size) ? printf("Invalid name, max size limited exceeded, try again\n")
-                             : printf("Invalid name, minimum size below allowable, try again\n"); 
+        ((*rgt->adress) > size) ? printf("Invalid name, max size limited exceeded, try again\n")
+                               : printf("Invalid name, minimum size below allowable, try again\n"); 
     }
     rgt->cep = cep;
-    cep = atoi(cep);
-
     if(rgt->cep < 0)
     {
         printf("Invalid cep, try again");
     }
 
-    *rgt->birth = birth;
-    int day = 0, mouth = 0, year = 0;
-    
-    if (day > 31 && mouth > 12 && year < 0)
+    *rgt->birth = *birth;
+    char *day, *mouth, *year;
+
+    atoi(day);
+    atoi(mouth);
+    atoi(year);
+
+    if (*day > 31 && *mouth > 12 && *year < 0)
     {
         printf("Invalid birthday, try again\n");
     }
-    char ch = '[^\]';
-    itoa(day);
-    itoa(mouth);
-    itoa(year);
+    char ch = '\'';
+
 
     strcpy(birth, day);
-    strcat(birth, ch);
-    strcat(birth,mouth);
-    strcat(birth, ch);
+    strcat(birth, &ch);
+    strcat(birth, mouth);
+    strcat(birth, &ch);
     strcat(birth, year);
     
-    *rgt->buffer = buffer;
+    *rgt->buffer = *buffer;
 
     element->type = 1;
     element->info = rgt;

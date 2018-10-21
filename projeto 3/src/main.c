@@ -1,11 +1,11 @@
-#include "head.h"
+#include "header.h"
 #define contacts "../reference/contato.txt"
 
 int main(int argv, char **argc){
 
   int menu = 1, op;
 
-  Schedule *new;
+  Schedule *newr;
 
   do{
   /* Menu functions:
@@ -45,15 +45,8 @@ int main(int argv, char **argc){
       case 1:
         printf("=========================================\n\n");
         printf("\tInserir Registro\n\n");
-        printf("Por favor preencha os dados:");
         
-        do 
-        {
-          scanf("%s %s %s %u %s %c", &new->name, &new->phone, &new->adress, new->cep
-                                     &new->birth, &new->buffer);
-
-        } while(!EOF);
-        printf("\n=========================================\n\n");    
+        printf("\n=========================================\n\n");
         break;
         
       case 2:

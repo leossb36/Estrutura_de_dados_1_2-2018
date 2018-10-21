@@ -1,4 +1,4 @@
-#include "head.h"
+#include "header.h"
 
 /* @todo
 open file
@@ -33,7 +33,7 @@ void *readDataFile(char *filename){
 
   if (readData == NULL)
   {
-    printf("\nError: Fail to allocate memory![1]\n");
+    printf("\nError: Fail to allocate memory!\n");
     exit(-2);
   }
 
@@ -66,7 +66,7 @@ void *readDataFile(char *filename){
     printf("%c\n", *e->buffer);
 
   }
-
+  free(readData);
   fclose(fp);
 
 }
