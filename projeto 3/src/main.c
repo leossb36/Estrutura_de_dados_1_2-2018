@@ -1,7 +1,10 @@
 #include "header.h"
 #define contacts "../reference/contato.txt"
 
-void choiceOptionExit();
+void choiceOption();
+void choiceOption1();
+void choiceOption2();
+void choiceOption3();
 
 int main(int argv, char **argc){
 
@@ -48,7 +51,7 @@ int main(int argv, char **argc){
         readDataFile(contacts, list);
         printf("\n=========================================\n\n");
 
-        choiceOptionExit();
+        choiceOption();
 
         break;
 
@@ -60,7 +63,7 @@ int main(int argv, char **argc){
         // list = insertBeginning(list, newr);
         printf("\n=========================================\n\n");
         
-        choiceOptionExit();
+        choiceOption1();
         break;
         
       case 2:
@@ -70,7 +73,7 @@ int main(int argv, char **argc){
 
         printf("\n=========================================\n\n");
 
-        choiceOptionExit();
+        choiceOption2();
         break;
         
       case 3:
@@ -80,7 +83,7 @@ int main(int argv, char **argc){
 
         printf("\n=========================================\n\n");
 
-        choiceOptionExit();
+        choiceOption3();
         break;
         
       case 4:
@@ -90,11 +93,10 @@ int main(int argv, char **argc){
 
         printf("\n=========================================\n\n");
 
-        choiceOptionExit();
+        choiceOption();
         break;
         
       case 5:
-        system("clear");
         printf("\nAgenda Finalizada\n\n");
         menu = 0;
         break;
@@ -110,18 +112,98 @@ int main(int argv, char **argc){
 return 0;
 }
 
-
-void choiceOptionExit(){
+void choiceOption(){
   int ch;
   printf("[0] - Voltar ao Menu da Agenda\n");
-  printf("[1] - Sair\n");
+  printf("[5] - Sair\n");
   printf("\n=========================================\n");
   printf("Digite sua escolha: ");
   scanf("%d", &ch);
 
-  if(ch == 1){
+  if(ch == 5){
     printf("\nAgenda Finalizada\n\n");
 
     exit(0);
+  }
+}
+
+void choiceOption1(){
+  int ch;
+  printf("[0] - Voltar ao Menu da Agenda\n");
+  printf("[1] - Inserir outro Registro\n");
+  printf("[5] - Sair\n");
+  printf("\n=========================================\n");
+  printf("Digite sua escolha: ");
+  scanf("%d", &ch);
+
+  if(ch == 5){
+    printf("\nAgenda Finalizada\n\n");
+
+    exit(0);
+  }
+
+  else if(ch == 1){
+    system("clear");
+    printf("=========================================\n\n");
+    printf("\tInserir Registro\n\n");
+
+    // list = insertBeginning(list, newr);
+    printf("\n=========================================\n\n");
+
+    choiceOption1();
+  }
+
+}
+
+void choiceOption2(){
+  int ch;
+  printf("[0] - Voltar ao Menu da Agenda\n");
+  printf("[2] - Remover outro Registro\n");
+  printf("[5] - Sair\n");
+  printf("\n=========================================\n");
+  printf("Digite sua escolha: ");
+  scanf("%d", &ch);
+
+  if(ch == 5){
+    printf("\nAgenda Finalizada\n\n");
+
+    exit(0);
+  }
+
+  else if(ch == 2){
+    system("clear");
+    printf("=========================================\n\n");
+    printf("\tRemover Registro por Nome\n\n");
+
+    printf("\n=========================================\n\n");
+
+    choiceOption2();
+  }
+
+}
+
+void choiceOption3(){
+  int ch;
+  printf("[0] - Voltar ao Menu da Agenda\n");
+  printf("[3] - Visualizar outro Registro\n");
+  printf("[5] - Sair\n");
+  printf("\n=========================================\n");
+  printf("Digite sua escolha: ");
+  scanf("%d", &ch);
+
+  if(ch == 5){
+    printf("\nAgenda Finalizada\n\n");
+
+    exit(0);
+  }
+
+  else if(ch == 3){
+    system("clear");
+    printf("=========================================\n\n");
+    printf("\tVisualizar Registro por Nome\n\n");
+
+    printf("\n=========================================\n\n");
+
+    choiceOption3();
   }
 }
