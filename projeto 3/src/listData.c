@@ -26,6 +26,26 @@ DataType *insertBeginning(DataType *list, DataType *element)
     return element;
 }
 
+DataType *insertElement(DataType *list,DataType *element, int position)
+{
+    DataType *aux;
+    int count = 0;
+
+    for(aux = list; count != position - 1; aux = aux->next)
+        count++;
+    
+    element->next = aux->next;
+    element->before = aux->before;
+
+    if (element->before == NULL)
+        element = insertBeginning(list, element);
+    
+    aux->next = element;
+    aux->before = NULL;
+
+    return element;    
+}
+
 
 DataType *newRegister(DataType *list, char *filename, char *name, char *phone, char *adress, unsigned int cep, char *birth)
 {
@@ -72,4 +92,42 @@ DataType *findRegister(DataType *list, char *name)
             return element;
     }
     return element;
+}
+
+char *inputName()
+{
+  char *name = (char *) malloc(101*sizeof(char));
+
+  scanf("%[^\n]", name);
+
+  return name;
+}
+
+DataType *registerData(DataType *list, char *filename)
+{
+  DataType *rgt;
+
+  rgt = list;
+
+  char name[101];
+  char phone[12];
+  char adress[101];
+  unsigned int cep;
+  char birth[11];
+
+  printf("\n\nNew Contact:\n\n");
+  printf("Name: ");
+  scanf("%[^\n]", name);  
+  printf("\nTelephone: ");
+  scanf("%c", phone);
+  printf("\nAdress: ");
+  scanf("%[^\n]", adress);
+  printf("\nCEP: ");
+  scanf("%u", &cep);
+  printf("\nBirthDay: ");
+  scanf("%c", birth);
+
+  rgt = newRegister(list, filename, name, phone, adress, cep, birth);
+
+  return rgt;
 }

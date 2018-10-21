@@ -24,8 +24,6 @@ DataType *readDataFile(char *filename, DataType *list)
 
   FILE * file = getContacts(filename);
 
-  Schedule *e;
-
   Schedule *readData = (Schedule *) malloc(sizeof(Schedule));
 
   if (readData == NULL)

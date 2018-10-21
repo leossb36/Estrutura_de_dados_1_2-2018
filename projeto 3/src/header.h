@@ -20,7 +20,6 @@ typedef struct element
     char adress[101];
     unsigned int cep;
     char birth[11];
-    char buffer[25];
 
 }Schedule;
 
@@ -39,11 +38,17 @@ typedef struct list
 
 DataType *readDataFile(char *,DataType *);
 
-void *seeByName(DataType *list, char *name);
+DataType *registerData(DataType *, char *);
+
+void *seeByName(DataType *, char *);
+
+char *inputName();
 
 DataType *voidList();
 
 DataType *insertBeginning(DataType *, DataType *);
+
+DataType *insertElement(DataType *, DataType *, int);
 
 DataType *newRegister(DataType *,char *,char *, char *, char *, unsigned int, char *);
 
