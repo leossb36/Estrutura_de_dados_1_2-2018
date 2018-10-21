@@ -94,13 +94,18 @@ void printLista(Lista *l)
 
 void liberaLista(Lista *l)
 {
-    Lista *e;
 
-    for (e = l; e != NULL; e = e->prox)
+{
+    Lista *atual;
+
+    for(atual = l; atual != NULL; l = atual)
     {
-        free(e->prox);
+        atual = atual->prox;
+        free(atual);
     }
+    free(l);
 }
+
 
 void insereLista(Lista *l, Lista *e, int idx)
 {
