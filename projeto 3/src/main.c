@@ -5,7 +5,9 @@ int main(int argv, char **argc){
 
   int menu = 1, op;
 
-  Schedule *newr;
+  DataType *list; //= (DataType *) malloc(sizeof(DataType));
+  DataType *newr;
+  Schedule *contact;
 
   do{
   /* Menu functions:
@@ -38,14 +40,15 @@ int main(int argv, char **argc){
       case 0:
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
-        readDataFile(contacts);
+        readDataFile(contacts, list);
         printf("\n=========================================\n\n");
         break;
 
       case 1:
         printf("=========================================\n\n");
         printf("\tInserir Registro\n\n");
-        
+
+        // list = insertBeginning(list, newr);
         printf("\n=========================================\n\n");
         break;
         

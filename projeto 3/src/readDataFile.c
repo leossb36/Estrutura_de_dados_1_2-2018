@@ -12,24 +12,21 @@ close the file
   see list in alphabetical order
 */
 
-void *readDataFile(char *filename){
+DataType *readDataFile(char *filename, DataType *list)
+{
 
-  FILE *fp;
+  char name[101];
+  char phone[12];
+  char adress[101];
+  unsigned int cep;
+  char birth[11];
+  char buffer = '$';
+
+  FILE * file = getContacts(filename);
+
   Schedule *e;
 
-  fp = fopen(filename, "r+");
-
-  if(fp == NULL){
-    perror("\n\n Error: Fail to open File!\n\n");
-    exit(1);
-  }
-  /* 9 - > 1001 1001 1001 1001 1001 -> 4 * 2bytes + 1bit = 9 size of cep
-  9 is the max numb to input to decribe a cep 
-  get $
-  char 4bytes -> 4 * 4 = 16
-  sum buffer values -> 16+9 = 25 */
-
-  Schedule *readData = (Schedule *) calloc(strlen(e->name) + strlen(e->phone) + strlen(e->adress) + strlen(e->birth) + strlen(e->buffer), sizeof(Schedule));
+  Schedule *readData = (Schedule *) malloc(sizeof(Schedule));
 
   if (readData == NULL)
   {
@@ -37,36 +34,51 @@ void *readDataFile(char *filename){
     exit(-2);
   }
 
-  while(!feof(fp))
+  while(!feof(file))
   {
-    fscanf(fp, "%[^\n]", e->name);
-    fgetc(fp);
+    fscanf(file, "%[^\n]", name);
+    getc(file);
 
-    fscanf(fp, "%s", e->phone);
-    fgetc(fp);
+    fscanf(file, "%s", phone);
+    getc(file);
 
-    fscanf(fp, "%[^\n]", e->adress);
-    fgetc(fp);
+    fscanf(file, "%[^\n]", adress);
+    getc(file);
 
-    fscanf(fp, "%u", &e->cep);
-    fgetc(fp);
+    fscanf(file, "%u", &cep);
+    getc(file);
 
-    fscanf(fp, "%s", e->birth);
-    fgetc(fp);
+    fscanf(file, "%s", birth);
+    getc(file);
 
-    fscanf(fp, "%c", e->buffer);
-    fgetc(fp);
+    fscanf(file, "%c", &buffer);
+    getc(file);
     // fgets(readData, sizeof readData, fp);
 
-    printf("%s\n", e->name);
-    printf("%s\n", e->phone);
-    printf("%s\n", e->adress);
-    printf("%u\n", e->cep);
-    printf("%s\n", e->birth);
-    printf("%c\n", *e->buffer);
-
+    list = newRegister(list, filename, name, phone, adress, cep, birth);
   }
-  free(readData);
-  fclose(fp);
+  fclose(file);
+
+  return list;
+}
+
+void *seeByName(DataType *list, char *name)
+{
+  DataType *findR = findRegister(list, name);
+
+  if(findR == NULL)
+  {
+    printf("\nCannot find the Register!\n");
+    getchar();
+  }
+  else
+  {
+    printf("\nRegister of %s\n\n", findR->info->name);
+    printf("Name: %s\n", findR->info->name);
+    printf("Telephone: %s\n", findR->info->phone);
+    printf("Adress: %s\n", findR->info->adress);
+    printf("CEP: %u\n", findR->info->cep);
+    printf("Birthday: %s\n", findR->info->birth);
+  }
 
 }

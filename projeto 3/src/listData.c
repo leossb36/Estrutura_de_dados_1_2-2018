@@ -18,8 +18,20 @@ DataType *voidList()
     return NULL;
 }
 
-DataType *newRegister(char *name, char *phone, char *adress, unsigned int cep, char *birth, char *buffer)
+DataType *insertBeginning(DataType *list, DataType *element)
 {
+    element->next = list;
+    element->before = NULL;
+
+    return element;
+}
+
+
+DataType *newRegister(DataType *list, char *filename, char *name, char *phone, char *adress, unsigned int cep, char *birth)
+{
+
+    FILE *fp = getContacts(filename);
+
     Schedule *rgt = (Schedule *) malloc(sizeof(Schedule));
 
     if(rgt == NULL)
@@ -37,55 +49,27 @@ DataType *newRegister(char *name, char *phone, char *adress, unsigned int cep, c
     }
 
     *rgt->name = *name;
-
-    if (*rgt->name > size || *rgt->name < 2)
-    {
-        ((*rgt->name) > size) ? printf("Invalid adress, max size limited exceeded, try again\n")
-                             : printf("Invalid adress, minimum size below allowable, try again\n"); 
-    }
     *rgt->phone = *phone;
-    if(*rgt->phone != 12)
-        printf("Invalid phone number, try again\n");
-
     *rgt->adress = *adress;
-    if (*rgt->adress > size || *rgt->adress < 10)
-    {
-        ((*rgt->adress) > size) ? printf("Invalid name, max size limited exceeded, try again\n")
-                               : printf("Invalid name, minimum size below allowable, try again\n"); 
-    }
     rgt->cep = cep;
-    if(rgt->cep < 0)
-    {
-        printf("Invalid cep, try again");
-    }
-
     *rgt->birth = *birth;
-    char *day, *mouth, *year;
 
-    atoi(day);
-    atoi(mouth);
-    atoi(year);
-
-    if (*day > 31 && *mouth > 12 && *year < 0)
-    {
-        printf("Invalid birthday, try again\n");
-    }
-    char ch = '\'';
-
-
-    strcpy(birth, day);
-    strcat(birth, &ch);
-    strcat(birth, mouth);
-    strcat(birth, &ch);
-    strcat(birth, year);
-    
-    *rgt->buffer = *buffer;
-
-    element->type = 1;
     element->info = rgt;
     element->next = NULL;
     element->before = NULL;
 
     return element;
 
+}
+
+DataType *findRegister(DataType *list, char *name)
+{
+    DataType *element;
+
+    for(element = list; element->info != NULL; element = element->next)
+    {
+        if(strcmp(element->info->name, name) == 1)
+            return element;
+    }
+    return element;
 }

@@ -24,25 +24,31 @@ typedef struct element
 
 }Schedule;
 
-
 typedef struct list
 {
     /* we are setting the list struct
     type represent the value that the menu will receve 
     info represent what is the information contains in the schedule
     and the rest represent the struct of the list*/
-    int type;
-    void *info;
+
+    Schedule *info;
     struct list *next;
     struct list *before;
 
 }DataType;
 
-void *readDataFile(char *);
+DataType *readDataFile(char *,DataType *);
+
+void *seeByName(DataType *list, char *name);
 
 DataType *voidList();
 
-DataType *newRegister(char *, char *, char *, unsigned int, char *, char *);
+DataType *insertBeginning(DataType *, DataType *);
 
+DataType *newRegister(DataType *,char *,char *, char *, char *, unsigned int, char *);
+
+DataType *findRegister(DataType *, char *);
+
+FILE *getContacts(char *);
 
 #endif
