@@ -14,7 +14,7 @@ close the file
 
 DataType *readDataFile(char *filename)
 {
-  DataType *list;
+  DataType *list = (DataType *) malloc(sizeof(DataType));
 
   char name[101];
   char phone[12];
@@ -36,25 +36,33 @@ DataType *readDataFile(char *filename)
   while(!feof(file))
   {
     fscanf(file, "%[^\n]", name);
-    getc(file);
+    fgetc(file);
 
     fscanf(file, "%s", phone);
-    getc(file);
+    fgetc(file);
 
     fscanf(file, "%[^\n]", adress);
-    getc(file);
+    fgetc(file);
 
     fscanf(file, "%u", &cep);
-    getc(file);
+    fgetc(file);
 
     fscanf(file, "%s", birth);
-    getc(file);
+    fgetc(file);
 
     fscanf(file, "%c", &buffer);
-    getc(file);
+    fgetc(file);
     // fgets(readData, sizeof readData, fp);
 
     list = newRegister(list, filename, name, phone, adress, cep, birth);
+    
+    printDataFile(list);
+    /* printf("%s\n", name);
+    printf("%s\n", phone);
+    printf("%s\n", adress);
+    printf("%u\n", cep);
+    printf("%s\n", birth);
+    printf("%c\n", buffer); */
   }
   fclose(file);
 
@@ -86,6 +94,8 @@ void *printDataFile(DataType *list)
 {
   DataType *aux;
 
+  char buffer = '$';
+
   if(list == NULL)
   {
     printf("\nList doesn't exist!\n");
@@ -97,13 +107,14 @@ void *printDataFile(DataType *list)
     printf("\nVoid list, please do a new register\n");
     exit(-3);
   }
-  for(aux = list; aux->info != NULL; aux = aux->next)
+
+  for(aux = list; aux != NULL; aux = aux->next)
   {
-    printf("\nRegister of %s\n\n", aux->info->name);
     printf("Name: %s\n", aux->info->name);
     printf("Telephone: %s\n", aux->info->phone);
     printf("Adress: %s\n", aux->info->adress);
     printf("CEP: %u\n", aux->info->cep);
     printf("Birthday: %s\n", aux->info->birth);
+    printf("%c\n", buffer);
   }
 }

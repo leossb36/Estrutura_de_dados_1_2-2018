@@ -6,7 +6,8 @@ void choiceOption1();
 void choiceOption2();
 void choiceOption3();
 
-int main(int argv, char **argc){
+int main(int argv, char **argc)
+{
 
   int menu = 1, op;
 
@@ -48,7 +49,9 @@ int main(int argv, char **argc){
         system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
-        // readDataFile(contacts, list);
+        list = readDataFile(contacts);
+        // printDataFile(list);
+              
         printf("\n=========================================\n\n");
 
         choiceOption();
@@ -109,7 +112,7 @@ int main(int argv, char **argc){
   } while(menu == 1);
 
 
-return 0;
+  return 0;
 }
 
 void choiceOption(){

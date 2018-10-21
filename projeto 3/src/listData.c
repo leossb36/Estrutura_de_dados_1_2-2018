@@ -114,6 +114,7 @@ DataType *registerData(DataType *list, char *filename)
   char adress[101];
   unsigned int cep;
   char birth[11];
+  char buffer;
 
   printf("\n\nNew Contact:\n\n");
   printf("Name: ");
@@ -130,4 +131,38 @@ DataType *registerData(DataType *list, char *filename)
   rgt = newRegister(list, filename, name, phone, adress, cep, birth);
 
   return rgt;
+}
+
+DataType *insertionSort(DataType *list)
+{
+    DataType *element;
+    DataType *temp;
+    Schedule *aux;
+
+    for(element = list; element != NULL ; element = element -> next)
+    {
+        aux = element->info;
+        temp = element->before;
+
+        while((temp->before != NULL) && ((strcmp(temp->info->name,aux->name) < 0)))
+        {
+            temp->next->info = temp->info;
+            temp = temp -> before;
+        }
+
+        temp->next->info = aux;
+
+    }
+
+    return list;
+}
+
+void *freeList(DataType *list)
+{
+    DataType *current;
+
+    for(current = list; current != NULL; current = current->next);
+        free(current);
+    
+    free(list);
 }

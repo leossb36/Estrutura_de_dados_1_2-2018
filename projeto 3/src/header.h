@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
 #define contacts "../reference/contato.txt"
 
@@ -56,6 +55,10 @@ DataType *newRegister(DataType *,char *,char *, char *, char *, unsigned int, ch
 
 DataType *findRegister(DataType *, char *);
 
+DataType *insertionSort(DataType *list);
+
 FILE *getContacts(char *);
+
+void *freeList(DataType *);
 
 #endif
