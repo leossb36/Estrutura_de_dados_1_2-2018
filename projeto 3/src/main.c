@@ -45,7 +45,7 @@ int main(int argv, char **argc){
         system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
-        readDataFile(contacts, list);
+        // readDataFile(contacts, list);
         printf("\n=========================================\n\n");
 
         choiceOptionExit();
@@ -114,12 +114,12 @@ return 0;
 void choiceOptionExit(){
   int ch;
   printf("[0] - Voltar ao Menu da Agenda\n");
-  printf("[1] - Sair\n");
+  printf("[5] - Sair\n");
   printf("\n=========================================\n");
   printf("Digite sua escolha: ");
   scanf("%d", &ch);
 
-  if(ch == 1){
+  if(ch == 5){
     printf("\nAgenda Finalizada\n\n");
 
     exit(0);

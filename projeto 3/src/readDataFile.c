@@ -12,8 +12,9 @@ close the file
   see list in alphabetical order
 */
 
-DataType *readDataFile(char *filename, DataType *list)
+DataType *readDataFile(char *filename)
 {
+  DataType *list;
 
   char name[101];
   char phone[12];
@@ -79,4 +80,30 @@ void *seeByName(DataType *list, char *name)
     printf("Birthday: %s\n", findR->info->birth);
   }
 
+}
+
+void *printDataFile(DataType *list)
+{
+  DataType *aux;
+
+  if(list == NULL)
+  {
+    printf("\nList doesn't exist!\n");
+    exit(-2);
+  }
+
+  if(list->info == NULL)
+  {
+    printf("\nVoid list, please do a new register\n");
+    exit(-3);
+  }
+  for(aux = list; aux->info != NULL; aux = aux->next)
+  {
+    printf("\nRegister of %s\n\n", aux->info->name);
+    printf("Name: %s\n", aux->info->name);
+    printf("Telephone: %s\n", aux->info->phone);
+    printf("Adress: %s\n", aux->info->adress);
+    printf("CEP: %u\n", aux->info->cep);
+    printf("Birthday: %s\n", aux->info->birth);
+  }
 }

@@ -36,11 +36,13 @@ typedef struct list
 
 }DataType;
 
-DataType *readDataFile(char *,DataType *);
+DataType *readDataFile(char *);
 
 DataType *registerData(DataType *, char *);
 
 void *seeByName(DataType *, char *);
+
+void *printDataFile(DataType *);
 
 char *inputName();
 
