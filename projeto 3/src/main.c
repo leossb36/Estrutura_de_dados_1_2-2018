@@ -15,6 +15,8 @@ int main(int argv, char **argc)
   DataType *newr;
   Schedule *contact;
 
+  list = readDataFile(contacts);
+
   do{
   /* Menu functions:
       see all registers
@@ -42,7 +44,7 @@ int main(int argv, char **argc)
     
     printf("Digite sua escolha: ");
     scanf("%d", &op);
-
+    
     switch(op) {
 
       case 0:
@@ -50,6 +52,7 @@ int main(int argv, char **argc)
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
         list = readDataFile(contacts);
+        printDataFile(list);
         // printDataFile(list);
               
         printf("\n=========================================\n\n");
@@ -63,6 +66,8 @@ int main(int argv, char **argc)
         printf("=========================================\n\n");
         printf("\tInserir Registro\n\n");
 
+        list = registerData(list, contacts);
+        printDataFile(list);
         // list = insertBeginning(list, newr);
         printf("\n=========================================\n\n");
         
@@ -83,6 +88,8 @@ int main(int argv, char **argc)
         system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Registro por Nome\n\n");
+
+        char *resposta = inputName();
 
         printf("\n=========================================\n\n");
 

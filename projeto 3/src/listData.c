@@ -101,15 +101,18 @@ DataType *findRegister(DataType *list, char *name)
     {
         if(strcmp(element->info->name, name) == 1)
             return element;
+        else{
+            printf("Nome não encontrado");
+        }
     }
     return element;
 }
 
 char *inputName()
 {
-  char *name = (char *) malloc(101*sizeof(char));
-
-  scanf("%[^\n]", name);
+    char *name = (char *) malloc(101*sizeof(char));
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", name);
 
   return name;
 }
@@ -127,21 +130,38 @@ DataType *registerData(DataType *list, char *filename)
   char birth[11];
   char buffer;
 
-  printf("\n\nNew Contact:\n\n");
+  printf("\n\nNovo Contato:\n\n");
+  setbuf(stdin, NULL);
   printf("Name: ");
-  scanf("%[^\n]", name);  
+  scanf("%[^\n]s", name); 
+  setbuf(stdin, NULL);
   printf("\nTelephone: ");
-  scanf("%c", phone);
+  scanf("%s", phone);
+  setbuf(stdin, NULL);
   printf("\nAdress: ");
-  scanf("%[^\n]", adress);
+  scanf("%[^\n]s", adress);
+  setbuf(stdin, NULL);
   printf("\nCEP: ");
   scanf("%u", &cep);
   printf("\nBirthDay: ");
-  scanf("%c", birth);
+  scanf("%s", birth);
 
   rgt = newRegister(list, filename, name, phone, adress, cep, birth);
 
-  return rgt;
+    if(rgt == NULL){
+        printf("\nRegistro não feito!\n");
+    }
+    else{
+        printf("=========================================\n");
+        printf("\nRegistro Confirmado!\n\n\n"); 
+
+        /* printf("Name: %s\n", name);
+        printf("Telephone: %s\n", phone);
+        printf("Adress: %s\n", adress);
+        printf("CEP: %u\n", cep);
+        printf("Birthday: %s\n", birth); */
+        return rgt;
+    }
 }
 
 DataType *insertionSort(DataType *list)
