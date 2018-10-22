@@ -52,7 +52,6 @@ int main(int argv, char **argc)
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
         list = readDataFile(contacts);
-        printDataFile(list);
         // printDataFile(list);
               
         printf("\n=========================================\n\n");
@@ -90,6 +89,8 @@ int main(int argv, char **argc)
         printf("\tVisualizar Registro por Nome\n\n");
 
         char *resposta = inputName();
+        //printf("%s", resposta); 
+        seeByName(list, resposta);
 
         printf("\n=========================================\n\n");
 

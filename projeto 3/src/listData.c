@@ -90,17 +90,19 @@ DataType *newRegister(DataType *list, char *filename, char *name, char *phone, c
     element->before = NULL;
 
     return element;
-
 }
 
-DataType *findRegister(DataType *list, char *name)
-{
-    DataType *element;
+DataType *findRegister(DataType *list, char *name){
 
-    for(element = list; element->info != NULL; element = element->next)
-    {
-        if(strcmp(element->info->name, name) == 1)
+    DataType *element;
+    int comp;
+
+    for(element = list; element->info != NULL; element = element->next){
+        
+        if(comp = strcmp(element->info->name, name) == 0){
             return element;
+        }
+
         else{
             printf("Nome não encontrado");
         }
@@ -112,6 +114,7 @@ char *inputName()
 {
     char *name = (char *) malloc(101*sizeof(char));
     setbuf(stdin, NULL);
+    printf("Digite o nome: ");
     scanf("%[^\n]", name);
 
   return name;
@@ -182,7 +185,6 @@ DataType *insertionSort(DataType *list)
         }
 
         temp->next->info = aux;
-
     }
 
     return list;

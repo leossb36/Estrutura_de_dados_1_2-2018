@@ -56,7 +56,7 @@ DataType *readDataFile(char *filename)
 
     list = newRegister(list, filename, name, phone, adress, cep, birth);
     
-    //printDataFile(list);
+    printDataFile(list);
     /* printf("%s\n", name);
     printf("%s\n", phone);
     printf("%s\n", adress);
@@ -71,6 +71,8 @@ DataType *readDataFile(char *filename)
 
 void *seeByName(DataType *list, char *name)
 {
+  //printf("%s", name);
+  
   DataType *findR = findRegister(list, name);
 
   if(findR == NULL)
