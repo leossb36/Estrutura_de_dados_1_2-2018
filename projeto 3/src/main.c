@@ -212,6 +212,10 @@ void choiceOption3(){
     system("clear");
     printf("=========================================\n\n");
     printf("\tVisualizar Registro por Nome\n\n");
+    DataType *list;
+    char *resposta = inputName();
+
+        seeByName(list, resposta);
 
     printf("\n=========================================\n\n");
 
