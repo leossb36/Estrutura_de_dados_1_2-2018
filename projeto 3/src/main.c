@@ -78,6 +78,9 @@ int main(int argv, char **argc)
         printf("=========================================\n\n");
         printf("\tRemover Registro por Nome\n\n");
 
+          char *rm = inputName();
+          removeByName(list, rm);
+
         printf("\n=========================================\n\n");
 
         choiceOption2();

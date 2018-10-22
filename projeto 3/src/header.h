@@ -41,6 +41,8 @@ DataType *registerData(DataType *, char *);
 
 void *seeByName(DataType *, char *);
 
+void *removeByName(DataType *, char *);
+
 void *printDataFile(DataType *);
 
 char *inputName();

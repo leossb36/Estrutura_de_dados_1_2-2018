@@ -120,3 +120,27 @@ void *printDataFile(DataType *list)
     printf("%c\n", buffer);
   }
 }
+
+void *removeByName(DataType *list, char *name){
+  
+  DataType *rmvr;
+  DataType *aux;
+
+  int comp;
+
+  aux = findRegister(list, name);
+
+  for(rmvr = list; rmvr->info != NULL; rmvr = rmvr->next){
+        
+    if(comp = strcmp(aux->info->name, name) == 0){
+      if(rmvr->next != NULL){
+        rmvr->before->next = rmvr->next;
+      }
+      if(rmvr->before != NULL){
+        rmvr->next->before = rmvr->before;
+      }
+      free(rmvr->info);
+    }
+  }
+  free(rmvr);
+}
