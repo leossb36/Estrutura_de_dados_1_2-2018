@@ -56,7 +56,7 @@ DataType *readDataFile(char *filename)
 
     list = newRegister(list, filename, name, phone, adress, cep, birth);
     
-    printDataFile(list);
+    //printDataFile(list);
     /* printf("%s\n", name);
     printf("%s\n", phone);
     printf("%s\n", adress);

@@ -122,38 +122,71 @@ char *inputName()
 
 DataType *registerData(DataType *list, char *filename)
 {
-  DataType *rgt;
+    DataType *rgt;
 
-  rgt = list;
+    rgt = list;
 
-  char name[101];
-  char phone[12];
-  char adress[101];
-  unsigned int cep;
-  char birth[11];
-  char buffer;
+    char name[101];
+    char phone[12];
+    char adress[101];
+    unsigned int cep;
+    char birth[11];
+    char buffer;
 
-  printf("\n\nNovo Contato:\n\n");
-  setbuf(stdin, NULL);
-  printf("Name: ");
-  scanf("%[^\n]s", name); 
-  setbuf(stdin, NULL);
-  printf("\nTelephone: ");
-  scanf("%s", phone);
-  setbuf(stdin, NULL);
-  printf("\nAdress: ");
-  scanf("%[^\n]s", adress);
-  setbuf(stdin, NULL);
-  printf("\nCEP: ");
-  scanf("%u", &cep);
-  printf("\nBirthDay: ");
-  scanf("%s", birth);
+    int tamanhoexemple = 2;
+    int tamanhoscanf = 1;
+    printf("\n\nNovo Contato:\n\n");
+    setbuf(stdin, NULL);
 
-  rgt = newRegister(list, filename, name, phone, adress, cep, birth);
+    //Name - string
+    printf("Digite Nome: ");
+    scanf("%[^\n]s", name); 
+    setbuf(stdin, NULL);
+
+    //Telephone - string - xxxxx-xxxx
+    printf("Digite Telefone: ");
+    scanf("%s", phone);
+    setbuf(stdin, NULL);
+
+    //Adress - string
+    printf("Digite endereço: ");
+    scanf("%[^\n]s", adress);
+    setbuf(stdin, NULL);
+    
+    //CEP - int - xxxxx
+    char exampleCEP[5] = "12345";
+    //int i = 10;
+    char auxCEP[6];
+    
+    while(tamanhoexemple != tamanhoscanf){
+        printf("Digite CEP: ");
+        scanf("%u", &cep);
+        // inteiro para string. Até 10 algarísmos.
+        sprintf(auxCEP, "%u", cep);
+
+        tamanhoexemple = strlen(auxCEP);
+        tamanhoscanf = strlen(exampleCEP);
+
+        while(tamanhoexemple != tamanhoscanf){
+            printf("Digite CEP, Corretamente[xxxxx]: ");
+            scanf("%u", &cep);
+            sprintf(auxCEP, "%u", cep);
+            
+            tamanhoexemple = strlen(auxCEP);
+            tamanhoscanf = strlen(exampleCEP);
+        }
+    }
+
+    //BirthDay - xx/xx/xxxx
+    printf("Digite Data de Nascimento: ");
+    scanf("%s", birth);
+
+    rgt = newRegister(list, filename, name, phone, adress, cep, birth);
 
     if(rgt == NULL){
         printf("\nRegistro não feito!\n");
     }
+
     else{
         printf("=========================================\n");
         printf("\nRegistro Confirmado!\n\n\n"); 
