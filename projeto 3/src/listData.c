@@ -67,13 +67,24 @@ DataType *newRegister(DataType *list, char *filename, char *name, char *phone, c
         perror("\nCannot allocate memory!\n");
         exit(-1);
     }
-
-    *rgt->name = *name;
-    *rgt->phone = *phone;
-    *rgt->adress = *adress;
+    for(int i = 0; i < sizeof(rgt->name); i++)
+    {
+        rgt->name[i] = name[i];
+    }
+    for(int i = 0; i < sizeof(rgt->phone); i++)
+    {
+        rgt->phone[i] = phone[i];
+    }
+    for(int i = 0; i < sizeof(rgt->adress); i++)
+    {
+        rgt->adress[i] = adress[i];
+    }
+    for(int i = 0; i < sizeof(rgt->birth); i++)
+    {
+        rgt->birth[i] = birth[i];
+    }
     rgt->cep = cep;
-    *rgt->birth = *birth;
-
+   
     element->info = rgt;
     element->next = NULL;
     element->before = NULL;
