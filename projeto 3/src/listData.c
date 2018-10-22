@@ -133,8 +133,6 @@ DataType *registerData(DataType *list, char *filename)
     char birth[11];
     char buffer;
 
-    int tamanhoexemple = 2;
-    int tamanhoscanf = 1;
     printf("\n\nNovo Contato:\n\n");
     setbuf(stdin, NULL);
 
@@ -148,13 +146,12 @@ DataType *registerData(DataType *list, char *filename)
 
     int examplephone = 5;
 
-    char auxphone1[6];
-    char auxphone2[6];
+    char auxphone1[10];
+    char auxphone2[10];
 
-    int tamanhoexemple1 = 1, tamanhoexemple2 = 2;
-    int tamanhoscanf1 = 3, tamanhoscanf2 = 4;
+    int sizeScanf1 = 3, sizeScanf2 = 4;
 
-    while(examplephone != tamanhoscanf1 || examplephone != tamanhoscanf2){
+    while(examplephone != sizeScanf1 || examplephone != sizeScanf2){
         printf("Digite Telefone: ");
         
         scanf("%[^-]s", phone);
@@ -165,18 +162,18 @@ DataType *registerData(DataType *list, char *filename)
         sprintf(auxphone2, "%s", phone2);
         setbuf(stdin, NULL);
 
-        tamanhoscanf1 = strlen(auxphone1);
-        tamanhoscanf2 = strlen(auxphone2);
+        sizeScanf1 = strlen(auxphone1);
+        sizeScanf2 = strlen(auxphone2);
 
         /* printf("PHONE 1: %s\n", phone);
         printf("PHONE 2: %s\n", phone2);
 
-        printf("tamanhoexemple1 = %d(certo)\n", examplephone);
-        printf("tamanhoexemple2 = %d(certo)\n", examplephone);
-        printf("tamanhoscanf1 = %d\n", tamanhoscanf1);
-        printf("tamanhoscanf2 = %d\n", tamanhoscanf2); */
+        printf("sizeExemple1 = %d(certo)\n", examplephone);
+        printf("sizeExemple2 = %d(certo)\n", examplephone);
+        printf("sizeScanf1 = %d\n", sizeScanf1);
+        printf("sizeScanf2 = %d\n", sizeScanf2); */
 
-        while(examplephone != tamanhoscanf1 || examplephone != tamanhoscanf2){
+        while(examplephone != sizeScanf1 || examplephone != sizeScanf2){
         
             printf("Digite Telefone, Corretamente [xxxxx-xxxx]: ");
             
@@ -188,19 +185,19 @@ DataType *registerData(DataType *list, char *filename)
             sprintf(auxphone2, "%s", phone2);
             setbuf(stdin, NULL);
 
-            tamanhoscanf1 = strlen(auxphone1);
-            tamanhoscanf2 = strlen(auxphone2);
+            sizeScanf1 = strlen(auxphone1);
+            sizeScanf2 = strlen(auxphone2);
 
             /* printf("PHONE 1: %s\n", phone);
             printf("PHONE 2: %s\n", phone2);
 
             printf("examplephone = %d(certo)\n", examplephone);
             printf("examplephone = %d(certo)\n", examplephone);
-            printf("tamanhoscanf1 = %d\n", tamanhoscanf1);
-            printf("tamanhoscanf2 = %d\n", tamanhoscanf2); */        
+            printf("sizeScanf1 = %d\n", sizeScanf1);
+            printf("sizeScanf2 = %d\n", sizeScanf2); */        
         }
     }
-    while(examplephone == tamanhoscanf1 || examplephone == tamanhoscanf2){
+    while(examplephone == sizeScanf1 || examplephone == sizeScanf2){
         strcat(phone, phone2);
         /* printf("%s", phone);
         printf("DEU CERTO!!\n"); */
@@ -213,25 +210,24 @@ DataType *registerData(DataType *list, char *filename)
     setbuf(stdin, NULL);
     
     //CEP - int - xxxxx
-    char exampleCEP[5] = "12345";
     char auxCEP[6];
+    int sizeExemple = 5;
+    int sizeScanf = 1;
     
-    while(tamanhoexemple != tamanhoscanf){
+    while(sizeExemple != sizeScanf){
         printf("Digite CEP: ");
         scanf("%u", &cep);
         // inteiro para string. Até 10 algarísmos.
         sprintf(auxCEP, "%u", cep);
 
-        tamanhoexemple = strlen(auxCEP);
-        tamanhoscanf = strlen(exampleCEP);
+        sizeScanf = strlen(auxCEP);
 
-        while(tamanhoexemple != tamanhoscanf){
+        while(sizeExemple != sizeScanf){
             printf("Digite CEP, Corretamente[xxxxx]: ");
             scanf("%u", &cep);
             sprintf(auxCEP, "%u", cep);
             
-            tamanhoexemple = strlen(auxCEP);
-            tamanhoscanf = strlen(exampleCEP);
+            sizeScanf = strlen(auxCEP);
         }
     }
 
