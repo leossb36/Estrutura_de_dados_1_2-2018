@@ -57,7 +57,7 @@ DataType *readDataFile()
 
     list = newRegister(list, name, phone, adress, cep, birth);
     
-    printDataFile(list);
+    //printDataFile(list);
     /* printf("%s\n", name);
     printf("%s\n", phone);
     printf("%s\n", adress);
@@ -125,30 +125,41 @@ void *printDataFile(DataType *list)
 }
 
 void *removeByName(DataType *list, char *name){
+  /*busca_e_remove (int y, celula *le)
+{
+   celula *p, *q;
+   p = le;
+   q = le->prox;
+   while (q != NULL && q->conteudo != y) {
+      p = q;
+      q = q->prox;
+   }
+   if (q != NULL) {
+      p->prox = q->prox;
+      free (q);
+   }
+}*/
   
   DataType *rmvr;
   DataType *aux;
 
   int comp;
 
-  aux = findRegister(list, name);
+  rmvr = findRegister(list, name);
+  aux = rmvr->next;
 
-  for(rmvr = list; rmvr != NULL; rmvr = rmvr->next){
-        
-    if(comp = strcmp(aux->info->name, name) == 0){
-      if(rmvr->next != NULL){
-        rmvr->before->next = rmvr->next;
-      }
-      if(rmvr->before != NULL){
-        rmvr->next->before = rmvr->before;
-      }
-      free(rmvr->info);
-    }
+  while((aux != NULL) && (comp = strcmp(aux->info->name, name) != 0)){
+    rmvr->info = aux->info;
+    aux = aux->next;
   }
-  free(rmvr);
+  if(aux != NULL){
+    rmvr->next = aux->next;
+    rmvr->before = aux->before;
+    free(rmvr);
+  }
+  
   printf("Register Removed!!\n");
 }
-
 void *exitProgram(DataType *list){
   FILE *fp;
   char buffer = '$';

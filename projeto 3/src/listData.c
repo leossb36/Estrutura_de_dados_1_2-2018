@@ -84,7 +84,7 @@ DataType *newRegister(DataType *list, char *name, char *phone, char *adress, uns
    
     element->info = rgt;
     element->next = NULL;
-    element->before = NULL;
+    element->before = list;
 
     return element;
 }
@@ -96,7 +96,7 @@ DataType *findRegister(DataType *list, char *name){
 
     for(element = list; element != NULL; element = element->next){
         
-        if(comp = strcmp(element->info->name, name) != 0){
+        if(comp = strcmp(element->info->name, name) == 0){
             return element;
         }
 
