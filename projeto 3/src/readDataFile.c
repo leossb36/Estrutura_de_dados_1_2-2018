@@ -77,6 +77,7 @@ void *seeByName(DataType *list, char *name)
   //printf("%s", name);
   
   DataType *findR = findRegister(list, name);
+  DataType *element;
 
   if(findR == NULL)
   {
@@ -85,12 +86,14 @@ void *seeByName(DataType *list, char *name)
   }
   else
   {
-    printf("\nRegister of %s\n\n", findR->info->name);
-    printf("Name: %s\n", findR->info->name);
-    printf("Telephone: %s\n", findR->info->phone);
-    printf("Adress: %s\n", findR->info->adress);
-    printf("CEP: %u\n", findR->info->cep);
-    printf("Birthday: %s\n", findR->info->birth);
+    for(element = list; element != NULL; element = element->next){
+      printf("\nRegister of %s\n\n", findR->info->name);
+      printf("Name: %s\n", findR->info->name);
+      printf("Telephone: %s\n", findR->info->phone);
+      printf("Adress: %s\n", findR->info->adress);
+      printf("CEP: %u\n", findR->info->cep);
+      printf("Birthday: %s\n", findR->info->birth);
+    }
   }
 
 }
@@ -146,4 +149,5 @@ void *removeByName(DataType *list, char *name){
     }
   }
   free(rmvr);
+  printf("Register Removed!!\n");
 }

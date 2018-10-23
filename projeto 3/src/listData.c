@@ -94,9 +94,9 @@ DataType *findRegister(DataType *list, char *name){
     DataType *element;
     int comp;
 
-    for(element = list; element->info != NULL; element = element->next){
+    for(element = list; element != NULL; element = element->next){
         
-        if(comp = strcmp(element->info->name, name) == 0){
+        if(comp = strcmp(element->info->name, name) != 0){
             return element;
         }
 

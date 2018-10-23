@@ -164,7 +164,7 @@ void choiceOption1(){
     printf("\tInserir Registro\n\n");
 
     DataType *list;
-    list = registerData(list, contacts);
+    list = registerData(list);
     printDataFile(list);
 
     // list = insertBeginning(list, newr);
