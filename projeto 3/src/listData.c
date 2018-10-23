@@ -247,29 +247,25 @@ DataType *registerData(DataType *list)
 
 DataType *insertionSort(DataType *list)
 {
-    DataType *aux = list;
     DataType *element;
-    DataType *temp;    
+    DataType *temp;  
+    DataType *aux = list;  
     
-    for(element = list; element != NULL; element = element->next)
-    {
-       
-
-        for(aux = list->next; aux != NULL; aux = aux->next)
+    for(aux = list->next; aux != NULL; aux = aux->next)
         {
-            if(strcmp(aux->info->name, element->info->name) < 0)
+            if(strcmp(aux->info->name, element->info->name) > 0)
             {
-                
-                // if(aux->before != NULL)
-                // {
-                //     temp = aux->before;
-                //     aux->before = element;
-                //     element->before = temp;
-                // }
+                if(aux != NULL)
+                {
+                    temp = aux->next;
+                    aux->next = element->next;
+                    element->next = temp;
+
+                     temp->before = aux;
+                    aux = element->before;
+                    element->before = temp->before;
+                }
             }
-        }
-      
-    }
     return list;
 
 }

@@ -10,7 +10,7 @@ int main(int argv, char **argc)
 
   int menu = 1, op;
 
-  DataType *list; //= (DataType *) malloc(sizeof(DataType));
+  DataType *list, *show; //= (DataType *) malloc(sizeof(DataType));
 
   list = voidList();
   list = readDataFile();
@@ -49,8 +49,10 @@ int main(int argv, char **argc)
         system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
-        list = readDataFile();
-        printDataFile(list);
+        //list = readDataFile();
+        for(list; list != NULL; list = list->before){
+          printDataFile(list);
+        }
               
         printf("\n=========================================\n\n");
 
