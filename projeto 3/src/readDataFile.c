@@ -17,8 +17,6 @@ DataType *readDataFile()
 {
   DataType *list = (DataType *) malloc(sizeof(DataType));
   
-  
-
   char name[101];
   char phone[12];
   char adress[101];
@@ -149,4 +147,30 @@ void *removeByName(DataType *list, char *name){
   }
   free(rmvr);
   printf("Register Removed!!\n");
+}
+
+void *exitProgram(DataType *list){
+  FILE *fp;
+  char buffer = '$';
+  fp = fopen(filename, "w+");
+
+  if(fp == NULL){
+        perror("\n\n Error: Fail to open File!\n\n");
+        exit(1);
+  }
+
+  DataType *element;
+    int comp;
+
+    for(element = list; element != NULL; element = element->next){
+        
+        fprintf(fp, "%s\n", element->info->name);
+        fprintf(fp, "%s\n", element->info->phone);
+        fprintf(fp, "%s\n", element->info->adress);
+        fprintf(fp, "%u\n", element->info->cep);
+        fprintf(fp, "%s\n", element->info->birth);
+        fprintf(fp, "%c\n", buffer);
+        
+    }
+  fclose(fp);
 }

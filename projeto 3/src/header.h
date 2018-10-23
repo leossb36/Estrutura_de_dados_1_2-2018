@@ -60,4 +60,6 @@ FILE *getContacts(char *);
 
 void *freeList(DataType *);
 
+void *exitProgram(DataType *list);
+
 #endif

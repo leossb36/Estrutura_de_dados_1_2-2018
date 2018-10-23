@@ -115,6 +115,10 @@ int main(int argv, char **argc)
       case 5:
         printf("\nAgenda Finalizada\n\n");
         menu = 0;
+
+        exitProgram(list);
+        freeList(list);
+
         break;
         
       default:
