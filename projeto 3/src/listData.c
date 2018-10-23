@@ -18,35 +18,6 @@ DataType *voidList()
     return NULL;
 }
 
-DataType *insertBeginning(DataType *list, DataType *element)
-{
-    element->next = list;
-    element->before = NULL;
-
-    return element;
-}
-
-// DataType *insertElement(DataType *list,DataType *element, int position)
-// {
-//     DataType *aux;
-//     int count = 0;
-
-//     for(aux = list; count != position - 1; aux = aux->next)
-//         count++;
-    
-//     element->next = aux->next;
-//     element->before = aux->before;
-
-//     if (element->before == NULL)
-//         element = insertBeginning(list, element);
-    
-//     aux->next = element;
-//     aux->before = NULL;
-
-//     return element;    
-// }
-
-
 DataType *newRegister(DataType *list, char *name, char *phone, char *adress, unsigned int cep, char *birth)
 {
     Schedule *rgt = (Schedule *) malloc(sizeof(Schedule));
@@ -83,14 +54,18 @@ DataType *newRegister(DataType *list, char *name, char *phone, char *adress, uns
     rgt->cep = cep;
    
     element->info = rgt;
-    element->next = NULL;
-    element->before = list;
-
-    if(list != NULL)
+    
+    if(list == NULL)
     {
-        list->before = element;
+        element->next = NULL;
+        element->before = NULL;
     }
-
+    else
+    {
+        element->next = list;
+        element->before = NULL;
+    }
+    
     return element;
 }
 
@@ -247,25 +222,34 @@ DataType *registerData(DataType *list)
 
 DataType *insertionSort(DataType *list)
 {
-    DataType *element;
+    DataType *element = list;
+    DataType *count;  
     DataType *temp;  
-    DataType *aux = list;  
     
-    for(aux = list->next; aux != NULL; aux = aux->next)
-        {
-            if(strcmp(aux->info->name, element->info->name) > 0)
-            {
-                if(aux != NULL)
-                {
-                    temp = aux->next;
-                    aux->next = element->next;
-                    element->next = temp;
+    for(element = list; element != NULL; element = element->next)
+    {
 
-                     temp->before = aux;
-                    aux = element->before;
-                    element->before = temp->before;
+        for(count = element; count != NULL; count = count->next)
+        {
+            temp = count->before;
+            if(strcmp(count->info->name, temp->info->name) > 0)
+            {
+                if(temp != NULL)
+                {
+                    count->next = temp;
+                    temp = element->before;
+                    element->before = count->next;
+
+                    count->before = temp;
+                    temp = element->next;
+                    element->next = count->before;
                 }
             }
+            
+        }        
+        
+    }
+    
     return list;
 
 }

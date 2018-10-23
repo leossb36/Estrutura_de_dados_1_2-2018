@@ -58,12 +58,7 @@ DataType *readDataFile()
     list = newRegister(list, name, phone, adress, cep, birth);
     
     //printDataFile(list);
-    /* printf("%s\n", name);
-    printf("%s\n", phone);
-    printf("%s\n", adress);
-    printf("%u\n", cep);
-    printf("%s\n", birth);
-    printf("%c\n", buffer); */
+
   }
   fclose(file);
 

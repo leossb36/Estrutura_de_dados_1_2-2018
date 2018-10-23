@@ -10,7 +10,7 @@ int main(int argv, char **argc)
 
   int menu = 1, op;
 
-  DataType *list, *show; //= (DataType *) malloc(sizeof(DataType));
+  DataType *list, *show; 
 
   list = voidList();
   list = readDataFile();
@@ -49,11 +49,8 @@ int main(int argv, char **argc)
         system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
-        //list = readDataFile();
-        for(list; list != NULL; list = list->before){
-          printDataFile(list);
-        }
-              
+        printDataFile(list);
+        
         printf("\n=========================================\n\n");
 
         choiceOption();
@@ -64,10 +61,8 @@ int main(int argv, char **argc)
         system("clear");
         printf("=========================================\n\n");
         printf("\tInserir Registro\n\n");
-
         list = registerData(list);
         printDataFile(list);
-        // list = insertBeginning(list, newr);
         printf("\n=========================================\n\n");
         
         choiceOption1();
@@ -104,10 +99,7 @@ int main(int argv, char **argc)
         system("clear");
         printf("=========================================\n\n");
         printf(" Visualizar Todos os Registros em Ordem\n\n");
-        list = insertionSort(readDataFile());
-        
-        
-
+        list = insertionSort(printDataFile(list));
         printf("\n=========================================\n\n");
 
         choiceOption();
