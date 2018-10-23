@@ -75,7 +75,6 @@ DataType *readDataFile()
 void *seeByName(DataType *list, char *name)
 {
   //printf("%s", name);
-  
   DataType *findR = findRegister(list, name);
   DataType *element;
 

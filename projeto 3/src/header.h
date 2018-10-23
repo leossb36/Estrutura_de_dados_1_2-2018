@@ -50,8 +50,6 @@ DataType *voidList();
 
 DataType *insertBeginning(DataType *, DataType *);
 
-DataType *insertElement(DataType *, DataType *, int);
-
 DataType *newRegister(DataType *, char *, char *, char *, unsigned int, char *);
 
 DataType *findRegister(DataType *, char *);

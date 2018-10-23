@@ -241,7 +241,7 @@ DataType *registerData(DataType *list)
 
 DataType *insertionSort(DataType *list)
 {
-    DataType *aux;
+    DataType *aux = list;
     DataType *element;
     DataType *temp;    
     
@@ -253,14 +253,28 @@ DataType *insertionSort(DataType *list)
         {
             if(strcmp(aux->info->name, element->info->name) > 0)
             {
-                strcpy(temp->info->name, aux->info->name);
-                strcpy(aux->info->name, element->info->name);
-                strcpy(element->info->name, temp->info->name);
+                if(aux != NULL)
+                {
+                    temp = aux->next;
+                    aux->next = element;
+                    element->next = temp;
+
+                    temp->before = aux;
+                    aux = element->before;
+                    element->before = element->before;
+                }
+                
+                // if(aux->before != NULL)
+                // {
+                //     temp = aux->before;
+                //     aux->before = element;
+                //     element->before = temp;
+                // }
             }
         }
       
     }
-    return element;
+    return list;
 
 }
 
