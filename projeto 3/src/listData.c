@@ -114,7 +114,7 @@ char *inputName()
 {
     char *name = (char *) malloc(101*sizeof(char));
     setbuf(stdin, NULL);
-    printf("Digite o nome: ");
+    printf("Insert a o nome: ");
     scanf("%[^\n]", name);
 
   return name;
@@ -133,11 +133,11 @@ DataType *registerData(DataType *list, char *filename)
     char birth[11];
     char buffer;
 
-    printf("\n\nNovo Contato:\n\n");
+    printf("\n\nNew Contact:\n\n");
     setbuf(stdin, NULL);
 
     //Name - string
-    printf("Digite Nome: ");
+    printf("Insert a Name: ");
     scanf("%[^\n]s", name); 
     setbuf(stdin, NULL);
 
@@ -152,7 +152,7 @@ DataType *registerData(DataType *list, char *filename)
     int sizeScanf1 = 3, sizeScanf2 = 4;
 
     while(examplephone != sizeScanf1 || examplephone != sizeScanf2){
-        printf("Digite Telefone: ");
+        printf("Insert a Telephone: ");
         
         scanf("%[^-]s", phone);
         scanf("%[^\n]s", phone2);
@@ -175,7 +175,7 @@ DataType *registerData(DataType *list, char *filename)
 
         while(examplephone != sizeScanf1 || examplephone != sizeScanf2){
         
-            printf("Digite Telefone, Corretamente [xxxxx-xxxx]: ");
+            printf("Insert a Correct Telephone - [xxxxx-xxxx]: ");
             
             scanf("%[^-]s", phone);
             scanf("%[^\n]s", phone2);
@@ -186,15 +186,7 @@ DataType *registerData(DataType *list, char *filename)
             setbuf(stdin, NULL);
 
             sizeScanf1 = strlen(auxphone1);
-            sizeScanf2 = strlen(auxphone2);
-
-            /* printf("PHONE 1: %s\n", phone);
-            printf("PHONE 2: %s\n", phone2);
-
-            printf("examplephone = %d(certo)\n", examplephone);
-            printf("examplephone = %d(certo)\n", examplephone);
-            printf("sizeScanf1 = %d\n", sizeScanf1);
-            printf("sizeScanf2 = %d\n", sizeScanf2); */        
+            sizeScanf2 = strlen(auxphone2);        
         }
     }
     while(examplephone == sizeScanf1 || examplephone == sizeScanf2){
@@ -205,7 +197,7 @@ DataType *registerData(DataType *list, char *filename)
     }
 
     //Adress - string
-    printf("Digite endereço: ");
+    printf("Insert a Adress: ");
     scanf("%[^\n]s", adress);
     setbuf(stdin, NULL);
     
@@ -215,7 +207,7 @@ DataType *registerData(DataType *list, char *filename)
     int sizeScanf = 1;
     
     while(sizeExemple != sizeScanf){
-        printf("Digite CEP: ");
+        printf("Insert a CEP: ");
         scanf("%u", &cep);
         // inteiro para string. Até 10 algarísmos.
         sprintf(auxCEP, "%u", cep);
@@ -223,7 +215,7 @@ DataType *registerData(DataType *list, char *filename)
         sizeScanf = strlen(auxCEP);
 
         while(sizeExemple != sizeScanf){
-            printf("Digite CEP, Corretamente[xxxxx]: ");
+            printf("Insert a Correct CEP - [xxxxx]: ");
             scanf("%u", &cep);
             sprintf(auxCEP, "%u", cep);
             
@@ -232,7 +224,7 @@ DataType *registerData(DataType *list, char *filename)
     }
 
     //BirthDay - xx/xx/xxxx
-    printf("Digite Data de Nascimento: ");
+    printf("Insert a Birth Date: ");
     scanf("%s", birth);
 
     rgt = newRegister(list, filename, name, phone, adress, cep, birth);
@@ -242,14 +234,10 @@ DataType *registerData(DataType *list, char *filename)
     }
 
     else{
+        system("clear");
         printf("=========================================\n");
         printf("\nRegistro Confirmado!\n\n\n"); 
 
-        /* printf("Name: %s\n", name);
-        printf("Telephone: %s\n", phone);
-        printf("Adress: %s\n", adress);
-        printf("CEP: %u\n", cep);
-        printf("Birthday: %s\n", birth); */
         return rgt;
     }
 }
