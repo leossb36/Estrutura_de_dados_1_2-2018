@@ -160,7 +160,6 @@ void *exitProgram(DataType *list){
   }
 
   DataType *element;
-    int comp;
 
     for(element = list; element != NULL; element = element->next){
         

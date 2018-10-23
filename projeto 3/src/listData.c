@@ -128,7 +128,6 @@ DataType *registerData(DataType *list)
     char adress[101];
     unsigned int cep;
     char birth[11];
-    char buffer;
 
     printf("\n\nNew Contact:\n\n");
     setbuf(stdin, NULL);

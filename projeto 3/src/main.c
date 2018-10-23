@@ -11,8 +11,6 @@ int main(int argv, char **argc)
   int menu = 1, op;
 
   DataType *list; //= (DataType *) malloc(sizeof(DataType));
-  DataType *newr;
-  Schedule *contact;
 
   list = readDataFile();
 
@@ -142,7 +140,11 @@ void choiceOption(){
 
   if(ch == 5){
     printf("\nAgenda Finalizada\n\n");
-
+    
+    DataType *list;
+    exitProgram(list);
+    freeList(list);
+    
     exit(0);
   }
 }
@@ -159,6 +161,10 @@ void choiceOption1(){
   if(ch == 5){
     printf("\nAgenda Finalizada\n\n");
 
+    DataType *list;
+    exitProgram(list);
+    freeList(list);
+
     exit(0);
   }
 
@@ -168,7 +174,7 @@ void choiceOption1(){
     printf("\tInserir Registro\n\n");
 
     DataType *list;
-    list = registerData(list);
+    registerData(list);
     printDataFile(list);
 
     // list = insertBeginning(list, newr);
@@ -190,6 +196,10 @@ void choiceOption2(){
 
   if(ch == 5){
     printf("\nAgenda Finalizada\n\n");
+
+    DataType *list;
+    exitProgram(list);
+    freeList(list);
 
     exit(0);
   }
@@ -217,6 +227,10 @@ void choiceOption3(){
 
   if(ch == 5){
     printf("\nAgenda Finalizada\n\n");
+
+    DataType *list;
+    exitProgram(list);
+    freeList(list);
 
     exit(0);
   }

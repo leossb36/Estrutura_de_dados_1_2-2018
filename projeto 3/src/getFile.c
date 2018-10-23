@@ -8,7 +8,7 @@ FILE *getContacts(char *filename)
 
     if(fp == NULL){
         perror("\n\n Error: Fail to open File!\n\n");
-        exit(1);
+        fp = fopen(filename, "w+");
     }
 
     return fp;
