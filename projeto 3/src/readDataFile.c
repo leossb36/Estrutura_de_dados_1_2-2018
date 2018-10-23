@@ -124,42 +124,29 @@ void *printDataFile(DataType *list)
   }
 }
 
-void *removeByName(DataType *list, char *name){
-  /*busca_e_remove (int y, celula *le)
+void *removeByName(DataType *list, char *name)
 {
-   celula *p, *q;
-   p = le;
-   q = le->prox;
-   while (q != NULL && q->conteudo != y) {
-      p = q;
-      q = q->prox;
-   }
-   if (q != NULL) {
-      p->prox = q->prox;
-      free (q);
-   }
-}*/
-  
-  DataType *rmvr;
   DataType *aux;
 
-  int comp;
+  aux = findRegister(list, name);
 
-  rmvr = findRegister(list, name);
-  aux = rmvr->next;
+  if (aux == NULL)
+    return list;
 
-  while((aux != NULL) && (comp = strcmp(aux->info->name, name) != 0)){
-    rmvr->info = aux->info;
-    aux = aux->next;
-  }
-  if(aux != NULL){
-    rmvr->next = aux->next;
-    rmvr->before = aux->before;
-    free(rmvr);
-  }
+  if (list == aux)
+    list = aux->next;
   
-  printf("Register Removed!!\n");
+  else
+    aux->before->next = aux->next;
+
+  if(aux->next != NULL)
+    aux->next->before = aux->before;
+
+  free(aux);
+  return list;
+
 }
+
 void *exitProgram(DataType *list){
   FILE *fp;
   char buffer = '$';
