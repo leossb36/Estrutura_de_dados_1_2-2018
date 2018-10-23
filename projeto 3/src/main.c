@@ -1,5 +1,4 @@
 #include "header.h"
-#define contacts "../reference/contato.txt"
 
 void choiceOption();
 void choiceOption1();
@@ -15,7 +14,7 @@ int main(int argv, char **argc)
   DataType *newr;
   Schedule *contact;
 
-  list = readDataFile(contacts);
+  list = readDataFile();
 
   do{
   /* Menu functions:
@@ -51,7 +50,7 @@ int main(int argv, char **argc)
         system("clear");
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
-        list = readDataFile(contacts);
+        list = readDataFile();
         // printDataFile(list);
               
         printf("\n=========================================\n\n");
@@ -65,7 +64,7 @@ int main(int argv, char **argc)
         printf("=========================================\n\n");
         printf("\tInserir Registro\n\n");
 
-        list = registerData(list, contacts);
+        list = registerData(list);
         printDataFile(list);
         // list = insertBeginning(list, newr);
         printf("\n=========================================\n\n");
@@ -78,8 +77,8 @@ int main(int argv, char **argc)
         printf("=========================================\n\n");
         printf("\tRemover Registro por Nome\n\n");
 
-          char *rm = inputName();
-          removeByName(list, rm);
+        char *rm = inputName();
+        removeByName(list, rm);
 
         printf("\n=========================================\n\n");
 
@@ -104,6 +103,9 @@ int main(int argv, char **argc)
         system("clear");
         printf("=========================================\n\n");
         printf(" Visualizar Todos os Registros em Ordem\n\n");
+        list = insertionSort(readDataFile());
+        
+        
 
         printf("\n=========================================\n\n");
 

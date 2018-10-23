@@ -1,5 +1,5 @@
 #include "header.h"
-#define size 101
+
 /* @todo
     if doesn't exist list, create a new list
     insert elements in the list
@@ -26,32 +26,29 @@ DataType *insertBeginning(DataType *list, DataType *element)
     return element;
 }
 
-DataType *insertElement(DataType *list,DataType *element, int position)
-{
-    DataType *aux;
-    int count = 0;
+// DataType *insertElement(DataType *list,DataType *element, int position)
+// {
+//     DataType *aux;
+//     int count = 0;
 
-    for(aux = list; count != position - 1; aux = aux->next)
-        count++;
+//     for(aux = list; count != position - 1; aux = aux->next)
+//         count++;
     
-    element->next = aux->next;
-    element->before = aux->before;
+//     element->next = aux->next;
+//     element->before = aux->before;
 
-    if (element->before == NULL)
-        element = insertBeginning(list, element);
+//     if (element->before == NULL)
+//         element = insertBeginning(list, element);
     
-    aux->next = element;
-    aux->before = NULL;
+//     aux->next = element;
+//     aux->before = NULL;
 
-    return element;    
-}
+//     return element;    
+// }
 
 
-DataType *newRegister(DataType *list, char *filename, char *name, char *phone, char *adress, unsigned int cep, char *birth)
+DataType *newRegister(DataType *list, char *name, char *phone, char *adress, unsigned int cep, char *birth)
 {
-
-    FILE *fp = getContacts(filename);
-
     Schedule *rgt = (Schedule *) malloc(sizeof(Schedule));
 
     if(rgt == NULL)
@@ -120,7 +117,7 @@ char *inputName()
   return name;
 }
 
-DataType *registerData(DataType *list, char *filename)
+DataType *registerData(DataType *list)
 {
     DataType *rgt;
 
@@ -227,7 +224,7 @@ DataType *registerData(DataType *list, char *filename)
     printf("Insert a Birth Date: ");
     scanf("%s", birth);
 
-    rgt = newRegister(list, filename, name, phone, adress, cep, birth);
+    rgt = newRegister(list, name, phone, adress, cep, birth);
 
     if(rgt == NULL){
         printf("\nRegistro não feito!\n");
@@ -242,26 +239,29 @@ DataType *registerData(DataType *list, char *filename)
     }
 }
 
-DataType *insertionSort(DataType *list){
+DataType *insertionSort(DataType *list)
+{
+    DataType *aux;
     DataType *element;
-    DataType *temp;
-    Schedule *aux;
-
-    for(element = list; element != NULL ; element = element -> next)
+    DataType *temp;    
+    
+    for(element = list; element != NULL; element = element->next)
     {
-        aux = element->info;
-        temp = element->before;
+       
 
-        while((temp->before != NULL) && ((strcmp(temp->info->name,aux->name) < 0)))
+        for(aux = list->next; aux != NULL; aux = aux->next)
         {
-            temp->next->info = temp->info;
-            temp = temp -> before;
+            if(strcmp(aux->info->name, element->info->name) > 0)
+            {
+                strcpy(temp->info->name, aux->info->name);
+                strcpy(aux->info->name, element->info->name);
+                strcpy(element->info->name, temp->info->name);
+            }
         }
-
-        temp->next->info = aux;
+      
     }
+    return element;
 
-    return list;
 }
 
 void *freeList(DataType *list)

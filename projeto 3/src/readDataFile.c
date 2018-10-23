@@ -1,4 +1,5 @@
 #include "header.h"
+#define filename "../reference/contato.txt"
 
 /* @todo
 open file
@@ -12,9 +13,11 @@ close the file
   see list in alphabetical order
 */
 
-DataType *readDataFile(char *filename)
+DataType *readDataFile()
 {
   DataType *list = (DataType *) malloc(sizeof(DataType));
+  
+  
 
   char name[101];
   char phone[12];
@@ -54,9 +57,9 @@ DataType *readDataFile(char *filename)
     fgetc(file);
     // fgets(readData, sizeof readData, fp);
 
-    list = newRegister(list, filename, name, phone, adress, cep, birth);
+    list = newRegister(list, name, phone, adress, cep, birth);
     
-    //printDataFile(list);
+    printDataFile(list);
     /* printf("%s\n", name);
     printf("%s\n", phone);
     printf("%s\n", adress);
@@ -130,7 +133,7 @@ void *removeByName(DataType *list, char *name){
 
   aux = findRegister(list, name);
 
-  for(rmvr = list; rmvr->info != NULL; rmvr = rmvr->next){
+  for(rmvr = list; rmvr != NULL; rmvr = rmvr->next){
         
     if(comp = strcmp(aux->info->name, name) == 0){
       if(rmvr->next != NULL){

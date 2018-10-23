@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define contacts "../reference/contato.txt"
 
 typedef struct element
 {
@@ -35,9 +34,9 @@ typedef struct list
 
 }DataType;
 
-DataType *readDataFile(char *);
+DataType *readDataFile();
 
-DataType *registerData(DataType *, char *);
+DataType *registerData(DataType *);
 
 void *seeByName(DataType *, char *);
 
@@ -53,7 +52,7 @@ DataType *insertBeginning(DataType *, DataType *);
 
 DataType *insertElement(DataType *, DataType *, int);
 
-DataType *newRegister(DataType *,char *,char *, char *, char *, unsigned int, char *);
+DataType *newRegister(DataType *, char *, char *, char *, unsigned int, char *);
 
 DataType *findRegister(DataType *, char *);
 
