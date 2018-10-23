@@ -12,6 +12,7 @@ int main(int argv, char **argc)
 
   DataType *list; //= (DataType *) malloc(sizeof(DataType));
 
+  list = voidList();
   list = readDataFile();
 
   do{
@@ -49,7 +50,7 @@ int main(int argv, char **argc)
         printf("=========================================\n\n");
         printf("\tVisualizar Todos os Registros\n\n");
         list = readDataFile();
-        // printDataFile(list);
+        printDataFile(list);
               
         printf("\n=========================================\n\n");
 

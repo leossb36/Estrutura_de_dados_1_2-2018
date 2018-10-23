@@ -57,7 +57,7 @@ DataType *readDataFile()
 
     list = newRegister(list, name, phone, adress, cep, birth);
     
-    printDataFile(list);
+    //printDataFile(list);
     /* printf("%s\n", name);
     printf("%s\n", phone);
     printf("%s\n", adress);
@@ -124,29 +124,27 @@ void *printDataFile(DataType *list)
   }
 }
 
-void *removeByName(DataType *list, char *name){
-  
-  DataType *rmvr;
+void *removeByName(DataType *list, char *name)
+{
   DataType *aux;
-
-  int comp;
 
   aux = findRegister(list, name);
 
-  for(rmvr = list; rmvr != NULL; rmvr = rmvr->next){
-        
-    if(comp = strcmp(aux->info->name, name) == 0){
-      if(rmvr->next != NULL){
-        rmvr->before->next = rmvr->next;
-      }
-      if(rmvr->before != NULL){
-        rmvr->next->before = rmvr->before;
-      }
-      free(rmvr->info);
-    }
-  }
-  free(rmvr);
-  printf("Register Removed!!\n");
+  if (aux == NULL)
+    return list;
+
+  if (list == aux)
+    list = aux->next;
+  
+  else
+    aux->before->next = aux->next;
+
+  if(aux->next != NULL)
+    aux->next->before = aux->before;
+
+  free(aux);
+  return list;
+
 }
 
 void *exitProgram(DataType *list){

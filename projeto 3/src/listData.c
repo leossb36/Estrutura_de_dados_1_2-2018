@@ -84,7 +84,12 @@ DataType *newRegister(DataType *list, char *name, char *phone, char *adress, uns
    
     element->info = rgt;
     element->next = NULL;
-    element->before = NULL;
+    element->before = list;
+
+    if(list != NULL)
+    {
+        list->before = element;
+    }
 
     return element;
 }
@@ -92,16 +97,18 @@ DataType *newRegister(DataType *list, char *name, char *phone, char *adress, uns
 DataType *findRegister(DataType *list, char *name){
 
     DataType *element;
-    int comp;
+    int comp = strcmp(element->info->name, name);
 
-    for(element = list; element != NULL; element = element->next){
-        
-        if(comp = strcmp(element->info->name, name) != 0){
+    for(element = list; element != NULL; element = element->next)
+    {
+        if(comp != 0)
+        {
             return element;
         }
-
-        else{
-            printf("Nome não encontrado");
+        else
+        {
+            // printf("Nome não encontrado");
+            return NULL;
         }
     }
     return element;
@@ -111,7 +118,7 @@ char *inputName()
 {
     char *name = (char *) malloc(101*sizeof(char));
     setbuf(stdin, NULL);
-    printf("Insert a o nome: ");
+    printf("Input with the Name: ");
     scanf("%[^\n]", name);
 
   return name;
@@ -250,18 +257,8 @@ DataType *insertionSort(DataType *list)
 
         for(aux = list->next; aux != NULL; aux = aux->next)
         {
-            if(strcmp(aux->info->name, element->info->name) > 0)
+            if(strcmp(aux->info->name, element->info->name) < 0)
             {
-                if(aux != NULL)
-                {
-                    temp = aux->next;
-                    aux->next = element;
-                    element->next = temp;
-
-                    temp->before = aux;
-                    aux = element->before;
-                    element->before = element->before;
-                }
                 
                 // if(aux->before != NULL)
                 // {
