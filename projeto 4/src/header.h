@@ -45,7 +45,6 @@ int randomFly(int n){
   i = rand() % 22;
   i += 10;
 
-  printf("%d\n", i);
   return i;
 }
 /* char airplanePrefix[65][7]=
