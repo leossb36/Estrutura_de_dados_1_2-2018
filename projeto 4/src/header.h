@@ -59,6 +59,38 @@ int randomFuel(){
   }
   return fuel[64];
 }
+
+/*void randomStatus(int *flynumber, int *take_off, int *landings){
+  srand(time(NULL));
+
+  int t = *take_off, l = *landings, f = *flynumber;
+  char status[f];
+  
+  for(int i = *flynumber; i > 0; i--){
+    int j = rand() % 1; // J = 0 -> D; J = 1 -> A
+
+    if(t == 0 && l == 0){
+      printf("All Flights got Status!!");
+    }
+
+    if(j = 0 && t > 0){
+      status[i] = 'D';
+      printf("%c\n", status[i]);
+      t--;
+    }
+    if(j = 0 && t == 0){
+      i++;
+    }
+    if(j == 1 && l > 0){
+      status[i] = 'A';
+      printf("%c\n", status[i]);
+      l--;
+    }
+    if(j == 1 && l == 0){
+      i++;
+    }
+  }
+}*/
 /* char airplanePrefix[65][7]=
   {
     "VG3001", "JJ4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",

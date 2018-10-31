@@ -23,6 +23,7 @@ int main(){
 	*p_take_off = take_off;
     
     int fly_number = landings + take_off;
+    //int *fly = fly_number;
 
     printf("\n--------------------------------------------------\n");
     printf("\tAeroporto Internacional de Brasília\n");
@@ -41,6 +42,7 @@ int main(){
     printf("Número de Decolagens: ");
     printf("%d\n", *p_take_off);
 
-    randomFuel();
+    //randomFuel();
+    //randomStatus(fly, p_take_off, p_landings);
 return 0;
 }
