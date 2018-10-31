@@ -28,7 +28,14 @@ typedef struct runway
   Air *airplane; // element of list
 }Runway;
 
+void showTime(){
+  time_t rawtime;
+  struct tm * timeinfo;
 
+  time ( &rawtime );
+  timeinfo = localtime ( &rawtime );
+  printf ( "%s", asctime (timeinfo) );
+}
 /* char airplanePrefix[65][7]=
   {
     "VG3001", "JJ4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",
