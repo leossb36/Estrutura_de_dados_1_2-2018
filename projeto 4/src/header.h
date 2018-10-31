@@ -47,6 +47,18 @@ int randomFly(int n){
 
   return i;
 }
+
+int randomFuel(){
+  int fuel[64];
+  //fuel[64] = (int )(malloc(sizeof(int) * 64));
+  srand(time(NULL));
+
+  for(int i = 0; i < 64; i++){
+    fuel[i] = rand() % 12;
+    printf("Fuel Airplane %d: %d\n", i+1, fuel[i]);
+  }
+  return fuel[64];
+}
 /* char airplanePrefix[65][7]=
   {
     "VG3001", "JJ4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",

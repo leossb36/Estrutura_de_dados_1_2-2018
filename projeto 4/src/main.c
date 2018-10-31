@@ -40,5 +40,7 @@ int main(){
 
     printf("Número de Decolagens: ");
     printf("%d\n", *p_take_off);
+
+    randomFuel();
 return 0;
 }
