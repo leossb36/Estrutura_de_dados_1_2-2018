@@ -36,6 +36,18 @@ void showTime(){
   timeinfo = localtime ( &rawtime );
   printf ( "%s", asctime (timeinfo) );
 }
+
+int randomFly(int n){
+  int i;
+  if(n == 1){
+    srand(time(NULL));
+  }
+  i = rand() % 22;
+  i += 10;
+
+  printf("%d\n", i);
+  return i;
+}
 /* char airplanePrefix[65][7]=
   {
     "VG3001", "JJ4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",
