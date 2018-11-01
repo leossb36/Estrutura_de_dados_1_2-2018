@@ -22,7 +22,7 @@ int main(){
     
     p_fly_number = (int*)(malloc(sizeof(int)));
     if(p_fly_number == NULL){
-        printf("\nError: Fail to allocate memory - p_landings!\n");
+        printf("\nError: Fail to allocate memory - p_fly_number!\n");
         exit(0);
     }
     
@@ -31,15 +31,16 @@ int main(){
 
     *p_fly_number = *p_landings + *p_take_off;
 
+    system("clear");
     printf("\n--------------------------------------------------\n");
     printf("\tAeroporto Internacional de Brasília\n");
     printf("--------------------------------------------------\n\n");
 
     printf("Hora Inicial: "); 
     showTime();
-    printf("Fila de Pedidos: \n");
+    printf("\nFila de Pedidos: \n");
     
-    printf("Número de Voos: ");
+    printf("\nNúmero de Voos: ");
     printf("%d\n", *p_fly_number);
 
     printf("Número de Aproximações: ");
