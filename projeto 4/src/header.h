@@ -28,37 +28,33 @@ typedef struct runway
   Air *airplane; // element of list
 }Runway;
 
-void showTime(){
-  time_t rawtime;
-  struct tm * timeinfo;
+// int randomFly(int n){
+//   int i;
+//   if(n == 1){
+//     srand(time(NULL));
+//   }
+//   i = rand() % 22;
+//   i += 10;
 
-  time ( &rawtime );
-  timeinfo = localtime ( &rawtime );
-  printf ( "%s", asctime (timeinfo) );
-}
+//   return i;
+// }
 
-int randomFly(int n){
-  int i;
-  if(n == 1){
-    srand(time(NULL));
-  }
-  i = rand() % 22;
-  i += 10;
+// int randomFuel(){
+//   int fuel[64];
+//   //fuel[64] = (int )(malloc(sizeof(int) * 64));
+//   srand(time(NULL));
 
-  return i;
-}
+//   for(int i = 0; i < 64; i++){
+//     fuel[i] = rand() % 12;
+//     printf("Fuel Airplane %d: %d\n", i+1, fuel[i]);
+//   }
+//   return fuel[64];
+// }
 
-int randomFuel(){
-  int fuel[64];
-  //fuel[64] = (int )(malloc(sizeof(int) * 64));
-  srand(time(NULL));
-
-  for(int i = 0; i < 64; i++){
-    fuel[i] = rand() % 12;
-    printf("Fuel Airplane %d: %d\n", i+1, fuel[i]);
-  }
-  return fuel[64];
-}
+void showTime();
+int randomFuel();
+int randomFly(int);
+void *getFlights(int *, int *, int *);
 
 /*void randomStatus(int *flynumber, int *take_off, int *landings){
   srand(time(NULL));
