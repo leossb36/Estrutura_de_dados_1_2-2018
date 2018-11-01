@@ -60,37 +60,48 @@ int randomFuel(){
   return fuel[64];
 }
 
-/*void randomStatus(int *flynumber, int *take_off, int *landings){
+void randomStatus(int *take_off, int *landings, int *flynumber){
+  
   srand(time(NULL));
 
   int t = *take_off, l = *landings, f = *flynumber;
   char status[f];
   
-  for(int i = *flynumber; i > 0; i--){
-    int j = rand() % 1; // J = 0 -> D; J = 1 -> A
+  for(int i = 0; i < f; i++){
 
-    if(t == 0 && l == 0){
-      printf("All Flights got Status!!");
+    int j = rand() % 1; // J(t) = 0 -> D; J(l) = 1 -> A
+    char aux;
+    
+    if(j == 0){
+      aux = 'D';
+    }
+    else if(j == 1){
+      aux = 'A';
     }
 
-    if(j = 0 && t > 0){
+    if(l != 0 && t != 0){
+      
+      status[i] = aux;
+
+      if(j == 0){
+        l--;
+      }
+      else if(j == 1){
+        t--;
+      }
+    }
+    
+    else if(l == 0){
       status[i] = 'D';
-      printf("%c\n", status[i]);
       t--;
     }
-    if(j = 0 && t == 0){
-      i++;
-    }
-    if(j == 1 && l > 0){
+    else if(t == 0){
       status[i] = 'A';
-      printf("%c\n", status[i]);
       l--;
     }
-    if(j == 1 && l == 0){
-      i++;
-    }
+    printf("%c\n", status[i]);
   }
-}*/
+}
 /* char airplanePrefix[65][7]=
   {
     "VG3001", "JJ4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",

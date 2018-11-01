@@ -1,8 +1,9 @@
 #include "header.h"
 
 int main(){
+
 	int landings, take_off;
-    int *p_take_off, *p_landings;
+    int *p_take_off, *p_landings, *p_fly_number;
     
     landings = randomFly(1);
     take_off = randomFly(2);
@@ -21,9 +22,8 @@ int main(){
     
 	*p_landings = landings;
 	*p_take_off = take_off;
-    
-    int fly_number = landings + take_off;
-    //int *fly = fly_number;
+
+    *p_fly_number = *p_landings + *p_take_off;
 
     printf("\n--------------------------------------------------\n");
     printf("\tAeroporto Internacional de Brasília\n");
@@ -34,7 +34,7 @@ int main(){
     printf("Fila de Pedidos: \n");
     
     printf("Número de Voos: ");
-    printf("%d\n", fly_number);
+    printf("%d\n", *p_fly_number);
 
     printf("Número de Aproximações: ");
     printf("%d\n", *p_landings);
@@ -43,6 +43,6 @@ int main(){
     printf("%d\n", *p_take_off);
 
     //randomFuel();
-    //randomStatus(fly, p_take_off, p_landings);
+    //randomStatus(p_take_off, p_landings, p_fly_number);
 return 0;
 }
