@@ -28,7 +28,6 @@ typedef struct runway
   Air *airplane; // element of list
 }Runway;
 
-void showTime();
 int randomFuel();
 int randomFly(int);
 void *getFlights(int *, int *, int *);

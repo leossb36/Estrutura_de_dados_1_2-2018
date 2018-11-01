@@ -1,13 +1,5 @@
 #include "header.h"
 
-void showTime(){
-  time_t rawtime;
-  struct tm * timeinfo;
-
-  time ( &rawtime );
-  timeinfo = localtime ( &rawtime );
-  printf ( "%s", asctime (timeinfo) );
-}
 
 int randomFuel()
 {
@@ -45,32 +37,33 @@ void randomStatus(int *take_off, int *landings, int *flynumber)
   {
 
     int auxNum = rand() % 2; // auxNum(t) = 2 -> D; auxNum(l) = 1 -> A
+    auxNum += 1;
     char aux;
     
     if(auxNum == 2){
       aux = 'D';
     }
-    else if(auxNum == 1){
+    if(auxNum == 1){
       aux = 'A';
     }
 
-    if(l != 0 && t != 0){
+    if(l > 0 && t > 0){
       
       status[i] = aux;
 
       if(auxNum == 2){
-        l--;
-      }
-      else if(auxNum == 1){
         t--;
+      }
+      if(auxNum == 1){
+        l--;
       }
     }
 
-    else if(l == 0){
+    if(l == 0){
       status[i] = 'D';
       t--;
     }
-    else if(t == 0){
+    if(t == 0){
       status[i] = 'A';
       l--;
     }

@@ -8,13 +8,12 @@ int main(){
     randomStatus(&take_off, &landings, &fly_number);
 
 
-    system("clear");
+    //system("clear");
     printf("\n--------------------------------------------------\n");
     printf("\tAeroporto Internacional de Brasília\n");
     printf("--------------------------------------------------\n\n");
 
-    printf("Hora Inicial: "); 
-    showTime();
+    printf("Hora Inicial: 16:00");
     printf("\nFila de Pedidos: \n");
     
     printf("\nNúmero de Voos: ");
