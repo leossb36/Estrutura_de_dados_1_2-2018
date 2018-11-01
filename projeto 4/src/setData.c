@@ -33,6 +33,51 @@ int randomFly(int n)
   return i;
 }
 
+void randomStatus(int *take_off, int *landings, int *flynumber)
+{
+  
+  srand(time(NULL));
+
+  int t = *take_off, l = *landings, f = *flynumber;
+  char status[f];
+  
+  for(int i = 0; i < f; i++)
+  {
+
+    int auxNum = rand() % 2; // auxNum(t) = 2 -> D; auxNum(l) = 1 -> A
+    char aux;
+    
+    if(auxNum == 2){
+      aux = 'D';
+    }
+    else if(auxNum == 1){
+      aux = 'A';
+    }
+
+    if(l != 0 && t != 0){
+      
+      status[i] = aux;
+
+      if(auxNum == 2){
+        l--;
+      }
+      else if(auxNum == 1){
+        t--;
+      }
+    }
+
+    else if(l == 0){
+      status[i] = 'D';
+      t--;
+    }
+    else if(t == 0){
+      status[i] = 'A';
+      l--;
+    }
+    printf("%c\n", status[i]);
+  }
+}
+
 void *getFlights(int *landings, int *take_off, int *fly_number)
 {
     int *p_take_off, *p_landings;

@@ -5,6 +5,8 @@ int main(){
 	int landings, take_off, fly_number;
     
     getFlights(&landings, &take_off, &fly_number);
+    randomStatus(&take_off, &landings, &fly_number);
+
 
     system("clear");
     printf("\n--------------------------------------------------\n");

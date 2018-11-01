@@ -28,76 +28,13 @@ typedef struct runway
   Air *airplane; // element of list
 }Runway;
 
-// int randomFly(int n){
-//   int i;
-//   if(n == 1){
-//     srand(time(NULL));
-//   }
-//   i = rand() % 22;
-//   i += 10;
-
-//   return i;
-// }
-
-// int randomFuel(){
-//   int fuel[64];
-//   //fuel[64] = (int )(malloc(sizeof(int) * 64));
-//   srand(time(NULL));
-
-//   for(int i = 0; i < 64; i++){
-//     fuel[i] = rand() % 12;
-//     printf("Fuel Airplane %d: %d\n", i+1, fuel[i]);
-//   }
-//   return fuel[64];
-// }
-
 void showTime();
 int randomFuel();
 int randomFly(int);
 void *getFlights(int *, int *, int *);
+void randomStatus(int *, int *, int *);
 
-void randomStatus(int *take_off, int *landings, int *flynumber){
-  
-  srand(time(NULL));
 
-  int t = &take_off, l = &landings, f = &flynumber;
-  char status[f];
-  
-  for(int i = 0; i < f; i++){
-
-    int auxNum = rand() % 2; // auxNum(t) = 2 -> D; auxNum(l) = 1 -> A
-    char aux;
-    
-    if(auxNum == 2){
-      aux = 'D';
-    }
-    else if(auxNum == 1){
-      aux = 'A';
-    }
-
-    if(l != 0 && t != 0){
-      
-      status[i] = aux;
-
-      if(auxNum == 2){
-        l--;
-      }
-      else if(auxNum == 1){
-        t--;
-      }
-    }
-
-    else if(l == 0){
-      status[i] = 'D';
-      t--;
-    }
-    else if(t == 0){
-      status[i] = 'A';
-      l--;
-    }
-    printf("%c\n", status[i]);
-  }
-}
 /* char airplanePrefix[65][7]=
   {
     "VG3001", "auxNumauxNum4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",
