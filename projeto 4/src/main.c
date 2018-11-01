@@ -1,7 +1,7 @@
 #include "header.h"
 
 int main(){
-
+    
 	int landings, take_off;
     int *p_take_off, *p_landings, *p_fly_number;
     
@@ -17,6 +17,12 @@ int main(){
 	p_take_off = (int*)(malloc(sizeof(int)));
     if(p_take_off == NULL){
         printf("\nError: Fail to allocate memory - p_take_off!\n");
+        exit(0);
+    }
+    
+    p_fly_number = (int*)(malloc(sizeof(int)));
+    if(p_fly_number == NULL){
+        printf("\nError: Fail to allocate memory - p_landings!\n");
         exit(0);
     }
     
