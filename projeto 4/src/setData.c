@@ -33,8 +33,7 @@ void randomStatus(int *take_off, int *landings, int *flynumber)
   int t = *take_off, l = *landings, f = *flynumber;
   char status[f];
   
-  for(int i = 0; i < f; i++)
-  {
+  for(int i = 0; i < f; i++){
 
     int auxNum = rand() % 2; // auxNum(t) = 2 -> D; auxNum(l) = 1 -> A
     auxNum += 1;
@@ -51,23 +50,29 @@ void randomStatus(int *take_off, int *landings, int *flynumber)
       
       status[i] = aux;
 
-      if(auxNum == 2){
+      if(status[i] == 'D'){
         t--;
       }
-      if(auxNum == 1){
+      else if(status[i] == 'A'){
         l--;
       }
     }
 
-    if(l == 0){
+    else if(l == 0 && t > 0){
       status[i] = 'D';
       t--;
     }
-    if(t == 0){
+    else if(t == 0 && l > 0){
       status[i] = 'A';
       l--;
     }
-    printf("%c\n", status[i]);
+
+    /* if(status[i] == 'A'){
+      printf("      %c                  - Aproximação = %d\n", status[i], l+1);
+    }
+    else if(status[i] == 'D'){
+      printf("      %c - Decolagem = %d\n", status[i], t+1);
+    } */
   }
 }
 
