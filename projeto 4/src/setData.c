@@ -36,7 +36,7 @@ char *randomStatus(int *take_off, int *landings, int *flynumber)
   srand(time(NULL));
 
   int t = *take_off, l = *landings, f = *flynumber;
-  char *status = malloc(sizeof(int) * f);
+  char *status = malloc(sizeof(int) * f); 
   if(status == NULL){
         printf("\nError: Fail to allocate memory - status!\n");
         exit(0);
@@ -116,23 +116,11 @@ void *getFlights(int *landings, int *take_off, int *fly_number)
 
 }
 
-void *flightOrder(int  *fuel, char *status, int *fly_number){
+void *flightOrder(int *fuel, char *status, int *fly_number){
   
   int f = *fly_number;
-  
-  for(int i = 0; i < f; i++){
-    
-    if(status[i] == 'A'){
-      printf("\t[Código do voo:  –  %c  –  %.2d]\n", status[i], fuel[i]);
-    }
-    else if(status[i] == 'D'){
-      printf("\t[Código do voo:  –  %c  –  --]\n", status[i]); 
-    }
-  }
-}
 
-
-/* char airplanePrefix[][7]=
+  char code[][7]=
   {
     "VG3001", "JJ4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",
     "AZ1008", "AZ1010", "TG1506", "VG3002", "JJ4402", "GL7603", "RL7880", 
@@ -144,4 +132,18 @@ void *flightOrder(int  *fuel, char *status, int *fly_number){
     "LF0978", "RL7867", "TT4502", "GL7645", "LF0932", "JJ4434", "TG1510", 
     "TT1020", "AZ1098", "BA2312", "VG3030", "BA2304", "KL5609", "KL5610", 
     "KL5611"
-  }; */
+  };
+
+  char *flycode = (char *) calloc(f, sizeof(char));
+
+  for(int i = 0; i < f; i++){
+    
+    strncpy(&flycode[i], code[i], 7);
+    if(status[i] == 'A'){
+      printf("\t[CODE: %s –  STATUS: %c  –  FUEL: %.2d]\n", &flycode[i], status[i], fuel[i]);
+    }
+    else if(status[i] == 'D'){
+      printf("\t[CODE: %s –  STATUS: %c  –  --NONE--]\n", &flycode[i], status[i]); 
+    }
+  }
+}

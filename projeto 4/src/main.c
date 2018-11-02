@@ -30,7 +30,18 @@ int main(){
     printf("Número de Decolagens: ");
     printf("%d\n", take_off);
 
-    printf("--------------------------------------------------\n\n");
+    printf("--------------------------------------------------\n");
+    eventList();
 
 return 0;
+}
+
+void eventList()
+{
+    printf("\n--------------------------------------------------\n");
+    printf("Código do voo: \n");
+    printf("Status: [aeronave decolou ou aeronave pousou]\n");
+    printf("Horário do início do procedimento: \n");
+    printf("Número da pista: \n");
+    printf("--------------------------------------------------\n\n");
 }
