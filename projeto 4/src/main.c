@@ -9,14 +9,19 @@ int main(){
     randomIndex();
 
 
-    //system("clear");
+    system("clear");
     printf("\n--------------------------------------------------\n");
     printf("\tAeroporto Internacional de Brasília\n");
     printf("--------------------------------------------------\n\n");
 
-    printf("Hora Inicial: 16:00");
+    printf("Hora Inicial: 16:00\n");
     printf("\nFila de Pedidos: \n");
-    
+
+    int *fuel = randomFuel();
+    char *status = randomStatus(&take_off, &landings, &fly_number);
+    flightOrder(fuel, status, &fly_number);
+
+
     printf("\nNúmero de Voos: ");
     printf("%d\n", fly_number);
 
@@ -26,9 +31,18 @@ int main(){
     printf("Número de Decolagens: ");
     printf("%d\n", take_off);
 
-    printf("--------------------------------------------------\n\n");
+    printf("--------------------------------------------------\n");
+    eventList();
 
-    //randomFuel();
-    //randomStatus(p_take_off, p_landings, p_fly_number);
 return 0;
+}
+
+void eventList()
+{
+    printf("\n--------------------------------------------------\n");
+    printf("Código do voo: \n");
+    printf("Status: [aeronave decolou ou aeronave pousou]\n");
+    printf("Horário do início do procedimento: \n");
+    printf("Número da pista: \n");
+    printf("--------------------------------------------------\n\n");
 }

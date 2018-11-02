@@ -6,6 +6,8 @@
 #include <string.h>
 #include <time.h>
 
+#define unit_time 5
+
 typedef struct airplane_data
 {
   char flyCode[7]; // AA0000 - code
@@ -28,10 +30,12 @@ typedef struct runway
   Air *airplane; // element of list
 }Runway;
 
-int randomFuel();
+int *randomFuel();
 int randomFly(int);
 void *getFlights(int *, int *, int *);
-void randomStatus(int *, int *, int *);
 void *randomIndex();
+char *randomStatus(int *, int *, int *);
+void *flightOrder(int *, char *, int *);
+void eventList();
 
 #endif
