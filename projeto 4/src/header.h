@@ -28,10 +28,11 @@ typedef struct runway
   Air *airplane; // element of list
 }Runway;
 
-int randomFuel();
+int *randomFuel();
 int randomFly(int);
 void *getFlights(int *, int *, int *);
-void randomStatus(int *, int *, int *);
+char *randomStatus(int *, int *, int *);
+void *flightOrder(int *, char *, int *);
 
 
 /* char airplanePrefix[65][7]=

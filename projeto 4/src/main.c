@@ -5,17 +5,22 @@ int main(){
 	int landings, take_off, fly_number;
     
     getFlights(&landings, &take_off, &fly_number);
-    randomStatus(&take_off, &landings, &fly_number);
+    //randomStatus(&take_off, &landings, &fly_number);
 
 
-    //system("clear");
+    system("clear");
     printf("\n--------------------------------------------------\n");
     printf("\tAeroporto Internacional de Brasília\n");
     printf("--------------------------------------------------\n\n");
 
-    printf("Hora Inicial: 16:00");
+    printf("Hora Inicial: 16:00\n");
     printf("\nFila de Pedidos: \n");
-    
+
+    int *fuel = randomFuel();
+    char *status = randomStatus(&take_off, &landings, &fly_number);
+    flightOrder(fuel, status, &fly_number);
+
+
     printf("\nNúmero de Voos: ");
     printf("%d\n", fly_number);
 
@@ -27,7 +32,5 @@ int main(){
 
     printf("--------------------------------------------------\n\n");
 
-    //randomFuel();
-    //randomStatus(p_take_off, p_landings, p_fly_number);
 return 0;
 }

@@ -1,16 +1,21 @@
 #include "header.h"
 
 
-int randomFuel()
+int *randomFuel()
 {
-  int fuel[64];
+  int *fuel = malloc(sizeof(int) * 64);
+  if(fuel == NULL){
+        printf("\nError: Fail to allocate memory - fuel!\n");
+        exit(0);
+  }
+
   srand(time(NULL));
 
   for(int i = 0; i < 64; i++){
     fuel[i] = rand() % 12;
-    printf("Fuel Airplane %d: %d\n", i+1, fuel[i]);
+    //printf("Fuel Airplane %d: %d\n", i+1, fuel[i]);
   }
-  return fuel[64];
+  return fuel;
 }
 
 int randomFly(int n)
@@ -25,13 +30,17 @@ int randomFly(int n)
   return i;
 }
 
-void randomStatus(int *take_off, int *landings, int *flynumber)
+char *randomStatus(int *take_off, int *landings, int *flynumber)
 {
   
   srand(time(NULL));
 
   int t = *take_off, l = *landings, f = *flynumber;
-  char status[f];
+  char *status = malloc(sizeof(int) * f);
+  if(status == NULL){
+        printf("\nError: Fail to allocate memory - status!\n");
+        exit(0);
+  }
   
   for(int i = 0; i < f; i++){
 
@@ -74,6 +83,7 @@ void randomStatus(int *take_off, int *landings, int *flynumber)
       printf("      %c - Decolagem = %d\n", status[i], t+1);
     } */
   }
+  return status;
 }
 
 void *getFlights(int *landings, int *take_off, int *fly_number)
@@ -104,6 +114,21 @@ void *getFlights(int *landings, int *take_off, int *fly_number)
 
     *fly_number = *landings + *take_off;
 
+}
+
+void *flightOrder(int  *fuel, char *status, int *fly_number){
+  
+  int f = *fly_number;
+  
+  for(int i = 0; i < f; i++){
+    
+    if(status[i] == 'A'){
+      printf("\t[Código do voo:  –  %c  –  %.2d]\n", status[i], fuel[i]);
+    }
+    else if(status[i] == 'D'){
+      printf("\t[Código do voo:  –  %c  –  --]\n", status[i]); 
+    }
+  }
 }
 
 
