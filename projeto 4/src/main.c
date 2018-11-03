@@ -3,10 +3,11 @@
 int main(){
 
 	int landings, take_off, fly_number;
-    
+    Air *airplane;
+    airplane = voidList();
     getFlights(&landings, &take_off, &fly_number);
+    airplane = createList(airplane, &landings, &take_off, &fly_number);
     //randomStatus(&take_off, &landings, &fly_number);
-    randomIndex();
 
 
     system("clear");
@@ -17,9 +18,10 @@ int main(){
     printf("Hora Inicial: 16:00\n");
     printf("\nFila de Pedidos: \n");
 
-    int *fuel = randomFuel();
-    char *status = randomStatus(&take_off, &landings, &fly_number);
-    flightOrder(fuel, status, &fly_number);
+    int fuel = randomFuel();
+    char status = randomStatus(&take_off, &landings, &fly_number);
+    // flightOrder(&fly_number, airplane);
+    randomIndex();
 
 
     printf("\nNúmero de Voos: ");
@@ -33,6 +35,7 @@ int main(){
 
     printf("--------------------------------------------------\n");
     eventList();
+    // airplane = createList(airplane, &landings, &take_off, &fly_number);
 
 return 0;
 }

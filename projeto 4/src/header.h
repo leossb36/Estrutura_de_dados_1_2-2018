@@ -14,7 +14,8 @@ typedef struct airplane_data
   char status; // A || D - status
   int fuel; // 0 - 12 - airplane fuel
   int time; // how many time the airplay spend
-  struct airplane_data *next; // list
+  struct airplane_data *next;
+  
 }Air;
 
 typedef struct queue_flight
@@ -30,12 +31,14 @@ typedef struct runway
   Air *airplane; // element of list
 }Runway;
 
-int *randomFuel();
+int randomFuel();
 int randomFly(int);
 void *getFlights(int *, int *, int *);
 void *randomIndex();
-char *randomStatus(int *, int *, int *);
-void *flightOrder(int *, char *, int *);
+char randomStatus(int *, int *, int *);
+void *flightOrder(int *, Air *);
+Air *voidList();
+Air *createList(Air *, int *, int *, int *);
 void eventList();
 
 #endif
