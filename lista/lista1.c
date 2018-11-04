@@ -95,7 +95,6 @@ void printLista(Lista *l)
 void liberaLista(Lista *l)
 {
 
-{
     Lista *atual;
 
     for(atual = l; atual != NULL; l = atual)

@@ -3,12 +3,19 @@
 int main(){
 
 	int landings, take_off, fly_number;
-    Air *airplane;
-    airplane = voidList();
+    Plane *plane;
+    List *list;
+    
+    list = voidList();
     getFlights(&landings, &take_off, &fly_number);
-    airplane = createList(airplane, &landings, &take_off, &fly_number);
-    //randomStatus(&take_off, &landings, &fly_number);
-
+    Queue *planeQueue = createQueue();
+    
+    for (int i = 0; i < fly_number; i++)
+    {
+        plane = createPlane(&landings, &take_off, &fly_number);
+        list = createElement(plane);
+        planeQueue = insertQueue(list, planeQueue);
+    }
 
     system("clear");
     printf("\n--------------------------------------------------\n");
@@ -17,12 +24,7 @@ int main(){
 
     printf("Hora Inicial: 16:00\n");
     printf("\nFila de Pedidos: \n");
-
-    int fuel = randomFuel();
-    char status = randomStatus(&take_off, &landings, &fly_number);
-    // flightOrder(&fly_number, airplane);
-    randomIndex();
-
+    flightOrder(planeQueue);
 
     printf("\nNúmero de Voos: ");
     printf("%d\n", fly_number);
@@ -35,7 +37,6 @@ int main(){
 
     printf("--------------------------------------------------\n");
     eventList();
-    // airplane = createList(airplane, &landings, &take_off, &fly_number);
 
 return 0;
 }
@@ -48,4 +49,33 @@ void eventList()
     printf("Horário do início do procedimento: \n");
     printf("Número da pista: \n");
     printf("--------------------------------------------------\n\n");
+}
+
+void *getFlights(int *landings, int *take_off, int *fly_number)
+{
+    int *p_take_off, *p_landings;
+
+    *landings = randomFly(1);
+    *take_off = randomFly(2);
+
+    p_landings = (int*) malloc(sizeof(int));
+    
+    if(p_landings == NULL)
+    {
+        printf("\nError: Fail to allocate memory - p_landings!\n");
+        exit(0);
+    }
+    
+	  p_take_off = (int*) malloc(sizeof(int));
+    
+    if(p_take_off == NULL)
+    {
+        printf("\nError: Fail to allocate memory - p_take_off!\n");
+        exit(0);
+    }
+
+    *p_landings = *landings;
+	  *p_take_off = *take_off;
+
+    *fly_number = *landings + *take_off;
 }
