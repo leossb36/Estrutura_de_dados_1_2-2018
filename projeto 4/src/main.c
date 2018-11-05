@@ -1,8 +1,9 @@
 #include "header.h"
+#define Untempo 5
 
 int main(){
     srand(time(NULL));
-    
+
 	int landings, take_off, fly_number;
     Plane *plane;
     List *list;
@@ -37,6 +38,7 @@ int main(){
     printf("%d\n", take_off);
 
     printf("--------------------------------------------------\n");
+    printf("Listagem de eventos:");
     eventList();
 
 return 0;
@@ -44,8 +46,7 @@ return 0;
 
 void eventList()
 {
-    printf("\n--------------------------------------------------\n");
-    printf("Código do voo: \n");
+    printf("\n\nCódigo do voo: \n");
     printf("Status: [aeronave decolou ou aeronave pousou]\n");
     printf("Horário do início do procedimento: \n");
     printf("Número da pista: \n");

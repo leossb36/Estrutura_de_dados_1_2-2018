@@ -125,6 +125,12 @@ char randomStatus(int *take_off, int *landings, int *flynumber)
   return *status;
 }
 
+void spendFuel(Plane *plane)
+{
+  if(plane->fuel >= 0 && plane->status == 'A')
+    plane->fuel -= 1;
+}
+
 Plane *createPlane(char *code, char status, int fuel)
 { 
 
@@ -141,4 +147,10 @@ Plane *createPlane(char *code, char status, int fuel)
   plane->fuel = fuel;
     
   return plane;
+}
+
+void *freePlane(Plane *plane)
+{
+  free(plane->flyCode);
+  free(plane);
 }

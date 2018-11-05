@@ -13,6 +13,9 @@ int randomFuel();
 int randomFly(int);
 char *getFlight(Plane *);
 char randomStatus(int *, int *, int *);
+void spendFuel(Plane *);
 char *getRandomCode();
+void *freePlane(Plane *);
+
 
 #endif
