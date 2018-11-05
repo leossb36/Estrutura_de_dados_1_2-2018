@@ -1,7 +1,8 @@
 #include "header.h"
 
 int main(){
-
+    srand(time(NULL));
+    
 	int landings, take_off, fly_number;
     Plane *plane;
     List *list;
@@ -14,7 +15,7 @@ int main(){
     {
         plane = createPlane(getRandomCode(), randomStatus(&take_off, &landings, &fly_number), randomFuel());
         list = createElement(plane);
-        planeQueue = insertQueue(list, planeQueue);
+        insertQueue(list, planeQueue);
     }
 
     system("clear");

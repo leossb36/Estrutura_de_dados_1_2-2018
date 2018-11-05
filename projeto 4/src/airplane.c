@@ -1,4 +1,5 @@
 #include "header.h"
+int select_names[64] = {0};
 
 char *getFlight(Plane *plane)
 {
@@ -41,14 +42,15 @@ char *getRandomCode()
   };
 
   int randNum;
-  int i = 0;
 
-  while(i < 64)
-  {
+  do{
+    
     randNum = rand() % 64;
-    codePlane[randNum];
-    i++;
-  }
+
+  }while(select_names[randNum] == 1);
+  
+  select_names[randNum] = 1;
+
   return codePlane[randNum];
 }
 
@@ -60,8 +62,6 @@ int randomFuel()
     exit(0);
   }
 
-  srand(time(NULL));
-
   for(int i = 0; i < 64; i++){
     fuel[i] = rand() % 13;
   }
@@ -71,9 +71,8 @@ int randomFuel()
 int randomFly(int n)
 {
   int i;
-  if(n == 1){
-    srand(time(NULL));
-  }
+  // if(n == 1){
+  // }
   i = rand() % 22;
   i += 10;
 
@@ -82,9 +81,6 @@ int randomFly(int n)
 
 char randomStatus(int *take_off, int *landings, int *flynumber)
 {
-  
-  srand(time(NULL));
-
   int t = *take_off, l = *landings, f = *flynumber;
   char *status = malloc(sizeof(int) * f); 
   if(status == NULL){
