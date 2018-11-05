@@ -13,7 +13,7 @@
 
 #define unit_time 5
 
-void *getFlights(int *, int *, int *);
+void *genFlights(int *, int *, int *);
 void eventList();
 
 #endif

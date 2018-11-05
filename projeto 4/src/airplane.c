@@ -1,46 +1,69 @@
 #include "header.h"
 
-char *getIndex(int *fly_number)
+char *getFlight(Plane *plane)
 {
+  int size = strlen(plane->flyCode) + 64;
 
-  char *airplanePrefix[64]=
+  char *code = (char *) calloc(size, sizeof(char));
+
+  if(code == NULL)
   {
-    "VG3001\0", "JJ4404\0", "LN7001\0", "TG1501\0", "GL7602\0", "TT1010\0", "AZ1009\0",
-    "AZ1008\0", "AZ1010\0", "TG1506\0", "VG3002\0", "JJ4402\0", "GL7603\0", "RL7880\0", 
-    "AL0012\0", "TT4544\0", "TG1505\0", "VG3003\0", "JJ4403\0", "JJ4401\0", "LN7002\0", 
-    "AZ1002\0", "AZ1007\0", "GL7604\0", "AZ1006\0", "TG1503\0", "AZ1003\0", "JJ4403\0", 
-    "AZ1001\0", "LN7003\0", "AZ1004\0", "TG1504\0", "AZ1005\0", "TG1502\0", "GL7601\0", 
-    "TT4500\0", "RL7801\0", "JJ4410\0", "GL7607\0", "AL0029\0", "VV3390\0", "VV3392\0", 
-    "GF4681\0", "GF4690\0", "AZ1020\0", "JJ4435\0", "VG3010\0", "LF0920\0", "AZ1065\0", 
-    "LF0978\0", "RL7867\0", "TT4502\0", "GL7645\0", "LF0932\0", "JJ4434\0", "TG1510\0", 
-    "TT1020\0", "AZ1098\0", "BA2312\0", "VG3030\0", "BA2304\0", "KL5609\0", "KL5610\0", 
-    "KL5611\0"
+    printf("\nError: Fail to allocate memory - code!\n");
+    exit(1);
+  }
+
+  if(plane->status == 'A')
+  {
+    snprintf(code, size, "[CODE: %s -- STATUS: %c -- FUEL: %.2d]", plane->flyCode, plane->status, plane->fuel);
+  }
+  else if(plane->status == 'D')
+  {
+    snprintf(code, size, "[CODE: %s -- STATUS: %c -- --NONE--]", plane->flyCode, plane->status);    
+  }
+
+  return code;
+}
+
+char *getRandomCode()
+{
+  char *codePlane[64]=
+  {
+    "VG3001", "JJ4404", "LN7001", "TG1501", "GL7602", "TT1010", "AZ1009",
+    "AZ1008", "AZ1010", "TG1506", "VG3002", "JJ4402", "GL7603", "RL7880", 
+    "AL0012", "TT4544", "TG1505", "VG3003", "JJ4403", "JJ4401", "LN7002", 
+    "AZ1002", "AZ1007", "GL7604", "AZ1006", "TG1503", "AZ1003", "JJ4403", 
+    "AZ1001", "LN7003", "AZ1004", "TG1504", "AZ1005", "TG1502", "GL7601", 
+    "TT4500", "RL7801", "JJ4410", "GL7607", "AL0029", "VV3390", "VV3392", 
+    "GF4681", "GF4690", "AZ1020", "JJ4435", "VG3010", "LF0920", "AZ1065", 
+    "LF0978", "RL7867", "TT4502", "GL7645", "LF0932", "JJ4434", "TG1510", 
+    "TT1020", "AZ1098", "BA2312", "VG3030", "BA2304", "KL5609", "KL5610", 
+    "KL5611"
   };
 
-  char *code = (char *) calloc(64*7, sizeof(char));
+  int randNum;
+  int i = 0;
 
-  for (int i = 0; i < *fly_number; i++)
+  while(i < 64)
   {
-      int num = rand() % 64;
-
-      strncpy(code, airplanePrefix[num], 7);
-
+    randNum = rand() % 64;
+    codePlane[randNum];
+    i++;
   }
-  return code;
+  return codePlane[randNum];
 }
 
 int randomFuel()
 {
   int *fuel = malloc(sizeof(int) * 64);
   if(fuel == NULL){
-        printf("\nError: Fail to allocate memory - fuel!\n");
-        exit(0);
+    printf("\nError: Fail to allocate memory - fuel!\n");
+    exit(0);
   }
 
   srand(time(NULL));
 
   for(int i = 0; i < 64; i++){
-    fuel[i] = rand() % 12;
+    fuel[i] = rand() % 13;
   }
   return *fuel;
 }
@@ -65,8 +88,8 @@ char randomStatus(int *take_off, int *landings, int *flynumber)
   int t = *take_off, l = *landings, f = *flynumber;
   char *status = malloc(sizeof(int) * f); 
   if(status == NULL){
-        printf("\nError: Fail to allocate memory - status!\n");
-        exit(0);
+    printf("\nError: Fail to allocate memory - status!\n");
+    exit(0);
   }
   
   for(int i = 0; i < f; i++){
@@ -106,7 +129,7 @@ char randomStatus(int *take_off, int *landings, int *flynumber)
   return *status;
 }
 
-Plane *createPlane(int *landings, int *take_off, int *fly_number)
+Plane *createPlane(char *code, char status, int fuel)
 { 
 
   Plane *plane = (Plane *) calloc(1, sizeof(Plane));
@@ -117,11 +140,9 @@ Plane *createPlane(int *landings, int *take_off, int *fly_number)
     exit(-1);      
   }
 
-  char *code = getIndex(fly_number);
-
   strcpy(plane->flyCode, code);
-  plane->status = randomStatus(take_off, landings, fly_number);
-  plane->fuel = randomFuel();
+  plane->status = status;
+  plane->fuel = fuel;
     
   return plane;
 }

@@ -17,10 +17,10 @@ typedef struct queue_flight
 
 List *voidList();
 List *createElement(Plane *plane);
-Plane *createPlane(int *, int *, int *);
+Plane *createPlane(char *, char , int);
 int voidQueue(Queue *);
 Queue *createQueue();
 void *insertQueue(List *, Queue *);
-void flightOrder(Queue *);
+void *flightOrder(Queue *);
 
 #endif

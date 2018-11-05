@@ -23,6 +23,11 @@ List *createElement(Plane *plane)
 
 int voidQueue(Queue *q)
 {
+  if(!q)
+  {
+    printf("\nError: There is no Queue\n");
+  }
+
   return (q->beginning == NULL && q->end == NULL);
 }
 
@@ -52,27 +57,19 @@ void *insertQueue(List *e, Queue *q)
   else
   {
     e->next = q->end;
-    q->end = e; 
+    q->end = e;
   }
 }
 
-void flightOrder(Queue *q)
+void *flightOrder(Queue *q)
 {
+  List *element;
 
-  List *element = q->end;
-
-  while(element != NULL)
+  for(element = q->end; element != NULL; element = element->next)
   {
+    char *code = getFlight(element->plane);
     
-    if(element->plane->status == 'A')
-    {
-      printf("[CODE: %s  --  STATUS: %c  --  FUEL: %d]\n", element->plane->flyCode, element->plane->status, element->plane->fuel);
-    }
-    else if(element->plane->status == 'D')
-    {
-      printf("[CODE: %s  --  STATUS: %c  -- --NONE--]\n", element->plane->flyCode, element->plane->status);
-    }
-    
-    element = element->next;
+    printf("%s\n", code);
+
   }
 }

@@ -11,7 +11,8 @@ typedef struct airplane_data
 
 int randomFuel();
 int randomFly(int);
-char *getIndex(int *);
+char *getFlight(Plane *);
 char randomStatus(int *, int *, int *);
+char *getRandomCode();
 
 #endif

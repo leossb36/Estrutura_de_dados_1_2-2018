@@ -7,12 +7,12 @@ int main(){
     List *list;
     
     list = voidList();
-    getFlights(&landings, &take_off, &fly_number);
+    genFlights(&landings, &take_off, &fly_number);
     Queue *planeQueue = createQueue();
     
     for (int i = 0; i < fly_number; i++)
     {
-        plane = createPlane(&landings, &take_off, &fly_number);
+        plane = createPlane(getRandomCode(), randomStatus(&take_off, &landings, &fly_number), randomFuel());
         list = createElement(plane);
         planeQueue = insertQueue(list, planeQueue);
     }
@@ -24,7 +24,7 @@ int main(){
 
     printf("Hora Inicial: 16:00\n");
     printf("\nFila de Pedidos: \n");
-    flightOrder(planeQueue);
+            flightOrder(planeQueue);
 
     printf("\nNúmero de Voos: ");
     printf("%d\n", fly_number);
@@ -51,7 +51,7 @@ void eventList()
     printf("--------------------------------------------------\n\n");
 }
 
-void *getFlights(int *landings, int *take_off, int *fly_number)
+void *genFlights(int *landings, int *take_off, int *fly_number)
 {
     int *p_take_off, *p_landings;
 
