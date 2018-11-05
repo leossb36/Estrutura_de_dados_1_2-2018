@@ -9,10 +9,10 @@ typedef struct airplane_data
   int fuel; // 0 - 12 - airplane fuel
 }Plane;
 
-int randomFuel();
+int *randomFuel();
 int randomFly(int);
 char *getFlight(Plane *);
-char randomStatus(int *, int *, int *);
+char *randomStatus(int *, int *, int *);
 char *getRandomCode();
 
 #endif

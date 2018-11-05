@@ -17,7 +17,7 @@ typedef struct queue_flight
 
 List *voidList();
 List *createElement(Plane *plane);
-Plane *createPlane(char *, char , int);
+Queue *createPlane(char **, char *, int *, int *, Queue *);
 int voidQueue(Queue *);
 Queue *createQueue();
 void *insertQueue(List *, Queue *);

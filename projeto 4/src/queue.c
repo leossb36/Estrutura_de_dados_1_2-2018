@@ -67,9 +67,9 @@ void *flightOrder(Queue *q)
 
   for(element = q->end; element != NULL; element = element->next)
   {
-    char *code = getFlight(element->plane);
+    getFlight(element->plane);
     
-    printf("%s\n", code);
+    /* printf("%s\n", code); */
 
   }
 }

@@ -10,21 +10,30 @@ int main(){
     genFlights(&landings, &take_off, &fly_number);
     Queue *planeQueue = createQueue();
     
-    for (int i = 0; i < fly_number; i++)
-    {
-        plane = createPlane(getRandomCode(), randomStatus(&take_off, &landings, &fly_number), randomFuel());
-        list = createElement(plane);
-        planeQueue = insertQueue(list, planeQueue);
-    }
+    char *status = randomStatus(&take_off, &landings, &fly_number);
+    int *fuel = randomFuel();
 
-    system("clear");
+     
+    char *codePlane[fly_number];
+
+    for(int i=0;i<fly_number;i++){
+       
+        codePlane[i] = getRandomCode();
+        printf("%s\n",codePlane[i]);
+    }
+    //list = createElement(plane);
+    //planeQueue = insertQueue(list, planeQueue);
+    
+
     printf("\n--------------------------------------------------\n");
     printf("\tAeroporto Internacional de Brasília\n");
     printf("--------------------------------------------------\n\n");
 
     printf("Hora Inicial: 16:00\n");
     printf("\nFila de Pedidos: \n");
-            flightOrder(planeQueue);
+            //flightOrder(planeQueue);
+    
+    planeQueue = createPlane(codePlane, status, fuel, &fly_number, planeQueue);
 
     printf("\nNúmero de Voos: ");
     printf("%d\n", fly_number);

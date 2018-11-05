@@ -2,7 +2,7 @@
 
 char *getFlight(Plane *plane)
 {
-  int size = strlen(plane->flyCode) + 64;
+  /* int size = strlen(plane->flyCode) + 64;
 
   char *code = (char *) calloc(size, sizeof(char));
 
@@ -10,18 +10,18 @@ char *getFlight(Plane *plane)
   {
     printf("\nError: Fail to allocate memory - code!\n");
     exit(1);
-  }
+  } */
 
   if(plane->status == 'A')
   {
-    snprintf(code, size, "[CODE: %s -- STATUS: %c -- FUEL: %.2d]", plane->flyCode, plane->status, plane->fuel);
+    printf( "[CODE: %s -- STATUS: %c -- FUEL: %.2d]\n", plane->flyCode, plane->status, plane->fuel);
   }
   else if(plane->status == 'D')
   {
-    snprintf(code, size, "[CODE: %s -- STATUS: %c -- --NONE--]", plane->flyCode, plane->status);    
+    printf("[CODE: %s -- STATUS: %c -- --NONE--]\n", plane->flyCode, plane->status);    
   }
 
-  return code;
+  //return code;
 }
 
 char *getRandomCode()
@@ -52,7 +52,7 @@ char *getRandomCode()
   return codePlane[randNum];
 }
 
-int randomFuel()
+int *randomFuel()
 {
   int *fuel = malloc(sizeof(int) * 64);
   if(fuel == NULL){
@@ -65,7 +65,7 @@ int randomFuel()
   for(int i = 0; i < 64; i++){
     fuel[i] = rand() % 13;
   }
-  return *fuel;
+  return fuel;
 }
 
 int randomFly(int n)
@@ -80,7 +80,7 @@ int randomFly(int n)
   return i;
 }
 
-char randomStatus(int *take_off, int *landings, int *flynumber)
+char *randomStatus(int *take_off, int *landings, int *flynumber)
 {
   
   srand(time(NULL));
@@ -126,12 +126,12 @@ char randomStatus(int *take_off, int *landings, int *flynumber)
       l--;
     }
   }
-  return *status;
+  return status;
 }
 
-Plane *createPlane(char *code, char status, int fuel)
-{ 
-
+Queue *createPlane(char **code, char *status, int *fuel, int *fly_numeber, Queue *q)
+{
+  int f = *fly_numeber;
   Plane *plane = (Plane *) calloc(1, sizeof(Plane));
 
   if(plane == NULL)
@@ -140,9 +140,46 @@ Plane *createPlane(char *code, char status, int fuel)
     exit(-1);      
   }
 
-  strcpy(plane->flyCode, code);
-  plane->status = status;
-  plane->fuel = fuel;
-    
-  return plane;
+  for(int i=0;i<f;i++){
+  
+    strcpy(plane->flyCode, code[i]);
+    plane->status = status[i];
+    plane->fuel = fuel[i];
+
+    /* printf("%s\n", code);
+    printf("%c\n", status[i]);
+    printf("%d\n", fuel[i]); */
+  
+
+    List *element = (List *) malloc(sizeof(List));
+  
+    if(element == NULL)
+    {
+      printf("\nError: Fail to allocate memory - element!\n");
+      exit(-1);
+    }
+
+    element->plane = plane;
+    element->next = NULL;
+
+    if(voidQueue(q))
+    {
+      q->beginning = element;
+      q->end = element;
+    }
+    else
+    {
+      element->next = q->end;
+      q->end = element;
+    }
+
+    if(plane->status == 'A')
+    {
+      printf( "[CODE: %s -- STATUS: %c -- FUEL: %.2d]\n", plane->flyCode, plane->status, plane->fuel);
+    }
+    else if(plane->status == 'D')
+    {
+      printf("[CODE: %s -- STATUS: %c -- --NONE--]\n", plane->flyCode, plane->status);    
+    }
+  }
 }
