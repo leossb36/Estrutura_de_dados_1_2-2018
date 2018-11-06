@@ -1,4 +1,5 @@
 #include "header.h"
+int select_names[64] = {0};
 
 char *getFlight(Plane *plane)
 {
@@ -41,14 +42,15 @@ char *getRandomCode()
   };
 
   int randNum;
-  int i = 0;
 
-  while(i < 64)
-  {
+  do{
+    
     randNum = rand() % 64;
-    codePlane[randNum];
-    i++;
-  }
+
+  }while(select_names[randNum] == 1);
+  
+  select_names[randNum] = 1;
+
   return codePlane[randNum];
 }
 
@@ -60,8 +62,6 @@ int *randomFuel()
     exit(0);
   }
 
-  srand(time(NULL));
-
   for(int i = 0; i < 64; i++){
     fuel[i] = rand() % 13;
   }
@@ -71,20 +71,16 @@ int *randomFuel()
 int randomFly(int n)
 {
   int i;
-  if(n == 1){
-    srand(time(NULL));
-  }
+  // if(n == 1){
+  // }
   i = rand() % 22;
   i += 10;
 
   return i;
 }
 
-char *randomStatus(int *take_off, int *landings, int *flynumber)
+char randomStatus(int *take_off, int *landings, int *flynumber)
 {
-  
-  srand(time(NULL));
-
   int t = *take_off, l = *landings, f = *flynumber;
   char *status = malloc(sizeof(int) * f); 
   if(status == NULL){
@@ -129,9 +125,15 @@ char *randomStatus(int *take_off, int *landings, int *flynumber)
   return status;
 }
 
-Queue *createPlane(char **code, char *status, int *fuel, int *fly_numeber, Queue *q)
+void spendFuel(Plane *plane)
 {
-  int f = *fly_numeber;
+  if(plane->fuel >= 0 && plane->status == 'A')
+    plane->fuel -= 1;
+}
+
+Plane *createPlane(char *code, char status, int fuel)
+{ 
+
   Plane *plane = (Plane *) calloc(1, sizeof(Plane));
 
   if(plane == NULL)
@@ -140,46 +142,15 @@ Queue *createPlane(char **code, char *status, int *fuel, int *fly_numeber, Queue
     exit(-1);      
   }
 
-  for(int i=0;i<f;i++){
-  
-    strcpy(plane->flyCode, code[i]);
-    plane->status = status[i];
-    plane->fuel = fuel[i];
+  strcpy(plane->flyCode, code);
+  plane->status = status;
+  plane->fuel = fuel;
+    
+  return plane;
+}
 
-    /* printf("%s\n", code);
-    printf("%c\n", status[i]);
-    printf("%d\n", fuel[i]); */
-  
-
-    List *element = (List *) malloc(sizeof(List));
-  
-    if(element == NULL)
-    {
-      printf("\nError: Fail to allocate memory - element!\n");
-      exit(-1);
-    }
-
-    element->plane = plane;
-    element->next = NULL;
-
-    if(voidQueue(q))
-    {
-      q->beginning = element;
-      q->end = element;
-    }
-    else
-    {
-      element->next = q->end;
-      q->end = element;
-    }
-
-    if(plane->status == 'A')
-    {
-      printf( "[CODE: %s -- STATUS: %c -- FUEL: %.2d]\n", plane->flyCode, plane->status, plane->fuel);
-    }
-    else if(plane->status == 'D')
-    {
-      printf("[CODE: %s -- STATUS: %c -- --NONE--]\n", plane->flyCode, plane->status);    
-    }
-  }
+void *freePlane(Plane *plane)
+{
+  free(plane->flyCode);
+  free(plane);
 }

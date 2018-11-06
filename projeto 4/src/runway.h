@@ -9,4 +9,9 @@ typedef struct runway
   Plane *plane; // element of list
 }Runway;
 
+int usingRunway(Plane *, Runway *);
+List *management(List *list);
+List *management3(Runway *, Runway *, Runway *, Plane *, int);
+void crashing(Plane *, int);
+
 #endif
